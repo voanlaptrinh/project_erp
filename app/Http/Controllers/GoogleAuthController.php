@@ -34,7 +34,7 @@ class GoogleAuthController extends Controller
             }
     
             // Đăng nhập người dùng
-            Auth::login($user);
+            Auth::login($user, true); // `true` giúp duy trì phiên lâu dài
     
             return redirect()->route('home'); // Chuyển hướng đến trang chính
         
