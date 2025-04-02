@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
         }
 
         // Tạo vai trò
-        $adminRole = Role::firstOrCreate(['name' => 'Super Admin']);
+        $adminRole = Role::firstOrCreate(['name' => 'Super-Admin']);
         $adminRole->givePermissionTo(Permission::all());
 
         $userRole = Role::firstOrCreate(['name' => 'User']);
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         // Gán Super Admin cho User ID 1
         $admin = User::find(1);
         if ($admin) {
-            $admin->assignRole('Super Admin');
+            $admin->assignRole('Super-Admin');
         }
 
 
@@ -55,7 +55,7 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $superAdmin->assignRole('Super Admin');
+        $superAdmin->assignRole('Super-Admin');
     }
     
 }
