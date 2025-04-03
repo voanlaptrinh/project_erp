@@ -21,26 +21,22 @@ class DatabaseSeeder extends Seeder
         // ]);
          // Tạo quyền
          $permissions = [
-            'create users', 'edit users', 'delete users',
-            'create posts', 'edit posts', 'delete posts',
-            'create roles', 'delete roles', 'create roles',
+            'create users', 'edit users', 'delete users', 'view users',
+            'create roles', 'edit roles', 'delete roles', 'view roles',
         ];
-
+        
         foreach ($permissions as $permission) {
-            Permission::firstOrCreate(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
+        
+        $adminRole = Role::firstOrCreate(['name' => 'Super Admin', 'guard_name' => 'web']);
+        $adminRole->syncPermissions($permissions);
 
-        // Tạo vai trò
-        $adminRole = Role::firstOrCreate(['name' => 'Super-Admin']);
-        $adminRole->givePermissionTo(Permission::all());
-
-        $userRole = Role::firstOrCreate(['name' => 'User']);
-        $userRole->givePermissionTo(['create posts', 'edit posts']);
 
         // Gán Super Admin cho User ID 1
         $admin = User::find(1);
         if ($admin) {
-            $admin->assignRole('Super-Admin');
+            $admin->assignRole('Super Admin');
         }
 
 
@@ -50,12 +46,12 @@ class DatabaseSeeder extends Seeder
         $superAdmin = User::firstOrCreate(
             ['email' => 'superadmin@example.com'],
             [
-                'name' => 'Super Admin',
+                'name' => 'Super-Admin',
                 'password' => \Hash::make('password123'), // Đổi mật khẩu mạnh hơn
             ]
         );
 
-        $superAdmin->assignRole('Super-Admin');
+        $superAdmin->assignRole('Super Admin');
     }
     
 }
