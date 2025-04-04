@@ -11,6 +11,7 @@
     <link href="{{ asset('/source/css/bootstrap-icons.css') }}" rel="stylesheet">
 
     <link href="{{ asset('/source/css/style.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/source/css/toastr.min.css') }}">
 
 </head>
 
@@ -241,14 +242,14 @@
             <ul class="sidebar-nav" id="sidebar-nav">
 
                 <li class="nav-item">
-                    <a class="nav-link " href="index.html">
+                    <a class="nav-link collapsed" href="index.html">
                         <i class="bi bi-grid"></i>
                         <span>Dashboard</span>
                     </a>
                 </li><!-- End Dashboard Nav -->
                 @if (auth()->user()->hasPermissionTo('view users'))
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="{{ route('admin.users.index') }}">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index','admin.users.create','admin.users.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.users.index') }}">
                             <i class="bi bi-person"></i>
                             <span>Quản lý người dùng</span>
                         </a>
@@ -256,37 +257,15 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('view roles'))
                     <li class="nav-item">
-                        <a class="nav-link collapsed" href="{{ route('admin.roles.index') }}">
-                            <i class="bi bi-person"></i>
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.roles.index','admin.roles.create','admin.roles.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.roles.index') }}">
+                            <i class="bi-shield-lock-fill"></i>
                             <span>Quản lý quyền người dùng</span>
                         </a>
                     </li>
                 @endif
 
 
-                <li class="nav-item">
-                    <a class="nav-link collapsed" data-bs-target="#icons-nav" data-bs-toggle="collapse"
-                        href="#">
-                        <i class="bi bi-gem"></i><span>Icons</span><i class="bi bi-chevron-down ms-auto"></i>
-                    </a>
-                    <ul id="icons-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                        <li>
-                            <a href="icons-bootstrap.html">
-                                <i class="bi bi-circle"></i><span>Bootstrap Icons</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="icons-remix.html">
-                                <i class="bi bi-circle"></i><span>Remix Icons</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="icons-boxicons.html">
-                                <i class="bi bi-circle"></i><span>Boxicons</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li><!-- End Icons Nav -->
+              
 
                 <li class="nav-heading">Pages</li>
 
@@ -366,6 +345,34 @@
 
     <!-- Template Main JS File -->
     <script src="{{ asset('source/js/main.js') }}"></script>
+    <script src="{{ asset('/source/js/jquery-3.3.1.js') }}"></script>
+    <script src="{{ asset('/source/js/toastr.min.js') }}"></script>
+    <script>
+        toastr.options = {
+
+            "progressBar": true, // Hiển thị thanh tiến trình
+            "timeOut": 2000, // Thời gian hiển thị thông báo (2 giây)
+            "extendedTimeOut": 1000, // Thời gian hiển thị khi người dùng di chuột vào thông báo (1 giây)
+
+        };
+
+        @if (Session::has('success'))
+            toastr.success("{{ Session::get('success') }}");
+        @endif
+
+        @if (Session::has('error'))
+            toastr.error("{{ Session::get('error') }}");
+        @endif
+
+        @if (Session::has('info'))
+            toastr.info("{{ Session::get('info') }}");
+        @endif
+
+        @if (Session::has('warning'))
+            toastr.warning("{{ Session::get('warning') }}");
+        @endif
+    </script>
+
 </body>
 
 </html>

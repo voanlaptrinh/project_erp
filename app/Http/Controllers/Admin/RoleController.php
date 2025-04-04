@@ -18,7 +18,7 @@ class RoleController extends Controller
     public function index()
     {
         // Get all roles with their permissions
-        $roles = Role::with('permissions')->get();
+        $roles = Role::with('permissions')->paginate(10);
 
         return view('admin.roles.index', compact('roles'));
     }
@@ -80,6 +80,6 @@ class RoleController extends Controller
         $role->delete();
 
         // Redirect back with success message
-        return redirect()->route('admin.roles.index')->with('success', 'Role deleted successfully');
+        return redirect()->route('admin.roles.index')->with('success', 'Xóa vai trò thành công.');
     }
 }
