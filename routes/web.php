@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
+use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LoginController;
@@ -58,7 +59,12 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::delete('/destroy/{project}', [ProjectController::class, 'destroy'])->name('admin.projects.destroy');
     });
 
-
+    Route::prefix('/tasks')->group(function () {
+        Route::get('/{project?}', [TaskController::class, 'index'])->name('admin.projects.tasks');
+        Route::get('/create/{project}', [TaskController::class, 'create'])->name('admin.tasks.create');
+        Route::post('/store/{project}', [TaskController::class, 'store'])->name('admin.tasks.store');
+    });
+    
    
 
     // Các route khác cho Sprint, Task, Resource và Issue (Bạn có thể chỉnh sửa để phù hợp với phân quyền)

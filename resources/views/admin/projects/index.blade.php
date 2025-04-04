@@ -38,6 +38,8 @@
                         @endcan
 
                         <a href="{{ route('admin.projects.show', $project->id) }}" class="btn btn-info">Xem</a>
+                        <a href="{{ route('admin.projects.tasks', $project->id) }}" class="btn btn-info">Xem Task</a>
+                        <a href="{{ route('admin.projects.tasks') }}" class="btn btn-info">Xem Task</a>
                     </td>
                 </tr>
             @endforeach

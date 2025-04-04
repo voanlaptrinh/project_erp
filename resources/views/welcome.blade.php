@@ -220,7 +220,7 @@
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="btn btn-danger">Đăng Xuất</button>
+                                    <button type="submit" class="btn w-100 text-start">  <i class="bi bi-box-arrow-right"></i> Đăng Xuất</button>
                                 </form>
                                 {{-- <a class="dropdown-item d-flex align-items-center" href="#">
                                     <i class="bi bi-box-arrow-right"></i>
@@ -260,6 +260,14 @@
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.roles.index','admin.roles.create','admin.roles.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.roles.index') }}">
                             <i class="bi-shield-lock-fill"></i>
                             <span>Quản lý quyền người dùng</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem dự án'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.index','admin.projects.create','admin.projects.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.projects.index') }}">
+                            <i class="bi bi-kanban"></i>
+                            <span>Dự án</span>
                         </a>
                     </li>
                 @endif
