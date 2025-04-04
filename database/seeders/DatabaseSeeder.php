@@ -23,6 +23,11 @@ class DatabaseSeeder extends Seeder
          $permissions = [
             'create users', 'edit users', 'delete users', 'view users',
             'create roles', 'edit roles', 'delete roles', 'view roles',
+            'xem dự án', 'tạo dự án', 'sửa dự án', 'xóa dự án',
+            'xem sprint', 'tạo sprint', 'sửa sprint', 'xóa sprint',
+            'xem task', 'tạo task', 'sửa task', 'xóa task',
+            'xem tài nguyên', 'sửa tài nguyên',
+            'xem sự cố', 'tạo sự cố', 'sửa sự cố', 'xóa sự cố',
         ];
         
         foreach ($permissions as $permission) {
