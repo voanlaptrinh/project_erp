@@ -10,7 +10,7 @@ class Project extends Model
     use HasFactory;
 
     protected $fillable = [
-        'ten_du_an', 'mo_ta', 'trang_thai', 'ngay_bat_dau', 'ngay_ket_thuc'
+        'ten_du_an', 'mo_ta', 'trang_thai', 'ngay_bat_dau', 'ngay_ket_thuc', 'alias'
     ];
 
     public function sprints()
@@ -37,4 +37,9 @@ class Project extends Model
     {
         return $this->belongsToMany(User::class);
     }
+    public function getRouteKeyName()
+{
+    return 'alias';
+}
+
 }

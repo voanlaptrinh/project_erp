@@ -1,4 +1,6 @@
 <h3>Danh sách Task</h3>
+<a href="{{ route('admin.tasks.create', $project->alias) }}" class="btn btn-success">Thêm Task</a>
+
 <table class="table">
     <thead>
         <tr>

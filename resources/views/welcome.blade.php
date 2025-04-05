@@ -36,66 +36,30 @@
 
                         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                             <i class="bi bi-bell"></i>
-                            <span class="badge bg-primary badge-number">4</span>
+                            <span
+                                class="badge bg-primary badge-number">{{ auth()->user()->notifications()->where('is_read', false)->count() }}</span>
                         </a><!-- End Notification Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
-                                You have 4 new notifications
+                                Bạn có {{ auth()->user()->notifications()->where('is_read', false)->count() }} thông báo mới chưa đọc
                                 <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View
                                         all</span></a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
+                            @forelse (auth()->user()->notifications->where('is_read', false) as $notification)
+                                {{-- <li><strong>{{ $notification->title }}</strong>: {{ $notification->message }}</li> --}}
+                                <li class="notification-item">
+                                    <i class="bi bi-info-circle text-primary"></i>
+                                    <div>
+                                        <h4>{{ $notification->title }}</h4>
+                                        <p>{{ $notification->message }}</p>
+                                        <p> {{ $notification->created_at->diffForHumans() }}</p>
+                                    </div>
+                                </li>
+                                @empty
+                                <span class="dropdown-item text-center">Không có thông báo</span>
+                            @endforelse
 
-                            <li class="notification-item">
-                                <i class="bi bi-exclamation-circle text-warning"></i>
-                                <div>
-                                    <h4>Lorem Ipsum</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>30 min. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-x-circle text-danger"></i>
-                                <div>
-                                    <h4>Atque rerum nesciunt</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>1 hr. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-check-circle text-success"></i>
-                                <div>
-                                    <h4>Sit rerum fuga</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>2 hrs. ago</p>
-                                </div>
-                            </li>
-
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="notification-item">
-                                <i class="bi bi-info-circle text-primary"></i>
-                                <div>
-                                    <h4>Dicta reprehenderit</h4>
-                                    <p>Quae dolorem earum veritatis oditseno</p>
-                                    <p>4 hrs. ago</p>
-                                </div>
-                            </li>
 
                             <li>
                                 <hr class="dropdown-divider">
@@ -220,7 +184,8 @@
                             <li>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
-                                    <button type="submit" class="btn w-100 text-start">  <i class="bi bi-box-arrow-right"></i> Đăng Xuất</button>
+                                    <button type="submit" class="btn w-100 text-start"> <i
+                                            class="bi bi-box-arrow-right"></i> Đăng Xuất</button>
                                 </form>
                                 {{-- <a class="dropdown-item d-flex align-items-center" href="#">
                                     <i class="bi bi-box-arrow-right"></i>
@@ -249,7 +214,8 @@
                 </li><!-- End Dashboard Nav -->
                 @if (auth()->user()->hasPermissionTo('view users'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index','admin.users.create','admin.users.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.users.index') }}">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('admin.users.index') }}">
                             <i class="bi bi-person"></i>
                             <span>Quản lý người dùng</span>
                         </a>
@@ -257,7 +223,8 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('view roles'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.roles.index','admin.roles.create','admin.roles.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.roles.index') }}">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.roles.index', 'admin.roles.create', 'admin.roles.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('admin.roles.index') }}">
                             <i class="bi-shield-lock-fill"></i>
                             <span>Quản lý quyền người dùng</span>
                         </a>
@@ -265,7 +232,8 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem dự án'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.index','admin.projects.create','admin.projects.edit']) ? '' : 'collapsed' }}" href="{{ route('admin.projects.index') }}">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.index', 'admin.projects.create', 'admin.projects.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('admin.projects.index') }}">
                             <i class="bi bi-kanban"></i>
                             <span>Dự án</span>
                         </a>
@@ -273,7 +241,7 @@
                 @endif
 
 
-              
+
 
                 <li class="nav-heading">Pages</li>
 

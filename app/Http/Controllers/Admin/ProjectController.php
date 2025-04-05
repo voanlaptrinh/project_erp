@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\notification;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
@@ -74,35 +76,42 @@ class ProjectController extends Controller
             'user_ids.array' => 'Danh sách người phụ trách phải là một mảng.',
             'user_ids.*.exists' => 'Một hoặc nhiều người phụ trách không hợp lệ.',
         ]);
+        $alias = Str::slug($request->ten_du_an) . '-' . now()->format('YmdHis');
         $project = Project::create([
             'ten_du_an' => $request->input('ten_du_an'),
             'mo_ta' => $request->input('mo_ta'),
+            'alias' => $alias,
             'trang_thai' => $request->input('trang_thai'),
             'ngay_bat_dau' => $request->input('ngay_bat_dau'),
             'ngay_ket_thuc' => $request->input('ngay_ket_thuc'),
         ]);
-
+        foreach ($request->user_ids as $userId) {
+            notification::create([
+                'user_id' => $userId,
+                'title' => 'Bạn được thêm vào dự án mới',
+                'message' => 'Bạn đã được thêm vào dự án "' . $project->ten_du_an . '".',
+            ]);
+        }
+        
         // Gán người phụ trách cho dự án
         $project->users()->sync($request->input('user_ids'));
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được thêm thành công!');
     }
 
     // Chỉ Admin mới có quyền sửa dự án
-    public function edit(Project $project)
-    {
-        $this->authorize('sửa dự án');  // Kiểm tra quyền sửa dự án
+    public function edit($alias)
+{
+    $this->authorize('sửa dự án');  // Kiểm tra quyền sửa dự án
+    $project = Project::where('alias', $alias)->firstOrFail();
+    $users = User::all();
+    $assignedUsers = $project->users->pluck('id')->toArray();
     
-        // Lấy tất cả người dùng
-        $users = User::all();
-    
-        // Lấy danh sách người dùng đã được gán vào dự án
-        $assignedUsers = $project->users->pluck('id')->toArray();  // Lấy id người dùng phụ trách dự án
-    
-        return view('admin.projects.edit', compact('project', 'users', 'assignedUsers'));
-    }
+    return view('admin.projects.edit', compact('project', 'users', 'assignedUsers'));
+}
+
 
     // Cập nhật dự án
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $alias)
     {
         $this->authorize('sửa dự án');  // Kiểm tra quyền
 
@@ -134,14 +143,16 @@ class ProjectController extends Controller
             'user_ids.array' => 'Danh sách người phụ trách phải là một mảng.',
             'user_ids.*.exists' => 'Một hoặc nhiều người phụ trách không hợp lệ.',
         ]);
-
+        $project = Project::where('alias', $alias)->firstOrFail();
         // Cập nhật trạng thái và các trường còn lại
+        $alias = Str::slug($request->ten_du_an) . '-' . now()->format('YmdHis');
         $project->update([
             'ten_du_an' => $request->input('ten_du_an'),
             'mo_ta' => $request->input('mo_ta'),
             'trang_thai' => $request->input('trang_thai'),
             'ngay_bat_dau' => $request->input('ngay_bat_dau'),
             'ngay_ket_thuc' => $request->input('ngay_ket_thuc'),
+            'alias' => $alias,
         ]);
 
         // Cập nhật người phụ trách cho dự án
@@ -152,12 +163,12 @@ class ProjectController extends Controller
 
 
     // Chỉ Admin mới có quyền xóa dự án
-    public function destroy(Project $project)
+    public function destroy($alias)
     {
         $this->authorize('xóa dự án');  // Kiểm tra quyền
 
+        $project = Project::where('alias', $alias)->firstOrFail();
         $project->delete();
-
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được xóa thành công!');
     }
 }

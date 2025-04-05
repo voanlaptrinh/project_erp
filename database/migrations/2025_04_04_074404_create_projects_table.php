@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('trang_thai', ['Chưa bắt đầu', 'Đang thực hiện', 'Tạm dừng', 'Hoàn thành'])->default('Chưa bắt đầu');
             $table->date('ngay_bat_dau')->nullable();
             $table->date('ngay_ket_thuc')->nullable();
+            $table->string('alias')->nullable();
             $table->timestamps();
         });
     }

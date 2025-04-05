@@ -26,20 +26,19 @@
                     <td>{{ $project->ngay_ket_thuc }}</td>
                     <td>
                         @can('sửa dự án')
-                            <a href="{{ route('admin.projects.edit', $project->id) }}" class="btn btn-primary">Sửa</a>
+                            <a href="{{ route('admin.projects.edit', $project->alias) }}" class="btn btn-primary">Sửa</a>
                         @endcan
-
+                
                         @can('xóa dự án')
-                            <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="d-inline">
+                            <form action="{{ route('admin.projects.destroy', $project->alias) }}" method="POST" class="d-inline">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa dự án này?')">Xóa</button>
                             </form>
                         @endcan
-
-                        <a href="{{ route('admin.projects.show', $project->id) }}" class="btn btn-info">Xem</a>
-                        <a href="{{ route('admin.projects.tasks', $project->id) }}" class="btn btn-info">Xem Task</a>
-                        <a href="{{ route('admin.projects.tasks') }}" class="btn btn-info">Xem Task</a>
+                
+                        <a href="{{ route('admin.projects.show', $project->alias) }}" class="btn btn-info">Xem</a>
+                        <a href="{{ route('admin.projects.tasks', $project->alias) }}" class="btn btn-info">Xem Task</a>
                     </td>
                 </tr>
             @endforeach

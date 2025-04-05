@@ -2,7 +2,7 @@
 @section('body')
 <div class="container">
     <h2>Sửa Dự Án: {{ $project->ten_du_an }}</h2>
-    <form action="{{ route('admin.projects.update', $project->id) }}" method="POST">
+    <form action="{{ route('admin.projects.update', $project->alias) }}" method="POST">
         @csrf
         @method('PUT') <!-- Đặt phương thức PUT để cập nhật dữ liệu -->
         <div class="form-group">
