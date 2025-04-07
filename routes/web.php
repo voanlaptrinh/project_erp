@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\UploadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,24 +50,29 @@ Route::middleware(['auth', 'role:Super Admin'])->group(function () {
     Route::delete('/admin/roles/{role}', [RoleController::class, 'destroy'])->name('admin.roles.destroy');
 });
 Route::prefix('admin')->middleware('auth')->group(function () {
+    Route::post('/upload-image', [UploadController::class, 'uploadImage'])->name('upload-image');
+    Route::post('/delete-image', [UploadController::class, 'deleteImage'])->name('delete-image');
     Route::prefix('/projects')->group(function () {
         Route::get('/', [ProjectController::class, 'index'])->name('admin.projects.index');
         Route::get('/create', [ProjectController::class, 'create'])->name('admin.projects.create');
         Route::post('/store', [ProjectController::class, 'store'])->name('admin.projects.store');
-        Route::get('/show/{alias}', [ProjectController::class, 'show'])->name('admin.projects.show');
+        Route::get('/show/{project}', [ProjectController::class, 'show'])->name('admin.projects.show');
         Route::get('/edit/{project}', [ProjectController::class, 'edit'])->name('admin.projects.edit');
         Route::put('/update/{project}', [ProjectController::class, 'update'])->name('admin.projects.update');
         Route::delete('/destroy/{alias}', [ProjectController::class, 'destroy'])->name('admin.projects.destroy');
     });
-    
+
     Route::prefix('/tasks')->group(function () {
         Route::get('/{project:alias?}', [TaskController::class, 'index'])->name('admin.projects.tasks');
         Route::get('/create/{project:alias}', [TaskController::class, 'create'])->name('admin.tasks.create');
         Route::post('/store/{project:alias}', [TaskController::class, 'store'])->name('admin.tasks.store');
+        Route::get('/{project}/tasks/{task}/edit', [TaskController::class, 'edit'])->name('admin.projects.tasks.edit');
+        Route::put('/{project}/tasks/{task}', [TaskController::class, 'update'])->name('admin.projects.tasks.update');
+        Route::delete('/{project}/tasks/{task}', [TaskController::class, 'destroy'])->name('admin.projects.tasks.destroy');
     });
-    
-    
-   
+
+
+
 
     // Các route khác cho Sprint, Task, Resource và Issue (Bạn có thể chỉnh sửa để phù hợp với phân quyền)
     // Route::resource('sprints', SprintController::class);

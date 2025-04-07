@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -20,6 +21,10 @@ class AdminUserController extends Controller
         }
     
         $users = $query->paginate(10); // Phân trang
+        //ghi lại log khi sử dụng
+        Log::create([
+            'message' => Auth::user()->name . ' đã xem danh sách người dùng'
+        ]);
         return view('admin.users.index', compact('users'));
     }
     
@@ -31,6 +36,7 @@ class AdminUserController extends Controller
 
     public function store(Request $request)
     {
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -63,7 +69,9 @@ class AdminUserController extends Controller
     
         // Gán vai trò cho người dùng
         $user->syncRoles($request->roles); // Sử dụng syncRoles thay vì assignRole
-    
+    Log::create([
+        'message' => Auth::user()->name . ' đã tạo người dùng ' . $request->name
+    ]);
         return redirect()->route('admin.users.index')->with('success', 'Tạo user thành công!');
     }
     
@@ -79,6 +87,9 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->syncRoles($request->roles);
+        Log::create([
+            'message' => Auth::user()->name . ' đã cập nhật quyền cho người dùng ' . $user->name
+        ]);
         return redirect()->route('admin.users.index')->with('success', 'Cập nhật quyền thành công!');
     }
 
@@ -86,6 +97,9 @@ class AdminUserController extends Controller
     {
         $user = User::findOrFail($id);
         $user->delete();
+        Log::create([
+            'message' => Auth::user()->name . ' đã xóa người dùng ' . $user->name
+        ]);
         return redirect()->route('admin.users.index')->with('success', 'Xóa user thành công!');
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use App\Models\notification;
 use App\Models\Project;
 use App\Models\User;
@@ -18,29 +19,43 @@ class ProjectController extends Controller
         $this->middleware('can:tạo dự án')->only(['create', 'store']);
         $this->middleware('can:sửa dự án')->only(['edit', 'update']);
         $this->middleware('can:xóa dự án')->only(['destroy']);
-        $this->middleware('can:xem dự án')->only(['index']);
+        $this->middleware('can:xem dự án')->only(['index', 'show']);
     }
 
     // Xem tất cả dự án hoặc dự án được phân quyền
-    public function index()
+    public function index(Request $request)
     {
-        // Kiểm tra nếu người dùng có quyền xem dự án
         if (Auth::user()->can('xem dự án')) {
-            $projects = Auth::user()->hasRole('Super Admin')
-                ? Project::all() // Super Admin có thể xem tất cả dự án
-                : Auth::user()->projects; // Các user khác chỉ thấy dự án được phân công
-
-            return view('admin.projects.index', compact('projects'));
+            $search = $request->input('search');
+            // dd($search);
+            if (Auth::user()->hasRole('Super Admin')) {
+                $projects = Project::when($search, function ($query) use ($search) {
+                    return $query->where('ten_du_an', 'like', '%' . $search . '%');
+                })
+                    ->paginate(20);
+            } else {
+                $projects = Auth::user()->projects()
+                    ->when($search, function ($query) use ($search) {
+                        return $query->where('ten_du_an', 'like', '%' . $search . '%');
+                    })
+                    ->paginate(20);
+            }
+            // Log::create([
+            //     'message' => Auth::user()->name . ' đã xem danh sách dự án'
+            // ]);
+            return view('admin.projects.index', compact('projects', 'search'));
         }
 
         return abort(403, 'Bạn không có quyền xem dự án.');
     }
 
 
+
+
     public function create()
     {
         $this->authorize('tạo dự án');  // Kiểm tra quyền
-        $users = User::all(); 
+        $users = User::all();
         return view('admin.projects.create', compact('users'));
     }
 
@@ -92,7 +107,9 @@ class ProjectController extends Controller
                 'message' => 'Bạn đã được thêm vào dự án "' . $project->ten_du_an . '".',
             ]);
         }
-        
+        Log::create([
+            'message' => Auth::user()->name . ' đã tạo dự án ' . $request->ten_du_an
+        ]);
         // Gán người phụ trách cho dự án
         $project->users()->sync($request->input('user_ids'));
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được thêm thành công!');
@@ -100,15 +117,25 @@ class ProjectController extends Controller
 
     // Chỉ Admin mới có quyền sửa dự án
     public function edit($alias)
-{
-    $this->authorize('sửa dự án');  // Kiểm tra quyền sửa dự án
-    $project = Project::where('alias', $alias)->firstOrFail();
-    $users = User::all();
-    $assignedUsers = $project->users->pluck('id')->toArray();
-    
-    return view('admin.projects.edit', compact('project', 'users', 'assignedUsers'));
-}
+    {
+        $this->authorize('sửa dự án');  // Kiểm tra quyền sửa dự án
+        $project = Project::where('alias', $alias)->firstOrFail();
+        $users = User::all();
+        $assignedUsers = $project->users->pluck('id')->toArray();
 
+        return view('admin.projects.edit', compact('project', 'users', 'assignedUsers'));
+    }
+    public function show($alias)
+    {
+        $this->authorize('xem dự án');  // Kiểm tra quyền sửa dự án
+        $project = Project::where('alias', $alias)->firstOrFail();
+        $users = User::all();
+        $assignedUsers = $project->users->pluck('id')->toArray();
+        Log::create([
+            'message' => Auth::user()->name . ' đã xem dự án ' . $project->ten_du_an
+        ]);
+        return view('admin.projects.show', compact('project', 'users', 'assignedUsers'));
+    }
 
     // Cập nhật dự án
     public function update(Request $request, $alias)
@@ -157,7 +184,9 @@ class ProjectController extends Controller
 
         // Cập nhật người phụ trách cho dự án
         $project->users()->sync($request->input('user_ids'));
-
+Log::create([
+            'message' => Auth::user()->name . ' đã cập nhật dự án ' . $request->ten_du_an
+        ]);
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được cập nhật thành công!');
     }
 
@@ -168,7 +197,18 @@ class ProjectController extends Controller
         $this->authorize('xóa dự án');  // Kiểm tra quyền
 
         $project = Project::where('alias', $alias)->firstOrFail();
+        $users = $project->users;
+        foreach ($users as $user) {
+            Notification::create([
+                'user_id' => $user->id,
+                'title' => 'Dự án đã bị xóa',
+                'message' => 'Dự án "' . $project->ten_du_an . '" mà bạn tham gia đã bị xóa.',
+            ]);
+        }
         $project->delete();
+        Log::create([
+            'message' => Auth::user()->name . ' đã xóa dự án ' . $project->ten_du_an
+        ]);
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được xóa thành công!');
     }
 }

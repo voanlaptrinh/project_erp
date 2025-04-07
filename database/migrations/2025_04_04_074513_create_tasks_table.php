@@ -11,19 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('project_id')->constrained()->onDelete('cascade');
-            $table->foreignId('sprint_id')->nullable()->constrained()->onDelete('set null');
-            $table->string('tieu_de');
-            $table->text('mo_ta')->nullable();
-            $table->enum('do_uu_tien', ['Thấp', 'Trung bình', 'Cao'])->default('Trung bình');
-            $table->enum('trang_thai', ['Mới', 'Đang thực hiện', 'Hoàn thành'])->default('Mới');
-            $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
-            $table->date('han_hoan_thanh')->nullable();
-            $table->timestamps();
-        });
-    }
+            Schema::create('tasks', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('project_id')->constrained()->onDelete('cascade');
+                $table->string('tieu_de');
+                $table->text('mo_ta')->nullable();
+                $table->enum('do_uu_tien', ['Thấp', 'Trung bình', 'Cao'])->default('Trung bình');
+                $table->enum('trang_thai', ['Mới', 'Đang thực hiện', 'Hoàn thành'])->default('Mới');
+                $table->foreignId('assigned_to')->nullable()->constrained('users')->onDelete('set null');
+                $table->date('han_hoan_thanh')->nullable();
+                $table->timestamps();
+            });
+    }   
 
     /**
      * Reverse the migrations.

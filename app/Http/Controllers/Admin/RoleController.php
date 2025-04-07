@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 class RoleController extends Controller
@@ -47,7 +49,9 @@ class RoleController extends Controller
         // Gán quyền cho vai trò, dùng tên quyền thay vì ID
         $permissions = Permission::whereIn('name', $request->permissions)->get();
         $role->givePermissionTo($permissions);
-
+        Log::create([
+            'message' => Auth::user()->name . 'Tạo vai trò mới: ' . $role->name
+        ]);
         return redirect()->route('admin.roles.index')->with('success', 'Tạo vai trò và gán quyền thành công.');
     }
 
@@ -69,7 +73,9 @@ class RoleController extends Controller
 
         // Gán quyền cho vai trò
         $role->syncPermissions($permissions);
-
+        Log::create([
+            'message' => Auth::user()->name . ' đã cập nhật vai trò: ' . $role->name
+        ]);
         return redirect()->route('admin.roles.index')->with('success', 'Cập nhật vai trò thành công.');
     }
 
@@ -78,7 +84,9 @@ class RoleController extends Controller
     {
         // Delete the role
         $role->delete();
-
+        Log::create([
+            'message' => Auth::user()->name . ' đã xóa vai trò: ' . $role->name
+        ]);
         // Redirect back with success message
         return redirect()->route('admin.roles.index')->with('success', 'Xóa vai trò thành công.');
     }
