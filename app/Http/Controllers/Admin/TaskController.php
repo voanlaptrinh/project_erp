@@ -68,12 +68,7 @@ class TaskController extends Controller
             'trang_thai.in' => 'Trạng thái không hợp lệ',
             'tieu_de.string' => 'Tiêu đề phải là một chuỗi',
             'tieu_de.max' => 'Tiêu đề không được vượt quá 255 ký tự',
-            'mo_ta.string' => 'Mô tả phải là một chuỗi',
-            'do_uu_tien.in' => 'Độ ưu tiên không hợp lệ',
-            'trang_thai.in' => 'Trạng thái không hợp lệ',
-            'assigned_to.exists' => 'Người được giao không tồn tại trong hệ thống',
-            'han_hoan_thanh.date' => 'Hạn hoàn thành phải là một ngày hợp lệ',
-            'assigned_to.exists' => 'Người được giao không tồn tại trong hệ thống',
+          
 
         ]);
 
@@ -132,12 +127,6 @@ class TaskController extends Controller
             'trang_thai.in' => 'Trạng thái không hợp lệ',
             'tieu_de.string' => 'Tiêu đề phải là một chuỗi',
             'tieu_de.max' => 'Tiêu đề không được vượt quá 255 ký tự',
-            'mo_ta.string' => 'Mô tả phải là một chuỗi',
-            'do_uu_tien.in' => 'Độ ưu tiên không hợp lệ',
-            'trang_thai.in' => 'Trạng thái không hợp lệ',
-            'assigned_to.exists' => 'Người được giao không tồn tại trong hệ thống',
-            'han_hoan_thanh.date' => 'Hạn hoàn thành phải là một ngày hợp lệ',
-            'assigned_to.exists' => 'Người được giao không tồn tại trong hệ thống',
 
         ]);
 
