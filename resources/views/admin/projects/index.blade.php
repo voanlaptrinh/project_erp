@@ -33,8 +33,8 @@
                                     <div class="row g-2">
                                         <div class="col-lg-10">
                                             <label for="email" class="form-label">Tên dự án:</label>
-                                            <input type="text" name="search" placeholder="Tên dự án" class="form-control "
-                                                value="{{ request('search') }}">
+                                            <input type="text" name="search" placeholder="Tên dự án"
+                                                class="form-control " value="{{ request('search') }}">
                                         </div>
 
                                         <div class="col-lg-2">
@@ -99,24 +99,27 @@
 
                                             </td>
                                             <td>
-                                                {{ $project->ngay_bat_dau->format('d-m-Y') }}
+                                                {{ $project->ngay_bat_dau }}
                                             </td>
 
                                             <td>
                                                 {{ $project->ngay_ket_thuc }}
                                             </td>
                                             <td colspan="4">
-                                                <a href="{{ route('admin.projects.tasks', $project->alias) }}"
-                                                    class="btn btn-info">Xem
-                                                    Task</a>
-                                                <a href="{{ route('admin.projects.show', $project->alias) }}"
-                                                    class="btn btn-info">Xem</a>
-                                                @can('sửa dự án')
+                                                @if (auth()->user()->hasPermissionTo('xem task'))
+                                                    <a href="{{ route('admin.projects.tasks', $project->alias) }}"
+                                                        class="btn btn-info">Xem
+                                                        Task</a>
+                                                @endif
+                                                @if (auth()->user()->hasPermissionTo('xem dự án'))
+                                                    <a href="{{ route('admin.projects.show', $project->alias) }}"
+                                                        class="btn btn-info">Xem</a>
+                                                @endif
+                                                @if (auth()->user()->hasPermissionTo('sửa dự án'))
                                                     <a href="{{ route('admin.projects.edit', $project->alias) }}"
                                                         class="btn btn-warning">Sửa</a>
-                                                @endcan
-
-                                                @can('xóa dự án')
+                                                @endif
+                                                @if (auth()->user()->hasPermissionTo('xóa dự án'))
                                                     <form action="{{ route('admin.projects.destroy', $project->alias) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
@@ -124,12 +127,12 @@
                                                         <button type="submit" class="btn btn-danger"
                                                             onclick="return confirm('Bạn có chắc chắn muốn xóa dự án này?')">Xóa</button>
                                                     </form>
-                                                @endcan
+                                                @endif
 
                                             </td>
 
                                         </tr>
-                                        @empty
+                                    @empty
                                         <tr>
                                             <td colspan="6" class="text-center">
                                                 <div class="alert alert-danger">

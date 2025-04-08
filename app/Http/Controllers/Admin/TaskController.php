@@ -14,28 +14,44 @@ class TaskController extends Controller
 {
     public function index(Project $project = null)
     {
-        // Nếu người dùng là Super Admin, họ có thể xem tất cả task
+        $query = Task::query();
+    
+        // Nếu là Super Admin
         if (auth()->user()->hasRole('Super Admin')) {
-            // Nếu có project, lấy tất cả task của dự án đó
             if ($project) {
-                $tasks = $project->tasks;
-            } else {
-                // Nếu không có project, lấy tất cả task trong hệ thống
-                $tasks = Task::all();
+                $query->where('project_id', $project->id);
             }
         } else {
-            // Nếu không phải Super Admin, chỉ lấy các task mà người dùng đã được phân công
+            // Người thường chỉ được thấy task mình được giao
             if ($project) {
-                // Nếu có project, lấy các task của dự án mà user được phân công
-                $tasks = $project->tasks()->where('assigned_to', auth()->id())->get();
+                $query->where('project_id', $project->id)
+                      ->where('assigned_to', auth()->id());
             } else {
-                // Nếu không có project, lấy tất cả task mà người dùng được phân công
-                $tasks = Task::where('assigned_to', auth()->id())->get();
+                $query->where('assigned_to', auth()->id());
             }
         }
-
+    
+        // Tìm kiếm theo tiêu đề
+        if (request()->filled('tieu_de')) {
+            $query->where('tieu_de', 'like', '%' . request('tieu_de') . '%');
+        }
+    
+        // Lọc theo độ ưu tiên
+        if (request()->filled('do_uu_tien')) {
+            $query->where('do_uu_tien', request('do_uu_tien'));
+        }
+    
+        // Lọc theo trạng thái
+        if (request()->filled('trang_thai')) {
+            $query->where('trang_thai', request('trang_thai'));
+        }
+    
+        // Lấy kết quả (thêm paginate nếu muốn)
+        $tasks = $query->paginate(20);
+    
         return view('admin.tasks.index', compact('project', 'tasks'));
     }
+    
     // Phân quyền cho các phương thức    
 
     // Hiển thị form thêm task

@@ -232,7 +232,7 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem dự án'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.index', 'admin.projects.create', 'admin.projects.edit']) ? '' : 'collapsed' }}"
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.show','admin.projects.index', 'admin.projects.create', 'admin.projects.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.projects.index') }}">
                             <i class="bi bi-kanban"></i>
                             <span>Dự án</span>
