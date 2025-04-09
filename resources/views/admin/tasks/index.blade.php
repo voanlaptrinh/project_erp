@@ -5,7 +5,7 @@
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                <li class="breadcrumb-item active">Task trong dự án {{$project->ten_du_an}}</li>
+                <li class="breadcrumb-item active">Task trong dự án ({{ $project->ten_du_an }})</li>
             </ol>
         </nav>
     </div>
@@ -23,35 +23,45 @@
 
                                     <i class="bi bi-check-circle"></i>
 
-                                    Tạo mới task trong dự án {{$project->ten_du_an}}</a>
+                                    Tạo mới task trong dự án ({{ $project->ten_du_an }})</a>
                             @endif
                         </div>
-                        <form method="GET" action="{{ route('admin.projects.tasks', ['project' => $project->id ?? null]) }}" class="row g-2 mb-3 align-items-end">
+                        <form method="GET"
+                            action="{{ route('admin.projects.tasks', ['project' => $project->alias ?? null]) }}"
+                            class="row g-2 mb-3 align-items-end">
                             <div class="col-md-4">
                                 <label for="tieu_de" class="form-label">Tiêu đề</label>
-                                <input type="text" class="form-control" name="tieu_de" id="tieu_de" placeholder="Tìm theo tiêu đề" value="{{ request('tieu_de') }}">
+                                <input type="text" class="form-control" name="tieu_de" id="tieu_de"
+                                    placeholder="Tìm theo tiêu đề" value="{{ request('tieu_de') }}">
                             </div>
-                        
+
                             <div class="col-md-3">
                                 <label for="do_uu_tien" class="form-label">Độ ưu tiên</label>
                                 <select class="form-select" name="do_uu_tien" id="do_uu_tien">
                                     <option value="">-- Chọn độ ưu tiên --</option>
-                                    <option value="Thấp" {{ request('do_uu_tien') == 'Thấp' ? 'selected' : '' }}>Thấp</option>
-                                    <option value="Trung bình" {{ request('do_uu_tien') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
-                                    <option value="Cao" {{ request('do_uu_tien') == 'Cao' ? 'selected' : '' }}>Cao</option>
+                                    <option value="Thấp" {{ request('do_uu_tien') == 'Thấp' ? 'selected' : '' }}>Thấp
+                                    </option>
+                                    <option value="Trung bình"
+                                        {{ request('do_uu_tien') == 'Trung bình' ? 'selected' : '' }}>Trung bình</option>
+                                    <option value="Cao" {{ request('do_uu_tien') == 'Cao' ? 'selected' : '' }}>Cao
+                                    </option>
                                 </select>
                             </div>
-                        
+
                             <div class="col-md-3">
                                 <label for="trang_thai" class="form-label">Trạng thái</label>
                                 <select class="form-select" name="trang_thai" id="trang_thai">
                                     <option value="">-- Chọn trạng thái --</option>
-                                    <option value="Mới" {{ request('trang_thai') == 'Mới' ? 'selected' : '' }}>Mới</option>
-                                    <option value="Đang thực hiện" {{ request('trang_thai') == 'Đang thực hiện' ? 'selected' : '' }}>Đang thực hiện</option>
-                                    <option value="Hoàn thành" {{ request('trang_thai') == 'Hoàn thành' ? 'selected' : '' }}>Hoàn thành</option>
+                                    <option value="Mới" {{ request('trang_thai') == 'Mới' ? 'selected' : '' }}>Mới
+                                    </option>
+                                    <option value="Đang thực hiện"
+                                        {{ request('trang_thai') == 'Đang thực hiện' ? 'selected' : '' }}>Đang thực hiện
+                                    </option>
+                                    <option value="Hoàn thành"
+                                        {{ request('trang_thai') == 'Hoàn thành' ? 'selected' : '' }}>Hoàn thành</option>
                                 </select>
                             </div>
-                        
+
                             <div class="col-md-2 d-grid">
                                 <button type="submit" class="btn btn-primary">Tìm kiếm</button>
                             </div>
@@ -66,9 +76,11 @@
                                         <th>Tiêu đề</th>
                                         <th>Dự án</th>
                                         <th>Người phụ trách</th>
+                                        <th>Độ ưu tiên</th>
+                                        <th>Trạng thái</th>
                                         <th>Hạn hoàn thành</th>
-                                       
-                                        <th colspan="4">Thao tác</th>
+
+                                        <th colspan="3">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,20 +89,43 @@
                                             <td>{{ $task->tieu_de }}</td>
                                             <td>{{ $task->project->ten_du_an }}</td>
                                             <td>{{ $task->user->name ?? 'Chưa giao' }}</td>
+                                            <td>{{ $task->do_uu_tien ?? '-' }}</td>
+                                            <td>{{ $task->trang_thai ?? '-' }}</td>
                                             <td>{{ $task->han_hoan_thanh ?? '-' }}</td>
 
 
-                                            <td colspan="4">
-                                              
+                                            <td colspan="3">
 
+                                                @if (auth()->user()->hasPermissionTo('xem task'))
+                                                    <a href="{{ route('admin.projects.tasks.show', [$project->alias, $task->id]) }}"
+                                                        class="btn  btn-info">
+                                                        Xem
+                                                    </a>
+                                                @endif
+                                                @if (auth()->user()->hasPermissionTo('sửa task'))
+                                                    <a href="{{ route('admin.projects.tasks.edit', [$project->alias, $task->id]) }}"
+                                                        class="btn btn-warning">
+                                                        Sửa
+                                                    </a>
+                                                @endif
+                                                @if (auth()->user()->hasPermissionTo('xóa task'))
+                                                    <form
+                                                        action="{{ route('admin.projects.tasks.destroy', [$project->alias, $task->id]) }}"
+                                                        method="POST" style="display:inline;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger"
+                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa task này?')">Xóa</button>
+                                                    </form>
+                                                @endif
                                             </td>
 
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="6" class="text-center">
+                                            <td colspan="7" class="text-center">
                                                 <div class="alert alert-danger">
-                                                    Không có dự án nào
+                                                    Không có task cho dự án nào
                                                 </div>
                                             </td>
                                         </tr>
@@ -99,14 +134,15 @@
                             </table>
                             <!-- End Table with stripped rows -->
                             <div class=" p-nav text-end d-flex justify-content-center">
-                              
+
                             </div>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
+
     </section>
 @endsection
 

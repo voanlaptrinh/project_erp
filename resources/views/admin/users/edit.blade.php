@@ -55,7 +55,60 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label for="mo_ta" class="form-label">Ngày vào làm</label>
+                                    <input type="date" class="form-control" id="ngay_vao_lam" name="ngay_vao_lam"
+                                        value="{{ old('ngay_vao_lam', $user->ngay_vao_lam) }}" placeholder="Ngày vào làm">
+                                </div>
+                                @error('ngay_vao_lam')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mo_ta" class="form-label">Số điện thoại</label>
+                                        <input type="text" class="form-control" id="so_dien_thoai" name="so_dien_thoai"
+                                            value="{{ old('so_dien_thoai', $user->so_dien_thoai) }}" placeholder="Số điện thoại">
+                                    </div>
+                                    @error('so_dien_thoai')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mo_ta" class="form-label">Ngày sinh</label>
+                                        <input type="date" class="form-control" id="ngay_sinh" name="ngay_sinh"
+                                            value="{{ old('ngay_sinh', $user->ngay_sinh) }}" placeholder="ngay_sinh">
+                                    </div>
+                                    @error('ngay_sinh')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="mo_ta" class="form-label">Giới tính</label>
+                                        <select name="gioi_tinh" id="gioi_tinh" class="form-select">
+                                            <option value="Nam" {{ old('gioi_tinh', $user->gioi_tinh) == 'Nam' ? 'selected' : '' }}>Nam</option>
+                                            <option value="Nữ" {{ old('gioi_tinh', $user->gioi_tinh) == 'Nữ' ? 'selected' : '' }}>Nữ</option>
+                                        </select>
+                                    </div>
+                                    @error('gioi_tinh')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label for="vi_tri" class="form-label">Vị trí</label>
+                                        <input type="text" class="form-control" id="vi_tri" name="vi_tri"
+                                            value="{{ old('vi_tri', $user->vi_tri) }}" placeholder="Vị trí">
+                                    </div>
+                                    @error('vi_tri')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <label for="roles">Vai trò</label>
                                 <table class="table">

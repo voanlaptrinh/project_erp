@@ -23,7 +23,12 @@ class User extends Authenticatable
         'email',
         'password',
         'avatar',
-        'google_id'
+        'google_id',
+        'ngay_vao_lam',
+        'so_dien_thoai',
+        'ngay_sinh',
+        'gioi_tinh',
+        'vi_tri',
     ];
 
     /**

@@ -42,7 +42,8 @@
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
-                                Bạn có {{ auth()->user()->notifications()->where('is_read', false)->count() }} thông báo mới chưa đọc
+                                Bạn có {{ auth()->user()->notifications()->where('is_read', false)->count() }} thông báo
+                                mới chưa đọc
                                 <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View
                                         all</span></a>
                             </li>
@@ -56,7 +57,7 @@
                                         <p> {{ $notification->created_at->diffForHumans() }}</p>
                                     </div>
                                 </li>
-                                @empty
+                            @empty
                                 <span class="dropdown-item text-center">Không có thông báo</span>
                             @endforelse
 
@@ -144,7 +145,8 @@
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                             data-bs-toggle="dropdown">
                             <img src="{{ auth()->user()->avatar ?? '' }}" alt="Profile" class="rounded-circle">
-                            <span class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name ?? '' }}</span>
+                            <span
+                                class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name ?? '' }}</span>
                         </a><!-- End Profile Iamge Icon -->
 
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -232,7 +234,7 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem dự án'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.show','admin.projects.index', 'admin.projects.create', 'admin.projects.edit']) ? '' : 'collapsed' }}"
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.show', 'admin.projects.index', 'admin.projects.create', 'admin.projects.edit', 'admin.projects.tasks', 'admin.projects.tasks.edit', 'admin.tasks.create', 'admin.projects.tasks.show']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.projects.index') }}">
                             <i class="bi bi-kanban"></i>
                             <span>Dự án</span>
@@ -323,7 +325,7 @@
     <script src="{{ asset('source/js/main.js') }}"></script>
     <script src="{{ asset('/source/js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('/source/js/toastr.min.js') }}"></script>
-    
+
     <script src="{{ asset('/source/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript">
         tinymce.init({

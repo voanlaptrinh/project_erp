@@ -19,6 +19,11 @@ return new class extends Migration
             $table->string('password');
             $table->string('google_id')->nullable(); // Lưu Google ID
             $table->string('avatar')->nullable();
+            $table->date('ngay_vao_lam')->nullable();
+            $table->string('so_dien_thoai')->nullable();
+            $table->date('ngay_sinh')->nullable();
+            $table->string('gioi_tinh')->nullable();
+            $table->string('vi_tri')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

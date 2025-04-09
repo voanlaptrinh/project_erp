@@ -15,7 +15,7 @@ class TaskController extends Controller
     public function index(Project $project = null)
     {
         $query = Task::query();
-    
+
         // Nếu là Super Admin
         if (auth()->user()->hasRole('Super Admin')) {
             if ($project) {
@@ -25,33 +25,33 @@ class TaskController extends Controller
             // Người thường chỉ được thấy task mình được giao
             if ($project) {
                 $query->where('project_id', $project->id)
-                      ->where('assigned_to', auth()->id());
+                    ->where('assigned_to', auth()->id());
             } else {
                 $query->where('assigned_to', auth()->id());
             }
         }
-    
+
         // Tìm kiếm theo tiêu đề
         if (request()->filled('tieu_de')) {
             $query->where('tieu_de', 'like', '%' . request('tieu_de') . '%');
         }
-    
+
         // Lọc theo độ ưu tiên
         if (request()->filled('do_uu_tien')) {
             $query->where('do_uu_tien', request('do_uu_tien'));
         }
-    
+
         // Lọc theo trạng thái
         if (request()->filled('trang_thai')) {
             $query->where('trang_thai', request('trang_thai'));
         }
-    
+
         // Lấy kết quả (thêm paginate nếu muốn)
         $tasks = $query->paginate(20);
-    
+
         return view('admin.tasks.index', compact('project', 'tasks'));
     }
-    
+
     // Phân quyền cho các phương thức    
 
     // Hiển thị form thêm task
@@ -84,7 +84,7 @@ class TaskController extends Controller
             'trang_thai.in' => 'Trạng thái không hợp lệ',
             'tieu_de.string' => 'Tiêu đề phải là một chuỗi',
             'tieu_de.max' => 'Tiêu đề không được vượt quá 255 ký tự',
-          
+
 
         ]);
 
@@ -110,18 +110,31 @@ class TaskController extends Controller
         return redirect()->route('admin.projects.tasks', $project->alias)->with('success', 'Tạo task thành công!');
     }
     public function edit(Project $project, Task $task)
-{
-    $this->authorize('sửa task');
+    {
+        $this->authorize('sửa task');
 
-    // Lấy danh sách người dùng thuộc dự án để chọn làm "assigned_to"
-    $users = $project->users;
+        // Lấy danh sách người dùng thuộc dự án để chọn làm "assigned_to"
+        $users = $project->users;
 
-    return view('admin.tasks.edit', [
-        'project' => $project,
-        'task' => $task,
-        'users' => $users,
-    ]);
-}
+        return view('admin.tasks.edit', [
+            'project' => $project,
+            'task' => $task,
+            'users' => $users,
+        ]);
+    }
+    public function show(Project $project, Task $task)
+    {
+        $this->authorize('xem task');
+
+        // Lấy danh sách người dùng thuộc dự án để chọn làm "assigned_to"
+        $users = $project->users;
+
+        return view('admin.tasks.show', [
+            'project' => $project,
+            'task' => $task,
+            'users' => $users,
+        ]);
+    }
 
     public function update(Request $request, Project $project, Task $task)
     {

@@ -67,6 +67,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/create/{project:alias}', [TaskController::class, 'create'])->name('admin.tasks.create');
         Route::post('/store/{project:alias}', [TaskController::class, 'store'])->name('admin.tasks.store');
         Route::get('/{project}/tasks/{task}/edit', [TaskController::class, 'edit'])->name('admin.projects.tasks.edit');
+        Route::get('/{project}/tasks/{task}/show', [TaskController::class, 'show'])->name('admin.projects.tasks.show');
         Route::put('/{project}/tasks/{task}', [TaskController::class, 'update'])->name('admin.projects.tasks.update');
         Route::delete('/{project}/tasks/{task}', [TaskController::class, 'destroy'])->name('admin.projects.tasks.destroy');
     });

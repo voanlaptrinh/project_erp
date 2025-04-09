@@ -29,7 +29,7 @@
                         Ngày bắt đầu: {{ $project->ngay_bat_dau }}
                         Ngày kết thúc: {{ $project->ngay_ket_thuc }}
                     </div>
-                    <div class="card-body pt-3">
+                    <div class="card-body pt-3 content-chitiet">
                         {!! $project->mo_ta !!}
                     </div>
                     <div class="card-footer">
