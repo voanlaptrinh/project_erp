@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\EmployeeContractController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TaskController;
@@ -71,7 +72,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{project}/tasks/{task}', [TaskController::class, 'update'])->name('admin.projects.tasks.update');
         Route::delete('/{project}/tasks/{task}', [TaskController::class, 'destroy'])->name('admin.projects.tasks.destroy');
     });
+    Route::prefix('/hop-dong')->group(function () {
+        Route::get('/', [EmployeeContractController::class, 'index'])->name('admin.employee-contracts.index');
+        Route::get('/create', [EmployeeContractController::class, 'create'])->name('admin.employee-contracts.create');
+        Route::post('/store', [EmployeeContractController::class, 'store'])->name('admin.employee-contracts.store');
 
+        Route::get('/{contract:alias}', [EmployeeContractController::class, 'show'])->name('admin.employee-contracts.show');
+        Route::get('/{contract:alias}/edit', [EmployeeContractController::class, 'edit'])->name('admin.employee-contracts.edit');
+        Route::put('/{contract:alias}', [EmployeeContractController::class, 'update'])->name('admin.employee-contracts.update');
+        Route::delete('/{contract:alias}', [EmployeeContractController::class, 'destroy'])->name('admin.employee-contracts.destroy');
+    });
 
 
 

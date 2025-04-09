@@ -11,6 +11,14 @@ use Illuminate\Support\Str;
 
 class EmployeeContractController extends Controller
 {
+    public function __construct()
+    {
+        // Kiểm tra quyền của người dùng để tạo, sửa, xóa hợp đồng
+        $this->middleware('can:tạo hợp đồng')->only(['create', 'store']);
+        $this->middleware('can:sửa hợp đồng')->only(['edit', 'update']);
+        $this->middleware('can:xóa hợp đồng')->only(['destroy']);
+        $this->middleware('can:xem hợp đồng')->only(['index', 'show']);
+    }
     public function index()
     {
         if (Auth::user()->hasRole('Super Admin')) {

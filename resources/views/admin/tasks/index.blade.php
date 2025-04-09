@@ -95,28 +95,31 @@
 
 
                                             <td colspan="3">
-
-                                                @if (auth()->user()->hasPermissionTo('xem task'))
-                                                    <a href="{{ route('admin.projects.tasks.show', [$project->alias, $task->id]) }}"
-                                                        class="btn  btn-info">
-                                                        Xem
-                                                    </a>
-                                                @endif
-                                                @if (auth()->user()->hasPermissionTo('sửa task'))
-                                                    <a href="{{ route('admin.projects.tasks.edit', [$project->alias, $task->id]) }}"
-                                                        class="btn btn-warning">
-                                                        Sửa
-                                                    </a>
-                                                @endif
-                                                @if (auth()->user()->hasPermissionTo('xóa task'))
-                                                    <form
-                                                        action="{{ route('admin.projects.tasks.destroy', [$project->alias, $task->id]) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa task này?')">Xóa</button>
-                                                    </form>
+                                                @if (auth()->user()->hasPermissionTo('xem task') ||
+                                                        auth()->user()->hasPermissionTo('sửa task') ||
+                                                        auth()->user()->hasPermissionTo('xóa task'))
+                                                    @if (auth()->user()->hasPermissionTo('xem task'))
+                                                        <a href="{{ route('admin.projects.tasks.show', [$project->alias, $task->id]) }}"
+                                                            class="btn  btn-info">
+                                                            Xem chi tiết
+                                                        </a>
+                                                    @endif
+                                                    @if (auth()->user()->hasPermissionTo('sửa task'))
+                                                        <a href="{{ route('admin.projects.tasks.edit', [$project->alias, $task->id]) }}"
+                                                            class="btn btn-warning">
+                                                            Sửa
+                                                        </a>
+                                                    @endif
+                                                    @if (auth()->user()->hasPermissionTo('xóa task'))
+                                                        <form
+                                                            action="{{ route('admin.projects.tasks.destroy', [$project->alias, $task->id]) }}"
+                                                            method="POST" style="display:inline;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa task này?')">Xóa</button>
+                                                        </form>
+                                                    @endif
                                                 @endif
                                             </td>
 

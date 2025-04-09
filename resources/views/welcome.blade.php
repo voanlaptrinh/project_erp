@@ -241,6 +241,15 @@
                         </a>
                     </li>
                 @endif
+                @if (auth()->user()->hasPermissionTo('xem hợp đồng'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['']) ? '' : 'collapsed' }}"
+                            href="{{ route('admin.employee-contracts.index') }}">
+                            <i class="bi bi-kanban"></i>
+                            <span>Xem hợp đồng</span>
+                        </a>
+                    </li>
+                @endif
 
 
 

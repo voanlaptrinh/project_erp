@@ -66,7 +66,12 @@
                                         <th>Trạng Thái</th>
                                         <th>Ngày Bắt Đầu</th>
                                         <th>Ngày Kết Thúc</th>
-                                        <th colspan="4">Thao tác</th>
+                                        @if (auth()->user()->hasPermissionTo('xem task') ||
+                                                auth()->user()->hasPermissionTo('xem dự án') ||
+                                                auth()->user()->hasPermissionTo('sửa dự án') ||
+                                                auth()->user()->hasPermissionTo('xóa dự án'))
+                                            <th colspan="4">Thao tác</th>
+                                        @endif
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -106,28 +111,35 @@
                                                 {{ $project->ngay_ket_thuc }}
                                             </td>
                                             <td colspan="4">
-                                                @if (auth()->user()->hasPermissionTo('xem task'))
-                                                    <a href="{{ route('admin.projects.tasks', $project->alias) }}"
-                                                        class="btn btn-info">Xem
-                                                        Task</a>
+                                                @if (auth()->user()->hasPermissionTo('xem task') ||
+                                                        auth()->user()->hasPermissionTo('xem dự án') ||
+                                                        auth()->user()->hasPermissionTo('sửa dự án') ||
+                                                        auth()->user()->hasPermissionTo('xóa dự án'))
+                                                    @if (auth()->user()->hasPermissionTo('xem task'))
+                                                        <a href="{{ route('admin.projects.tasks', $project->alias) }}"
+                                                            class="btn btn-info">Xem
+                                                            Task</a>
+                                                    @endif
+                                                    @if (auth()->user()->hasPermissionTo('xem dự án'))
+                                                        <a href="{{ route('admin.projects.show', $project->alias) }}"
+                                                            class="btn btn-info">Xem</a>
+                                                    @endif
+                                                    @if (auth()->user()->hasPermissionTo('sửa dự án'))
+                                                        <a href="{{ route('admin.projects.edit', $project->alias) }}"
+                                                            class="btn btn-warning">Sửa</a>
+                                                    @endif
+                                                    @if (auth()->user()->hasPermissionTo('xóa dự án'))
+                                                        <form
+                                                            action="{{ route('admin.projects.destroy', $project->alias) }}"
+                                                            method="POST" class="d-inline">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit" class="btn btn-danger"
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa dự án này?')">Xóa</button>
+                                                        </form>
+                                                    @endif
                                                 @endif
-                                                @if (auth()->user()->hasPermissionTo('xem dự án'))
-                                                    <a href="{{ route('admin.projects.show', $project->alias) }}"
-                                                        class="btn btn-info">Xem</a>
-                                                @endif
-                                                @if (auth()->user()->hasPermissionTo('sửa dự án'))
-                                                    <a href="{{ route('admin.projects.edit', $project->alias) }}"
-                                                        class="btn btn-warning">Sửa</a>
-                                                @endif
-                                                @if (auth()->user()->hasPermissionTo('xóa dự án'))
-                                                    <form action="{{ route('admin.projects.destroy', $project->alias) }}"
-                                                        method="POST" class="d-inline">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger"
-                                                            onclick="return confirm('Bạn có chắc chắn muốn xóa dự án này?')">Xóa</button>
-                                                    </form>
-                                                @endif
+
 
                                             </td>
 
