@@ -25,10 +25,10 @@
                         <form action="{{ route('admin.projects.store') }}" method="POST" class="row g-3">
                             @csrf
                             <div class="col-md-12">
-                                <div class="form-floating">
+                                <div class="form-group">
+                                    <label for="ten_du_an" class="form-label">Tên Dự Án</label>
                                     <input type="text" class="form-control" id="ten_du_an" name="ten_du_an"
                                         value="{{ old('ten_du_an') }}" placeholder="Tên Dự Án">
-                                    <label for="ten_du_an">Tên Dự Án</label>
                                 </div>
                                 @error('ten_du_an')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>

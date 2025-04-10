@@ -243,9 +243,9 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem hợp đồng'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['']) ? '' : 'collapsed' }}"
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.employee-contracts.index','admin.employee-contracts.create','admin.employee-contracts.view','admin.employee-contracts.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.employee-contracts.index') }}">
-                            <i class="bi bi-kanban"></i>
+                            <i class="bi bi-file-earmark-text"></i>
                             <span>Xem hợp đồng</span>
                         </a>
                     </li>

@@ -83,40 +83,15 @@
                                             <td>{{ number_format($contract->luong_thoa_thuan, 0, ',', '.') }} ₫ </td>
                                             <td>
                                                 @if ($contract->file_hop_dong)
-                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#viewModal{{ $contract->id }}">
-                                                        Xem hợp đồng
-                                                    </button>
-
-
-                                                    @if ($contract->file_hop_dong)
-                                                        <div class="modal fade" id="viewModal{{ $contract->id }}"
-                                                            tabindex="-1"
-                                                            aria-labelledby="viewModalLabel{{ $contract->id }}"
-                                                            aria-hidden="true">
-                                                            <div class="modal-dialog modal-xl">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title"
-                                                                            id="viewModalLabel{{ $contract->id }}">Xem hợp
-                                                                            đồng - {{ $contract->loai_hop_dong }}</h5>
-                                                                        <button type="button" class="btn-close"
-                                                                            data-bs-dismiss="modal"
-                                                                            aria-label="Đóng"></button>
-                                                                    </div>
-                                                                    <div class="modal-body">
-                                                                        <iframe src="{{ asset($contract->file_hop_dong) }}"
-                                                                            width="100%" height="600px"
-                                                                            frameborder="0"></iframe>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    @endif
+                                                <a href="{{ route('admin.employee-contracts.view', $contract) }}" class="btn btn-sm btn-primary" target="_blank">
+                                                    Xem hợp đồng
+                                                </a>
+                                                
                                                 @else
                                                     <span class="text-muted">Không có</span>
                                                 @endif
                                             </td>
+                                            
                                             <td colspan="2">
                                                 @if (auth()->user()->hasPermissionTo('sửa hợp đồng') || auth()->user()->hasPermissionTo('xóa hợp đồng'))
                                                     @if (auth()->user()->hasPermissionTo('sửa hợp đồng'))
@@ -140,7 +115,7 @@
                             </table>
                             <!-- End Table with stripped rows -->
                             <div class=" p-nav text-end d-flex justify-content-center">
-
+                                {{ $contracts->appends(request()->query())->links('pagination::bootstrap-4') }}
                             </div>
                         </div>
                     </div>
@@ -148,4 +123,5 @@
             </div>
         </div>
     </section>
+   
 @endsection

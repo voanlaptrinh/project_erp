@@ -76,8 +76,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/', [EmployeeContractController::class, 'index'])->name('admin.employee-contracts.index');
         Route::get('/create', [EmployeeContractController::class, 'create'])->name('admin.employee-contracts.create');
         Route::post('/store', [EmployeeContractController::class, 'store'])->name('admin.employee-contracts.store');
+        Route::get('/view/{contract}', [EmployeeContractController::class, 'view'])->name('admin.employee-contracts.view');
 
-        Route::get('/{contract:alias}', [EmployeeContractController::class, 'show'])->name('admin.employee-contracts.show');
         Route::get('/{contract:alias}/edit', [EmployeeContractController::class, 'edit'])->name('admin.employee-contracts.edit');
         Route::put('/{contract:alias}', [EmployeeContractController::class, 'update'])->name('admin.employee-contracts.update');
         Route::delete('/{contract:alias}', [EmployeeContractController::class, 'destroy'])->name('admin.employee-contracts.destroy');
