@@ -30,7 +30,7 @@
 
                             <div class="col-lg-6">
                                 <label for="user_id" class="form-label">Nhân viên:</label>
-                                <select name="user_id" id="user_id" required class="form-select">
+                                <select name="user_id" id="user_id" class="form-select">
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}">{{ $user->name }} - {{ $user->email }}
                                         </option>
