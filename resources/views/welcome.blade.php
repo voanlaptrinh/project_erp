@@ -12,6 +12,13 @@
 
     <link href="{{ asset('/source/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/source/css/toastr.min.css') }}">
+    <!-- Select2 core CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
+    <!-- Theme Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
+        rel="stylesheet" />
+
 
 </head>
 
@@ -243,10 +250,19 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem hợp đồng'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.employee-contracts.index','admin.employee-contracts.create','admin.employee-contracts.view','admin.employee-contracts.edit']) ? '' : 'collapsed' }}"
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.employee-contracts.index', 'admin.employee-contracts.create', 'admin.employee-contracts.view', 'admin.employee-contracts.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.employee-contracts.index') }}">
                             <i class="bi bi-file-earmark-text"></i>
                             <span>Xem hợp đồng</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem toàn bộ chấm công') || auth()->user()->hasPermissionTo('xem chấm công'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.chamcong.index']) ? '' : 'collapsed' }}"
+                            href="{{ route('admin.chamcong.index') }}">
+                            <i class="bi bi-clock me-2"></i>
+                            <span>Chấm công</span>
                         </a>
                     </li>
                 @endif
@@ -377,8 +393,15 @@
         })
     </script>
     <script>
+        $(document).ready(function() {
+            $('#user_id').select2({
+                theme: 'bootstrap4',
+                width: '100%',
+                placeholder: "-- Chọn nhân viên --",
+                allowClear: true
+            });
+        });
         toastr.options = {
-
             "progressBar": true, // Hiển thị thanh tiến trình
             "timeOut": 2000, // Thời gian hiển thị thông báo (2 giây)
             "extendedTimeOut": 1000, // Thời gian hiển thị khi người dùng di chuột vào thông báo (1 giây)
@@ -401,7 +424,7 @@
             toastr.warning("{{ Session::get('warning') }}");
         @endif
     </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 
 </html>

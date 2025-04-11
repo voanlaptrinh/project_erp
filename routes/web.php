@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AttendancesController;
 use App\Http\Controllers\Admin\EmployeeContractController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
@@ -82,9 +83,11 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{contract:alias}', [EmployeeContractController::class, 'update'])->name('admin.employee-contracts.update');
         Route::delete('/{contract:alias}', [EmployeeContractController::class, 'destroy'])->name('admin.employee-contracts.destroy');
     });
-
-
-
+    Route::prefix('/cham-cong')->group(function () {
+        Route::get('/', [AttendancesController::class, 'index'])->name('admin.chamcong.index');
+        Route::post('/vao', [AttendancesController::class, 'chamCongVao'])->name('chamcong.vao');
+        Route::post('/ra', [AttendancesController::class, 'chamCongRa'])->name('chamcong.ra');
+    });
     // Các route khác cho Sprint, Task, Resource và Issue (Bạn có thể chỉnh sửa để phù hợp với phân quyền)
     // Route::resource('sprints', SprintController::class);
     // Route::resource('tasks', TaskController::class);

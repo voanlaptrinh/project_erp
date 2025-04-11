@@ -74,7 +74,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($contracts as $contract)
+                                    @forelse ($contracts as $contract)
                                         <tr>
                                             <td>{{ $contract->loai_hop_dong }}</td>
                                             <td>{{ $contract->user->name }}</td>
@@ -110,7 +110,15 @@
                                                     @endif
                                                 @endif
                                             </td>
-                                    @endforeach
+                                            @empty
+                                            <tr>
+                                                <td colspan="7" class="text-center">
+                                                    <div class="alert alert-danger">
+                                                        Không có hợp đồng
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforelse
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->

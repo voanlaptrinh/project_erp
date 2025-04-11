@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             'xem dự án', 'tạo dự án', 'sửa dự án', 'xóa dự án',
             'xem task', 'tạo task', 'sửa task', 'xóa task',
             'xem hợp đồng', 'tạo hợp đồng', 'sửa hợp đồng', 'xóa hợp đồng',
+            'xem toàn bộ chấm công', 'xem chấm công'
             // 'xem tài nguyên', 'sửa tài nguyên',
             // 'xem sự cố', 'tạo sự cố', 'sửa sự cố', 'xóa sự cố',
         ];
