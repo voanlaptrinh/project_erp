@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <div class="col-12 d-sm-flex justify-content-between align-items-center">
 
-                            <div>
+                            <div class="card-title">
                                 🕒 Thời gian hiện tại: <span id="realtime-clock"
                                     style="color: rgb(255, 60, 0); font-weight: 900;">--:--:--</span>
                             </div>
