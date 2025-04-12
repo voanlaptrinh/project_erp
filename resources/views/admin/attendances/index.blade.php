@@ -1,17 +1,38 @@
 @extends('welcome')
 @section('body')
 
+    <div class="col-12 d-sm-flex justify-content-between align-items-center">
+        <div class="pagetitle">
+            <h1>Quản lý Chấm công</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
+                    <li class="breadcrumb-item active">Tài khoản Chấm công</li>
+                </ol>
+            </nav>
+        </div>
+        @if (auth()->user()->hasPermissionTo('thống kê chấm công'))
+            <form method="POST" action="{{ route('admin.chamcong.generateThongKe') }}"
+                class="d-flex gap-2 align-items-center mb-3">
+                @csrf
+                <select name="thang" class="form-select w-auto">
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option value="{{ $i }}" {{ now()->month == $i ? 'selected' : '' }}>Tháng
+                            {{ $i }}</option>
+                    @endfor
+                </select>
 
-    <div class="pagetitle">
-        <h1>Quản lý Chấm công</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="/">Trang chủ</a></li>
-                <li class="breadcrumb-item active">Tài khoản Chấm công</li>
-            </ol>
-        </nav>
+                <select name="nam" class="form-select w-auto">
+                    @for ($y = now()->year - 2; $y <= now()->year + 1; $y++)
+                        <option value="{{ $y }}" {{ now()->year == $y ? 'selected' : '' }}>{{ $y }}
+                        </option>
+                    @endfor
+                </select>
+
+                <button type="submit" class="btn btn-danger">📊 Thống kê tháng</button>
+            </form>
+        @endif
     </div>
-
 
     <section class="section dashboard">
         <div class="row">
@@ -42,19 +63,15 @@
                         <form method="GET" action="{{ route('admin.chamcong.index') }}"
                             class="mb-3 d-flex gap-2 align-items-center">
                             @can('xem toàn bộ chấm công')
-                         
-                            
                                 <select name="user_id" id="user_id" class="form-select">
                                     <option value="">-- Chọn nhân viên --</option>
                                     @foreach ($users as $user)
-                                        <option value="{{ $user->id }}" {{ request('user_id') == $user->id ? 'selected' : '' }}>
+                                        <option value="{{ $user->id }}"
+                                            {{ request('user_id') == $user->id ? 'selected' : '' }}>
                                             {{ $user->name }}
                                         </option>
                                     @endforeach
                                 </select>
-                        
-                            
-                            
                             @endcan
 
                             <input type="date" name="ngay" class="form-control" value="{{ request('ngay') }}">
@@ -88,19 +105,19 @@
                                             <td>
                                                 {{ $cc->gio_ra ? \Carbon\Carbon::parse($cc->gio_ra)->format('H:i:s d/m/Y') : '-' }}
                                             </td>
-                                            <td >
+                                            <td>
                                                 @if ($cc->di_muon)
-                                                <span class="badge text-bg-danger">Có</span>
+                                                    <span class="badge text-bg-danger">Có</span>
                                                 @else
-                                                <span class="badge text-bg-success">Không</span>
+                                                    <span class="badge text-bg-success">Không</span>
                                                 @endif
                                                 {{-- {{ $cc->di_muon ? 'Có' : '' }} --}}
                                             </td>
                                             <td>
                                                 @if ($cc->ve_som)
-                                                <span class="badge text-bg-danger">Có</span>
+                                                    <span class="badge text-bg-danger">Có</span>
                                                 @else
-                                                <span class="badge text-bg-success">Không</span>
+                                                    <span class="badge text-bg-success">Không</span>
                                                 @endif
                                                 {{-- {{ $cc->ve_som ? 'Có' : 'Không' }} --}}
                                             </td>
