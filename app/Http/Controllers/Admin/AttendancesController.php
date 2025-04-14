@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AttendancesController extends Controller
 {
+
     public function __construct()
     {
         // Kiểm tra quyền của người dùng để tạo, sửa, xóa hợp đồng
-        $this->middleware('can:xem toàn bộ chấm công')->only(['index']);
         $this->middleware('can:xem chấm công')->only(['index']);
         $this->middleware('can:xem chấm công')->only(['chamCongRa', 'chamCongVao']);
     }
@@ -27,7 +27,7 @@ class AttendancesController extends Controller
         $query = Attendance::with('nhanVien')->orderBy('ngay', 'desc');
 
         // Nếu không có quyền xem toàn bộ -> chỉ lọc của chính mình
-        if (!Auth::user()->can('xem toàn bộ chấm công')) {
+        if (!Auth::user()->can('toàn bộ chấm công')) {
             $query->where('user_id', Auth::id());
         } else {
             // Lọc theo user_id (nếu có)

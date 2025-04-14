@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AttendancesController;
 use App\Http\Controllers\Admin\EmployeeContractController;
+use App\Http\Controllers\Admin\PerformaceReviewController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TaskController;
@@ -92,7 +93,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
     Route::post('/chamcong/thong-kes', [ThongkeChamCongController::class, 'thongKeThang'])->name('admin.chamcong.generateThongKe');
-
+    Route::get('/danh-gia-hieu-suat', [PerformaceReviewController::class, 'danhGia'])->name('reviews.index');
     // Các route khác cho Sprint, Task, Resource và Issue (Bạn có thể chỉnh sửa để phù hợp với phân quyền)
     // Route::resource('sprints', SprintController::class);
     // Route::resource('tasks', TaskController::class);

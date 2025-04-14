@@ -257,7 +257,7 @@
                         </a>
                     </li>
                 @endif
-                @if (auth()->user()->hasPermissionTo('xem toàn bộ chấm công') || auth()->user()->hasPermissionTo('xem chấm công'))
+                @if (auth()->user()->hasPermissionTo('toàn bộ chấm công') || auth()->user()->hasPermissionTo('xem chấm công'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.chamcong.index']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.chamcong.index') }}">

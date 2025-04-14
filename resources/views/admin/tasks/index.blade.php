@@ -79,6 +79,7 @@
                                         <th>Độ ưu tiên</th>
                                         <th>Trạng thái</th>
                                         <th>Hạn hoàn thành</th>
+                                        <th>Trạng thái hạn</th>
 
                                         <th colspan="3">Thao tác</th>
                                     </tr>
@@ -92,7 +93,14 @@
                                             <td>{{ $task->do_uu_tien ?? '-' }}</td>
                                             <td>{{ $task->trang_thai ?? '-' }}</td>
                                             <td>{{ $task->han_hoan_thanh ?? '-' }}</td>
-
+                                            <td>
+                                                @if($task->han_hoan_thanh && \Carbon\Carbon::parse($task->han_hoan_thanh)->lt(\Carbon\Carbon::now()))
+                                                    <span class="badge bg-danger">Có</span>
+                                                @else
+                                                    <span class="badge bg-success">Không</span>
+                                                @endif
+                                            </td>
+                                            
 
                                             <td colspan="3">
                                                 @if (auth()->user()->hasPermissionTo('xem task') ||

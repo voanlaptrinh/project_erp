@@ -18,10 +18,6 @@ class Task extends Model
         return $this->belongsTo(Project::class);
     }
 
-    public function sprint()
-    {
-        return $this->belongsTo(Sprint::class);
-    }
 
     public function user()
     {
