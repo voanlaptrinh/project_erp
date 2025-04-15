@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('so_dien_thoai')->nullable();
             $table->string('dia_chi')->nullable();
             $table->text('ghi_chu')->nullable();
+            $table->string('alias')->nullable();
             $table->timestamps();
         
             $table->foreign('project_id')->references('id')->on('projects')->nullOnDelete();

@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
+use Carbon\Carbon;
 class KhachHang extends Model
 {
     use HasFactory;
@@ -31,4 +32,5 @@ class KhachHang extends Model
     {
         return $this->hasMany(TicketSuport::class);
     }
+  
 }

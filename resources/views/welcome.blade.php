@@ -221,6 +221,7 @@
                         <span>Dashboard</span>
                     </a>
                 </li><!-- End Dashboard Nav -->
+                <li class="nav-heading">Nhận sự</li>
                 @if (auth()->user()->hasPermissionTo('view users'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit']) ? '' : 'collapsed' }}"
@@ -270,10 +271,18 @@
 
 
 
-                <li class="nav-heading">Pages</li>
+                <li class="nav-heading">Khách hàng</li>
 
                 <!-- End Profile Page Nav -->
-
+                @if (auth()->user()->hasPermissionTo('xem khách hàng'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['khach-hangs.index', 'khach-hangs.create', 'khach-hangs.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('khach-hangs.index') }}">
+                            <i class="bi bi-people me-2"></i>
+                            <span>Khách hàng</span>
+                        </a>
+                    </li>
+                @endif
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-faq.html">
                         <i class="bi bi-question-circle"></i>
