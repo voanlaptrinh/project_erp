@@ -13,16 +13,21 @@ class Project extends Model
         'ten_du_an', 'mo_ta', 'trang_thai', 'ngay_bat_dau', 'ngay_ket_thuc', 'alias'
     ];
 
-    public function sprints()
-    {
-        return $this->hasMany(Sprint::class);
-    }
+   
 
     public function tasks()
     {
         return $this->hasMany(Task::class);
     }
-
+    public function khachHang()
+    {
+        return $this->belongsTo(KhachHang::class);
+    }
+    
+    public function hopDongs()
+    {
+        return $this->hasMany(HopDong::class);
+    }
     public function resources()
     {
         return $this->hasMany(Resource::class);

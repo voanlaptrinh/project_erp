@@ -406,7 +406,7 @@
             $('#user_id').select2({
                 theme: 'bootstrap4',
                 width: '100%',
-                placeholder: "-- Chọn nhân viên --",
+                placeholder: "-- Chọn select --",
                 allowClear: true
             });
         });

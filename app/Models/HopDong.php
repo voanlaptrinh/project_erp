@@ -9,9 +9,12 @@ class HopDong extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'khach_hang_id', 'ten_hop_dong', 'ngay_ky', 'ngay_het_han', 'gia_tri', 'trang_thai', 'ghi_chu'
+        'project_id', 'ten_hop_dong', 'ngay_ky', 'ngay_het_han', 'gia_tri', 'trang_thai', 'ghi_chu', 'alias'
     ];
-
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id');
+    }
     public function khachHang()
     {
         return $this->belongsTo(KhachHang::class);

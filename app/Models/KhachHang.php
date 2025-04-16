@@ -10,7 +10,7 @@ class KhachHang extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'project_id', 'ten', 'email', 'so_dien_thoai', 'dia_chi', 'ghi_chu'
+        'project_id', 'ten', 'email', 'so_dien_thoai', 'dia_chi', 'ghi_chu', 'alias'
     ];
 
     public function project()

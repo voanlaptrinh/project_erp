@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hop_dongs', function (Blueprint $table) {
+        Schema::create('hop_dongs', function (Blueprint $table) { //gợp đồng dự án với khách hàng
             $table->id();
-            $table->unsignedBigInteger('khach_hang_id');
-            $table->string('so_hop_dong')->unique();
+            $table->unsignedBigInteger('project_id');
+            $table->string('so_hop_dong')->nullable();
+            $table->string('alias')->nullable();
+            $table->string('file')->nullable(); //hợp đồng tay khi up lên
             $table->date('ngay_ky')->nullable();
             $table->date('ngay_het_han')->nullable();
             $table->decimal('gia_tri', 15, 2)->nullable();
@@ -22,7 +24,7 @@ return new class extends Migration
             $table->string('trang_thai')->default('đang hiệu lực'); // Hết hiệu lực, Hủy
             $table->timestamps();
 
-            $table->foreign('khach_hang_id')->references('id')->on('khach_hangs')->cascadeOnDelete();
+            $table->foreign('project_id')->references('id')->on('projects')->cascadeOnDelete();
         });
     }
 
