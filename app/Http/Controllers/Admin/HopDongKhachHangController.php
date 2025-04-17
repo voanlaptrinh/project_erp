@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HopDong;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class HopDongKhachHangController extends Controller
 {
@@ -41,11 +42,13 @@ class HopDongKhachHangController extends Controller
             $file->move(public_path('hopdongs'), $filename);
             $filePath = 'hopdongs/' . $filename;
         }
-
+        $project = Project::findOrFail($request->project_id);
+        $alias = Str::slug($project->ten_du_an . '-' . now()->timestamp);
         HopDong::create([
             'project_id' => $request->project_id,
             'so_hop_dong' => $request->so_hop_dong,
             'file' => $filePath,
+            'alias' => $alias,
             'ngay_ky' => $request->ngay_ky,
             'ngay_het_han' => $request->ngay_het_han,
             'gia_tri' => $request->gia_tri,
@@ -58,9 +61,7 @@ class HopDongKhachHangController extends Controller
 
     public function edit($alias)
     {
-        $hopDong = HopDong::whereHas('project', function ($q) use ($alias) {
-            $q->where('alias', $alias);
-        })->firstOrFail();
+        $hopDong = HopDong::where('alias', $alias)->firstOrFail();
 
         $projects = Project::all();
         return view('admin.hop_dong_khach_hang.edit', compact('hopDong', 'projects'));
@@ -68,9 +69,7 @@ class HopDongKhachHangController extends Controller
 
     public function update(Request $request, $alias)
     {
-        $hopDong = HopDong::whereHas('project', function ($q) use ($alias) {
-            $q->where('alias', $alias);
-        })->firstOrFail();
+        $hopDong = HopDong::where('alias', $alias)->firstOrFail();
 
         $request->validate([
             'project_id' => 'required|exists:projects,id',
@@ -102,7 +101,8 @@ class HopDongKhachHangController extends Controller
         $hopDong->gia_tri = $request->gia_tri;
         $hopDong->noi_dung = $request->noi_dung;
         $hopDong->trang_thai = $request->trang_thai ?? 'đang hiệu lực';
-
+        $project = Project::findOrFail($request->project_id);
+        $hopDong->alias = Str::slug($project->ten_du_an . '-' . now()->timestamp);
         $hopDong->save();
 
         return redirect()->route('hop_dong_khach_hang.index')->with('success', 'Cập nhật hợp đồng thành công!');
@@ -110,9 +110,7 @@ class HopDongKhachHangController extends Controller
 
     public function destroy($alias)
     {
-        $hopDong = HopDong::whereHas('project', function ($q) use ($alias) {
-            $q->where('alias', $alias);
-        })->firstOrFail();
+        $hopDong = HopDong::where('alias', $alias)->firstOrFail();
 
         if ($hopDong->file && file_exists(public_path($hopDong->file))) {
             unlink(public_path($hopDong->file));

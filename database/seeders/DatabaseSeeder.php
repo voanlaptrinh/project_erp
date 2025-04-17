@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             'xem hợp đồng', 'tạo hợp đồng', 'sửa hợp đồng', 'xóa hợp đồng',
             'toàn bộ chấm công', 'xem chấm công', 'thống kê chấm công',
             'xem khách hàng', 'tạo khách hàng', 'sửa khách hàng', 'xóa khách hàng',
+            'xem hợp đồng dự án', 'tạo hợp đồng dự án', 'sửa hợp đồng dự án', 'xóa hợp đồng dự án',
             // 'xem tài nguyên', 'sửa tài nguyên',
             // 'xem sự cố', 'tạo sự cố', 'sửa sự cố', 'xóa sự cố',
         ];

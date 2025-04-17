@@ -101,7 +101,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{alias}', [KhachHangController::class, 'update'])->name('khach-hangs.update');
         Route::delete('/{alias}', [KhachHangController::class, 'destroy'])->name('khach-hangs.destroy');
     });
-    Route::prefix('hopdong_khachhang')->name('hopdongs.')->group(function () {
+    Route::prefix('hopdong_khachhang')->group(function () {
         Route::get('/', [HopDongKhachHangController::class, 'index'])->name('hop_dong_khach_hang.index');
         Route::get('/create', [HopDongKhachHangController::class, 'create'])->name('hop_dong_khach_hang.create');
         Route::post('/store', [HopDongKhachHangController::class, 'store'])->name('hop_dong_khach_hang.store');
@@ -119,3 +119,6 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Route::resource('resources', ResourceController::class);
     // Route::resource('issues', IssueController::class);
 });
+Route::fallback(function () {
+    return view('errors.404');
+  });

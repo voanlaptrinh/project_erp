@@ -283,12 +283,15 @@
                         </a>
                     </li>
                 @endif
+                @if (auth()->user()->hasPermissionTo('xem hợp đồng dự án'))
+                    
                 <li class="nav-item">
-                    <a class="nav-link collapsed" href="pages-faq.html">
-                        <i class="bi bi-question-circle"></i>
-                        <span>F.A.Q</span>
+                    <a class="nav-link {{ in_array(Request::route()->getName(), ['hop_dong_khach_hang.index', 'hop_dong_khach_hang.create', 'hop_dong_khach_hang.edit']) ? '' : 'collapsed' }}" href="{{ route('hop_dong_khach_hang.index') }}">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Hợp đồng dự án</span>
                     </a>
                 </li><!-- End F.A.Q Page Nav -->
+                @endif
 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-contact.html">

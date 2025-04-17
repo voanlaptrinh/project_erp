@@ -9,7 +9,7 @@ class HopDong extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'project_id', 'ten_hop_dong', 'ngay_ky', 'ngay_het_han', 'gia_tri', 'trang_thai', 'ghi_chu', 'alias'
+        'project_id', 'so_hop_dong', 'ngay_ky', 'ngay_het_han', 'gia_tri', 'trang_thai', 'noi_dung', 'alias','file'
     ];
     public function project()
     {
