@@ -10,11 +10,22 @@ use Illuminate\Support\Str;
 
 class HopDongKhachHangController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $hopDongs = HopDong::with('project')->latest()->paginate(10);
-        return view('admin.hop_dong_khach_hang.index', compact('hopDongs'));
+        $project_id = $request->input('project_id');
+    
+        $projects = Project::all(); // Dùng để hiển thị select box
+    
+        $hopDongs = HopDong::with('project')
+            ->when($project_id, function ($query) use ($project_id) {
+                $query->where('project_id', $project_id);
+            })
+            ->latest()
+            ->paginate(10);
+    
+        return view('admin.hop_dong_khach_hang.index', compact('hopDongs', 'projects', 'project_id'));
     }
+    
 
     public function create()
     {
