@@ -8,8 +8,8 @@
 
         <div class="mb-3">
             <label for="project_id" class="form-label">Dự án</label>
-            <select name="project_id" id="project_id" class="form-control" required onchange="generateAlias()">
-                <option value="">-- Chọn dự án --</option>
+            <select name="project_id"  id="user_id" class="form-control" required onchange="generateAlias()">
+                <option value="">-- Chọn select --</option>
                 @foreach ($projects as $project)
                     <option value="{{ $project->id }}">{{ $project->ten_du_an }}</option>
                 @endforeach

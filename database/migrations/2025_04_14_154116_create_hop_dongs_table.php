@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('file')->nullable(); //hợp đồng tay khi up lên
             $table->date('ngay_ky')->nullable();
             $table->date('ngay_het_han')->nullable();
-            $table->decimal('gia_tri', 15, 2)->nullable();
+            $table->integer('gia_tri')->nullable();
             $table->text('noi_dung')->nullable();
             $table->string('trang_thai')->default('đang hiệu lực'); // Hết hiệu lực, Hủy
             $table->timestamps();

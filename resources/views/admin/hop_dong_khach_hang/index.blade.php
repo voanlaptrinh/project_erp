@@ -77,12 +77,12 @@
 
                                             <td colspan="4">
                                                 @if (auth()->user()->hasPermissionTo('sửa hợp đồng dự án'))
-                                                    <a href="{{ route('admin.projects.edit', $project->alias) }}"
+                                                    <a href="{{ route('hop_dong_khach_hang.edit', $hd->alias) }}"
                                                         class="btn btn-warning">Sửa</a>
                                                 @endif
                                                 @if (auth()->user()->hasPermissionTo('xóa hợp đồng dự án'))
                                                     <form
-                                                        action="{{ route('admin.projects.destroy', $project->alias) }}"
+                                                        action="{{ route('hop_dong_khach_hang.destroy', $hd->alias) }}"
                                                         method="POST" class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
