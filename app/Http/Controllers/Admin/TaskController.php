@@ -12,12 +12,22 @@ use Illuminate\Support\Facades\Auth;
 
 class TaskController extends Controller
 {
+    public function __construct()
+    {
+        // Kiểm tra quyền của người dùng để tạo, sửa, xóa dự án
+        $this->middleware('can:tạo task')->only(['create', 'store']);
+        $this->middleware('can:sửa task')->only(['edit', 'update']);
+        $this->middleware('can:xóa task')->only(['destroy']);
+        $this->middleware('can:xem task')->only(['index', 'show']);
+        $this->middleware('can:xem toàn bộ task')->only(['index', 'show']);
+    }
+
     public function index(Project $project = null)
     {
         $query = Task::query();
 
         // Nếu là Super Admin
-        if (auth()->user()->hasRole('Super Admin')) {
+        if (auth()->user()->can('xem toàn bộ task')) {
             if ($project) {
                 $query->where('project_id', $project->id);
             }
@@ -57,8 +67,7 @@ class TaskController extends Controller
     // Hiển thị form thêm task
     public function create(Project $project)
     {
-        // Chỉ cho phép người có quyền truy cập dự án này
-        $this->authorize('xem dự án', $project);
+      
 
         return view('admin.tasks.create', compact('project'));
     }
@@ -111,8 +120,7 @@ class TaskController extends Controller
     }
     public function edit(Project $project, Task $task)
     {
-        $this->authorize('sửa task');
-
+        
         // Lấy danh sách người dùng thuộc dự án để chọn làm "assigned_to"
         $users = $project->users;
 
@@ -124,7 +132,7 @@ class TaskController extends Controller
     }
     public function show(Project $project, Task $task)
     {
-        $this->authorize('xem task');
+      
 
         // Lấy danh sách người dùng thuộc dự án để chọn làm "assigned_to"
         $users = $project->users;
@@ -187,7 +195,7 @@ class TaskController extends Controller
     }
     public function destroy(Project $project, Task $task)
     {
-        $this->authorize('xóa task');
+    
 
         // Thông báo cho người được giao (nếu có)
         if ($task->assigned_to) {
