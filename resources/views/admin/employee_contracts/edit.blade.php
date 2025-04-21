@@ -30,7 +30,7 @@
 
                             <div class="col-lg-6">
                                 <label for="user_id" class="form-label">Nhân viên:</label>
-                                <select name="user_id" id="user_id" class="form-select" disabled>
+                                <select name="user_id" id="user_id" class="form-select" >
                                     @foreach ($users as $user)
                                         <option value="{{ $user->id }}"
                                             {{ $contract->user_id == $user->id ? 'selected' : '' }}>
@@ -38,6 +38,9 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('user_id')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
 
@@ -45,18 +48,18 @@
                                 <div class="form-group">
                                     <label for="loai_hop_dong" class="form-label">Loại hợp đồng:</label>
                                     <input type="text" name="loai_hop_dong" class="form-control"
-                                        value="{{ old('loai_hop_dong', $contract->loai_hop_dong) }}" >
+                                        value="{{ old('loai_hop_dong', $contract->loai_hop_dong) }}">
                                 </div>
                                 @error('loai_hop_dong')
-                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                            @enderror
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
 
                             <div class="col-lg-6">
                                 <label for="ngay_bat_dau" class="form-label">Ngày bắt đầu:</label>
                                 <input type="date" name="ngay_bat_dau" class="form-control"
                                     value="{{ old('ngay_bat_dau', $contract->ngay_bat_dau) }}">
-                                    @error('ngay_bat_dau')
+                                @error('ngay_bat_dau')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -65,7 +68,7 @@
                                 <label class="form-label">Ngày kết thúc:</label>
                                 <input type="date" name="ngay_ket_thuc" class="form-control"
                                     value="{{ old('ngay_ket_thuc', $contract->ngay_ket_thuc) }}">
-                                    @error('ngay_ket_thuc')
+                                @error('ngay_ket_thuc')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -73,23 +76,26 @@
                             <div class="col-lg-6">
                                 <label class="form-label">Lương thỏa thuận:</label>
                                 <input type="text" name="luong_thoa_thuan" class="form-control"
-                                    value="{{ old('luong_thoa_thuan', $contract->luong_thoa_thuan) }}" >
-                                    @error('luong_thoa_thuan')
+                                    value="{{ old('luong_thoa_thuan', $contract->luong_thoa_thuan) }}">
+                                @error('luong_thoa_thuan')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <div class="col-lg-6">
-                                <label class="form-label">File hợp đồng:</label>
-                               
-                                <input type="file" name="file_hop_dong" accept=".pdf" class="form-control">
+                                <label class="form-label">File hợp đồng (pdf, doc, docx):</label>
+
+                                <input type="file" name="file_hop_dong" accept=".pdf,.doc,.docx" class="form-control">
                                 @if ($contract->file_hop_dong)
-                                <div class="mb-2">
-                                    <strong>File hiện tại:</strong> <a
-                                        href="{{ asset('contracts/' . basename($contract->file_hop_dong)) }}"
-                                        target="_blank">{{ basename($contract->file_hop_dong) }}</a>
-                                </div>
-                            @endif
+                                    <div class="mb-2">
+                                        <strong>File hiện tại:</strong> <a
+                                            href="{{ asset('contracts/' . basename($contract->file_hop_dong)) }}"
+                                            target="_blank">{{ basename($contract->file_hop_dong) }}</a>
+                                    </div>
+                                @endif
+                                @error('loai_hop_dong')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                             </div>
 
                             <div class="text-end">

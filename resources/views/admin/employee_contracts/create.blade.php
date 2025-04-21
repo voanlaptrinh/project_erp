@@ -74,7 +74,7 @@
 
                             <div class="col-lg-6">
                                 <label class="form-label">Lương thỏa thuận:</label>
-                                <input type="text" name="luong_thoa_thuan" class="form-control"
+                                <input type="text" name="luong_thoa_thuan" id="luong_thoa_thuan" class="form-control"
                                     value="{{ old('luong_thoa_thuan') }}" placeholder="VD: 50000000 ">
                                 @error('luong_thoa_thuan')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -82,12 +82,13 @@
                             </div>
 
                             <div class="col-lg-6">
-                                <label class="form-label">File hợp đồng (chỉ file pdf):</label>
-                                <input type="file" name="file_hop_dong" accept=".pdf" class="form-control">
+                                <label class="form-label">File hợp đồng (pdf, doc, docx):</label>
+                                <input type="file" name="file_hop_dong" accept=".pdf,.doc,.docx" class="form-control @error('file_hop_dong') is-invalid @enderror">
                                 @error('file_hop_dong')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
+                            
 
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Thêm mới dự án</button>
@@ -98,4 +99,6 @@
             </div>
         </div>
     </section>
+ 
+    
 @endsection

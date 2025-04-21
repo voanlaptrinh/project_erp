@@ -4,13 +4,22 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\HopDong;
+use App\Models\Log;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\IOFactory;
 use Illuminate\Support\Str;
 use PhpOffice\PhpWord\Settings;
 class HopDongKhachHangController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:tạo hợp đồng dự án')->only(['create', 'store']);
+        $this->middleware('can:sửa hợp đồng dự án')->only(['edit', 'update']);
+        $this->middleware('can:xóa hợp đồng dự án')->only(['destroy']);
+        $this->middleware('can:xem hợp đồng dự án')->only(['index']);
+    }
     public function index(Request $request)
     {
         $project_id = $request->input('project_id');
@@ -106,7 +115,9 @@ class HopDongKhachHangController extends Controller
             'noi_dung' => $request->noi_dung,
             'trang_thai' => $request->trang_thai ?? 'đang hiệu lực',
         ]);
-
+        Log::create([
+            'message' => Auth::user()->name . ' đã tạo mới hợp đồng của dự án ' . $project->ten_du_an,
+        ]);
         return redirect()->route('hop_dong_khach_hang.index')->with('success', 'Thêm hợp đồng thành công!');
     }
 
@@ -197,7 +208,9 @@ class HopDongKhachHangController extends Controller
         $hopDong->alias = Str::slug($project->ten_du_an . '-' . now()->timestamp);
     
         $hopDong->save();
-    
+        Log::create([
+            'message' => Auth::user()->name . ' đã sửa hợp đồng của dự án ' . $project->ten_du_an,
+        ]);
         return redirect()->route('hop_dong_khach_hang.index')->with('success', 'Cập nhật hợp đồng thành công!');
     }
 

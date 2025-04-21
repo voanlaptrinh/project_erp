@@ -27,7 +27,7 @@
                         
                             <div class="col-lg-6">
                                 <label for="project_id" class="form-label">Dự án</label>
-                                <select name="project_id" id="project_id" class="form-control @error('project_id') is-invalid @enderror">
+                                <select name="project_id" id="user_id" class="form-control @error('project_id') is-invalid @enderror">
                                     <option value="">-- Chọn dự án --</option>
                                     @foreach ($projects as $project)
                                         <option value="{{ $project->id }}" {{ old('project_id') == $project->id ? 'selected' : '' }}>
@@ -76,12 +76,13 @@
                                         <label style="cursor:pointer;">
                                             <input class="form-control stretched-link @error('file') is-invalid @enderror" type="file" name="file">
                                         </label>
-                                        @error('file')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
+                                      
                                         <p class="small mb-0 mt-2"><b>Ghi chú:</b> Đưa bản mềm hợp đồng dự án lên đây</p>
                                     </div>
                                 </div>
+                                @error('file')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                             </div>
                         
                             <div class="col-lg-6">

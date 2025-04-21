@@ -23,9 +23,9 @@ class DatabaseSeeder extends Seeder
          $permissions = [
             'create users', 'edit users', 'delete users', 'view users',
             'create roles', 'edit roles', 'delete roles', 'view roles',
-            'xem dự án', 'tạo dự án', 'sửa dự án', 'xóa dự án',
-            'xem task', 'tạo task', 'sửa task', 'xóa task',
-            'xem hợp đồng', 'tạo hợp đồng', 'sửa hợp đồng', 'xóa hợp đồng',
+            'xem dự án', 'xem toàn bộ dự án', 'tạo dự án', 'sửa dự án', 'xóa dự án',
+            'xem task', 'xem toàn bộ task', 'tạo task', 'sửa task', 'xóa task',
+            'xem hợp đồng', 'xem toàn bộ hợp đồng', 'tạo hợp đồng', 'sửa hợp đồng', 'xóa hợp đồng',
             'toàn bộ chấm công', 'xem chấm công', 'thống kê chấm công',
             'xem khách hàng', 'tạo khách hàng', 'sửa khách hàng', 'xóa khách hàng',
             'xem hợp đồng dự án', 'tạo hợp đồng dự án', 'sửa hợp đồng dự án', 'xóa hợp đồng dự án',

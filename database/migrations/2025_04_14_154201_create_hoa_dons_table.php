@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('hoa_dons', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('hop_dong_id');
-    $table->string('so_hoa_don')->unique();
-    $table->date('ngay_phat_hanh');
-    $table->decimal('so_tien', 15, 2);
-    $table->string('trang_thai')->default('chưa thanh toán'); // Đã thanh toán, Quá hạn
-    $table->timestamps();
+            $table->string('so_hoa_don')->unique();
+            $table->date('ngay_phat_hanh');
+            $table->decimal('so_tien', 15, 2);
+            $table->string('trang_thai')->default('chưa thanh toán'); // Đã thanh toán, Quá hạn
+            $table->timestamps();
 
-    $table->foreign('hop_dong_id')->references('id')->on('hop_dongs')->cascadeOnDelete();
+            $table->foreign('hop_dong_id')->references('id')->on('hop_dongs')->cascadeOnDelete();
         });
     }
 

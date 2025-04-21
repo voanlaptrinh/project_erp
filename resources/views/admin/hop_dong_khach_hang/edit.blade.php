@@ -24,80 +24,121 @@
                         </div>
                         <form action="{{ route('hop_dong_khach_hang.update', $hopDong->alias) }}" method="POST"
                             enctype="multipart/form-data" class="row g-3">
-                          @csrf
-                          @method('PUT')
-                      
-                          <div class="mb-3">
-                              <label for="project_id" class="form-label">Dự án</label>
-                              <select name="project_id" class="form-control">
-                                  @foreach ($projects as $project)
-                                      <option value="{{ $project->id }}" 
-                                              {{ old('project_id', $hopDong->project_id) == $project->id ? 'selected' : '' }}>
-                                          {{ $project->ten_du_an }}
-                                      </option>
-                                  @endforeach
-                              </select>
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="so_hop_dong" class="form-label">Số hợp đồng</label>
-                              <input type="text" name="so_hop_dong" class="form-control" 
-                                     value="{{ old('so_hop_dong', $hopDong->so_hop_dong) }}">
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="file" class="form-label">Tệp hợp đồng</label>
-                              <input type="file" name="file" class="form-control">
-                              @if ($hopDong->file)
-                                  <a href="{{ asset($hopDong->file) }}" target="_blank">Xem tệp hiện tại</a>
-                              @endif
-                          </div>
-                      
-                          @if ($hopDong->file)
-                              <iframe src="{{ asset($hopDong->file) }}" width="100%" height="600px"></iframe>
-                          @endif
-                      
-                          <div class="mb-3">
-                              <label for="ngay_ky" class="form-label">Ngày ký</label>
-                              <input type="date" name="ngay_ky" class="form-control" 
-                                     value="{{ old('ngay_ky', $hopDong->ngay_ky) }}">
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="ngay_het_han" class="form-label">Ngày hết hạn</label>
-                              <input type="date" name="ngay_het_han" class="form-control" 
-                                     value="{{ old('ngay_het_han', $hopDong->ngay_het_han) }}">
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="gia_tri" class="form-label">Giá trị</label>
-                              <input type="number" name="gia_tri" class="form-control" 
-                                     value="{{ old('gia_tri', $hopDong->gia_tri) }}">
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="noi_dung" class="form-label">Nội dung</label>
-                              <textarea name="noi_dung" class="form-control" rows="4">{{ old('noi_dung', $hopDong->noi_dung) }}</textarea>
-                          </div>
-                      
-                          <div class="mb-3">
-                              <label for="trang_thai" class="form-label">Trạng thái</label>
-                              <select name="trang_thai" class="form-control">
-                                  <option value="đang hiệu lực" {{ old('trang_thai', $hopDong->trang_thai) == 'đang hiệu lực' ? 'selected' : '' }}>Đang hiệu lực</option>
-                                  <option value="hết hiệu lực" {{ old('trang_thai', $hopDong->trang_thai) == 'hết hiệu lực' ? 'selected' : '' }}>Hết hiệu lực</option>
-                                  <option value="hủy" {{ old('trang_thai', $hopDong->trang_thai) == 'hủy' ? 'selected' : '' }}>Hủy</option>
-                              </select>
-                          </div>
-                      
-                          <button type="submit" class="btn btn-primary">Cập nhật</button>
-                      </form>
-                      
+                            @csrf
+                            @method('PUT')
+
+                            <div class="col-lg-6">
+                                <label for="project_id" class="form-label">Dự án</label>
+                                <select name="project_id" id="user_id"
+                                    class="form-control  @error('project_id') is-invalid @enderror">
+                                    <option value="">-- Chọn dự án --</option>
+
+                                    @foreach ($projects as $project)
+                                        <option value="{{ $project->id }}"
+                                            {{ old('project_id', $hopDong->project_id) == $project->id ? 'selected' : '' }}>
+                                            {{ $project->ten_du_an }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('project_id')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="trang_thai" class="form-label">Trạng thái</label>
+                                <select name="trang_thai" class="form-control  @error('trang_thai') is-invalid @enderror">
+                                    <option value="đang hiệu lực"
+                                        {{ old('trang_thai', $hopDong->trang_thai) == 'đang hiệu lực' ? 'selected' : '' }}>
+                                        Đang hiệu lực</option>
+                                    <option value="hết hiệu lực"
+                                        {{ old('trang_thai', $hopDong->trang_thai) == 'hết hiệu lực' ? 'selected' : '' }}>
+                                        Hết hiệu lực</option>
+                                    <option value="hủy"
+                                        {{ old('trang_thai', $hopDong->trang_thai) == 'hủy' ? 'selected' : '' }}>Hủy
+                                    </option>
+                                </select>
+                                @error('trang_thai')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="so_hop_dong" class="form-label">Số hợp đồng</label>
+                                <input type="text" name="so_hop_dong"
+                                    class="form-control @error('so_hop_dong') is-invalid @enderror"
+                                    value="{{ old('so_hop_dong', $hopDong->so_hop_dong) }}">
+                                @error('so_hop_dong')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="gia_tri" class="form-label">Giá trị</label>
+                                <input type="number" name="gia_tri"
+                                    class="form-control @error('gia_tri') is-invalid @enderror"
+                                    value="{{ old('gia_tri', $hopDong->gia_tri) }}">
+
+                                @error('gia_tri')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-4">
+                                <div
+                                    class="text-center justify-content-center align-items-center p-4 p-sm-5 border border-2 border-dashed position-relative rounded-3">
+                                    <img src="{{ asset('source/images/gallery.png') }}" class="h-50px" alt="">
+                                    <div>
+                                        <h6 class="my-2">Upload course file here, or <a href="#!"
+                                                class="text-primary">Browse</a></h6>
+                                        <label style="cursor:pointer;">
+                                            <input class="form-control stretched-link @error('file') is-invalid @enderror"
+                                                type="file" name="file">
+                                        </label>
+                                        @error('file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <p class="small mb-0 mt-2"><b>Ghi chú:</b> Đưa bản mềm hợp đồng dự án lên đây</p>
+                                    </div>
+                                </div>
+                                @error('file')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-8">
+                                @if ($hopDong->file)
+                                    <iframe src="{{ asset($hopDong->file) }}" width="100%" height="600px"></iframe>
+                                @endif
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="ngay_ky" class="form-label">Ngày ký</label>
+                                <input type="date" name="ngay_ky"
+                                    class="form-control @error('ngay_ky') is-invalid @enderror"
+                                    value="{{ old('ngay_ky', $hopDong->ngay_ky) }}">
+                                @error('ngay_ky')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-6">
+                                <label for="ngay_het_han" class="form-label">Ngày hết hạn</label>
+                                <input type="date" name="ngay_het_han"
+                                    class="form-control @error('ngay_het_han') is-invalid @enderror"
+                                    value="{{ old('ngay_het_han', $hopDong->ngay_het_han) }}">
+                                @error('ngay_het_han')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-lg-12">
+                                <label for="noi_dung" class="form-label">Nội dung</label>
+                                <textarea name="noi_dung" id="tyni" class="form-control @error('noi_dung') is-invalid @enderror" rows="4">{{ old('noi_dung', $hopDong->noi_dung) }}</textarea>
+                                @error('noi_dung')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="text-end">
+                                <button type="submit" class="btn btn-primary">Cập nhật hợp đồng dự án</button>
+                            </div>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
-
-   
 @endsection

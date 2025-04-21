@@ -20,15 +20,15 @@ class ProjectController extends Controller
         $this->middleware('can:sửa dự án')->only(['edit', 'update']);
         $this->middleware('can:xóa dự án')->only(['destroy']);
         $this->middleware('can:xem dự án')->only(['index', 'show']);
+        $this->middleware('can:xem toàn bộ dự án')->only(['index', 'show']);
     }
 
     // Xem tất cả dự án hoặc dự án được phân quyền
     public function index(Request $request)
     {
-        if (Auth::user()->can('xem dự án')) {
+        if (Auth::user()->can('xem dự án') || Auth::user()->can('xem toàn bộ dự án')) {
             $search = $request->input('search');
-            // dd($search);
-            if (Auth::user()->hasRole('Super Admin')) {
+            if (Auth::user()->can('xem toàn bộ dự án')) {
                 $projects = Project::when($search, function ($query) use ($search) {
                     return $query->where('ten_du_an', 'like', '%' . $search . '%');
                 })
@@ -54,7 +54,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-        $this->authorize('tạo dự án');  // Kiểm tra quyền
+      
         $users = User::all();
         return view('admin.projects.create', compact('users'));
     }
@@ -118,7 +118,7 @@ class ProjectController extends Controller
     // Chỉ Admin mới có quyền sửa dự án
     public function edit($alias)
     {
-        $this->authorize('sửa dự án');  // Kiểm tra quyền sửa dự án
+      
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = User::all();
         $assignedUsers = $project->users->pluck('id')->toArray();
@@ -127,7 +127,7 @@ class ProjectController extends Controller
     }
     public function show($alias)
     {
-        $this->authorize('xem dự án');  // Kiểm tra quyền sửa dự án
+       
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = User::all();
         $assignedUsers = $project->users->pluck('id')->toArray();
@@ -140,7 +140,7 @@ class ProjectController extends Controller
     // Cập nhật dự án
     public function update(Request $request, $alias)
     {
-        $this->authorize('sửa dự án');  // Kiểm tra quyền
+      
 
         // Xác thực dữ liệu
         $request->validate([
@@ -194,7 +194,7 @@ Log::create([
     // Chỉ Admin mới có quyền xóa dự án
     public function destroy($alias)
     {
-        $this->authorize('xóa dự án');  // Kiểm tra quyền
+       
 
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = $project->users;
