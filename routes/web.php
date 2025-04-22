@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AttendancesController;
 use App\Http\Controllers\Admin\EmployeeContractController;
 use App\Http\Controllers\Admin\HopDongKhachHangController;
+use App\Http\Controllers\Admin\HoTroKhachHangController;
 use App\Http\Controllers\Admin\KhachHangController;
 use App\Http\Controllers\Admin\PerformaceReviewController;
 use App\Http\Controllers\Admin\ProjectController;
@@ -109,6 +110,19 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{alias}', [HopDongKhachHangController::class, 'update'])->name('hop_dong_khach_hang.update');
         Route::delete('/{alias}', [HopDongKhachHangController::class, 'destroy'])->name('hop_dong_khach_hang.destroy');
     });
+    Route::prefix('ho-tro-khach-hang')->group(function () {
+        Route::get('/', [HoTroKhachHangController::class, 'index'])->name('ho_tro_khach_hangs.index');
+        Route::get('/create', [HoTroKhachHangController::class, 'create'])->name('ho_tro_khach_hangs.create');
+        Route::post('/store', [HoTroKhachHangController::class, 'store'])->name('ho_tro_khach_hangs.store');
+        Route::get('/{id}/edit', [HoTroKhachHangController::class, 'edit'])->name('ho_tro_khach_hangs.edit');
+        Route::put('/{id}', [HoTroKhachHangController::class, 'update'])->name('ho_tro_khach_hangs.update'); 
+        Route::get('/{id}/show', [HoTroKhachHangController::class, 'show'])->name('ho_tro_khach_hangs.show');
+        Route::delete('/{id}', [HoTroKhachHangController::class, 'destroy'])->name('ho_tro_khach_hangs.destroy');
+      
+    });
+
+
+
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
     Route::post('/chamcong/thong-kes', [ThongkeChamCongController::class, 'thongKeThang'])->name('admin.chamcong.generateThongKe');

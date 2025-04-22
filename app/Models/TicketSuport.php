@@ -14,6 +14,7 @@ class TicketSuport extends Model
         'noi_dung',
         'trang_thai',
         'do_uu_tien',
+        'uu_tien',
         'nguoi_xu_ly_id',
     ];
 

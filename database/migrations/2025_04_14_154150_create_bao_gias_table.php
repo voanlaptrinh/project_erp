@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bao_gias', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('hop_dong_id');
-            $table->string('so_bao_gia')->unique();
+            $table->string('so_bao_gia')->unique(); //mã báo giá
             $table->date('ngay_gui')->nullable();
             $table->decimal('tong_gia_tri', 15, 2)->nullable();
             $table->text('chi_tiet')->nullable();

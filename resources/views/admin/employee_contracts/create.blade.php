@@ -72,7 +72,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <label class="form-label">Lương thỏa thuận:</label>
                                 <input type="text" name="luong_thoa_thuan" id="luong_thoa_thuan" class="form-control"
                                     value="{{ old('luong_thoa_thuan') }}" placeholder="VD: 50000000 ">
@@ -81,17 +81,36 @@
                                 @enderror
                             </div>
 
-                            <div class="col-lg-6">
-                                <label class="form-label">File hợp đồng (pdf, doc, docx):</label>
-                                <input type="file" name="file_hop_dong" accept=".pdf,.doc,.docx" class="form-control @error('file_hop_dong') is-invalid @enderror">
+                            <div class="col-lg-12">
+                                <div
+                                    class="text-center justify-content-center align-items-center p-4 p-sm-5 border border-2 border-dashed position-relative rounded-3">
+                                    <img src="{{ asset('source/images/gallery.png') }}" class="h-50px" alt="">
+                                    <div>
+                                        <h6 class="my-2">Upload course file here, or <a href="#!"
+                                                class="text-primary">Browse</a></h6>
+                                        <label style="cursor:pointer;">
+                                            <input class="form-control stretched-link @error('file_hop_dong') is-invalid @enderror"
+                                                type="file" accept=".pdf,.doc,.docx" name="file_hop_dong">
+                                        </label>
+                                        @error('file')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                        <p class="small mb-0 mt-2"><b>Ghi chú:</b> Đưa bản mềm hợp đồng dự án lên đây</p>
+                                    </div>
+                                </div>
                                 @error('file_hop_dong')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+                                {{-- <label class="form-label">File hợp đồng (pdf, doc, docx):</label>
+                                <input type="file" name="file_hop_dong" accept=".pdf,.doc,.docx" class="form-control @error('file_hop_dong') is-invalid @enderror">
+                                @error('file_hop_dong')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror --}}
                             </div>
                             
 
                             <div class="text-end">
-                                <button type="submit" class="btn btn-primary">Thêm mới dự án</button>
+                                <button type="submit" class="btn btn-primary">Thêm mới hợp đồng</button>
                             </div>
                         </form>
                     </div>

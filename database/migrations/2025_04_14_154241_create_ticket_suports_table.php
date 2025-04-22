@@ -16,10 +16,11 @@ return new class extends Migration
             $table->unsignedBigInteger('khach_hang_id');
             $table->string('tieu_de');
             $table->text('noi_dung');
-            $table->string('trang_thai')->default('mới'); // Đang xử lý, Đã giải quyết
+            $table->enum('trang_thai', ['mới', 'đang xử lý', 'đã xử lý', 'đã đóng'])->default('mới');
+            $table->enum('uu_tien', ['thấp', 'trung bình', 'cao', 'khẩn cấp'])->default('trung bình');
             $table->unsignedBigInteger('nguoi_xu_ly_id')->nullable(); // user_id xử lý
             $table->timestamps();
-        
+    
             $table->foreign('khach_hang_id')->references('id')->on('khach_hangs')->cascadeOnDelete();
             $table->foreign('nguoi_xu_ly_id')->references('id')->on('users')->nullOnDelete();
         });

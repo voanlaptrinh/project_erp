@@ -284,13 +284,22 @@
                     </li>
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem hợp đồng dự án'))
-                    
-                <li class="nav-item">
-                    <a class="nav-link {{ in_array(Request::route()->getName(), ['hop_dong_khach_hang.index', 'hop_dong_khach_hang.create', 'hop_dong_khach_hang.edit']) ? '' : 'collapsed' }}" href="{{ route('hop_dong_khach_hang.index') }}">
-                        <i class="bi bi-file-earmark-text"></i>
-                        <span>Hợp đồng dự án</span>
-                    </a>
-                </li><!-- End F.A.Q Page Nav -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['hop_dong_khach_hang.index', 'hop_dong_khach_hang.create', 'hop_dong_khach_hang.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('hop_dong_khach_hang.index') }}">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span>Hợp đồng dự án</span>
+                        </a>
+                    </li><!-- End F.A.Q Page Nav -->
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem hỗ trợ khách hàng'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['ho_tro_khach_hangs.index']) ? '' : 'collapsed' }}"
+                            href="{{ route('ho_tro_khach_hangs.index') }}">
+                            <i class="bi bi-headset"></i>
+                            <span>Hỗ trợ khách hàng</span>
+                        </a>
+                    </li><!-- End F.A.Q Page Nav -->
                 @endif
 
                 <li class="nav-item">
