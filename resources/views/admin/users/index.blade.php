@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <div class="col-12 d-sm-flex justify-content-between align-items-center">
                             <h5 class="card-title">Datatables Licensekeys </h5>
-                            @if (auth()->user()->hasPermissionTo('create users'))
+                            @if (auth()->user()->hasPermissionTo('thêm người dùng'))
                                 <a href="{{ route('admin.users.create') }}" class="btn btn-success">
 
                                     <i class="bi bi-check-circle"></i>
@@ -93,11 +93,11 @@
 
 
                                             <td colspan="2">
-                                                @if (auth()->user()->hasPermissionTo('edit users'))
+                                                @if (auth()->user()->hasPermissionTo('sửa người dùng'))
                                                     <a class="btn btn-warning"
                                                         href="{{ route('admin.users.edit', $user->id) }}">Chỉnh sửa</a>
                                                 @endif
-                                                @if (auth()->user()->hasPermissionTo('delete users'))
+                                                @if (auth()->user()->hasPermissionTo('xóa người dùng'))
                                                     <form action="{{ route('admin.users.destroy', $user->id) }}"
                                                         method="POST" style="display:inline;">
                                                         @csrf

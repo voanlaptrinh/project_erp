@@ -12,6 +12,14 @@ use Illuminate\Support\Facades\Hash;
 
 class AdminUserController extends Controller
 {
+    public function __construct()
+    {
+        // Kiểm tra quyền của người dùng để tạo, sửa, xóa hợp đồng
+        $this->middleware('can:thêm người dùng')->only(['create', 'store']);
+        $this->middleware('can:sửa người dùng')->only(['edit', 'update']);
+        $this->middleware('can:xóa người dùng')->only(['destroy']);
+        $this->middleware('can:xem người dùng')->only(['index']);
+    }
     public function index(Request $request)
     {
         $query = User::with('roles');

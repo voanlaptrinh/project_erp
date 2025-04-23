@@ -40,11 +40,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="col-12 d-sm-flex justify-content-between align-items-center">
-
-                            <div class="card-title">
-                                🕒 Thời gian hiện tại: <span id="realtime-clock"
-                                    style="color: rgb(255, 60, 0); font-weight: 900;">--:--:--</span>
-                            </div>
+                            <h5 class="card-title">Quản lý chấm công</h5>
+                           
                             @unless (auth()->user()->hasRole('Super Admin'))
                                 <div class="card-title">
                                     <div>
@@ -204,17 +201,5 @@
             {{ $chamCongs->links() }}
         </div>
     </div> --}}
-    <script>
-        function updateClock() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            const timeString = `${hours}:${minutes}:${seconds}`;
-            document.getElementById('realtime-clock').textContent = timeString;
-        }
-
-        setInterval(updateClock, 1000);
-        updateClock(); // chạy ngay lần đầu
-    </script>
+   
 @endsection

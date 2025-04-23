@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // ]);
          // Tạo quyền
          $permissions = [
-            'create users', 'edit users', 'delete users', 'view users',
+            'thêm người dùng', 'sửa người dùng', 'xóa người dùng', 'xem người dùng',
             'create roles', 'edit roles', 'delete roles', 'view roles',
             'xem dự án', 'xem toàn bộ dự án', 'tạo dự án', 'sửa dự án', 'xóa dự án',
             'xem task', 'xem toàn bộ task', 'tạo task', 'sửa task', 'xóa task',
@@ -29,7 +29,7 @@ class DatabaseSeeder extends Seeder
             'toàn bộ chấm công', 'xem chấm công', 'thống kê chấm công',
             'xem khách hàng', 'tạo khách hàng', 'sửa khách hàng', 'xóa khách hàng',
             'xem hợp đồng dự án', 'tạo hợp đồng dự án', 'sửa hợp đồng dự án', 'xóa hợp đồng dự án',
-            'xem hỗ trợ khách hàng', 'tạo hỗ trợ khách hàng', 'sửa hỗ trợ khách hàng', 'xóa hỗ trợ khách hàng',
+            'xem hỗ trợ khách hàng','xem toàn bộ hỗ trợ khách hàng', 'tạo hỗ trợ khách hàng', 'sửa hỗ trợ khách hàng', 'xóa hỗ trợ khách hàng',
             // 'xem tài nguyên', 'sửa tài nguyên',
             // 'xem sự cố', 'tạo sự cố', 'sửa sự cố', 'xóa sự cố',
         ];

@@ -13,11 +13,10 @@
     <link href="{{ asset('/source/css/style.css') }}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('/source/css/toastr.min.css') }}">
     <!-- Select2 core CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('/source/css/select2.min.css') }}" rel="stylesheet" />
 
     <!-- Theme Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/@ttskch/select2-bootstrap4-theme@1.5.2/dist/select2-bootstrap4.min.css"
-        rel="stylesheet" />
+    <link href="{{ asset('/source/css/select2-bootstrap4.min.css') }}" rel="stylesheet" />
 
 
 </head>
@@ -29,7 +28,7 @@
             <div class="d-flex align-items-center justify-content-between">
                 <a href="index.html" class="logo d-flex align-items-center">
                     <img src="assets/img/logo.png" alt="">
-                    <span class="d-none d-lg-block">NiceAdmin</span>
+                    <span class="d-none d-lg-block">Metasoft</span>
                 </a>
                 <i class="bi bi-list toggle-sidebar-btn"></i>
             </div><!-- End Logo -->
@@ -211,7 +210,7 @@
         </header><!-- End Header -->
 
         <!-- ======= Sidebar ======= -->
-        <aside id="sidebar" class="sidebar">
+        <aside id="sidebar" class="sidebar d-flex flex-column justify-content-between">
 
             <ul class="sidebar-nav" id="sidebar-nav">
 
@@ -222,7 +221,7 @@
                     </a>
                 </li><!-- End Dashboard Nav -->
                 <li class="nav-heading">Nhận sự</li>
-                @if (auth()->user()->hasPermissionTo('view users'))
+                @if (auth()->user()->hasPermissionTo('xem người dùng'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.users.index') }}">
@@ -294,7 +293,7 @@
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem hỗ trợ khách hàng'))
                     <li class="nav-item">
-                        <a class="nav-link {{ in_array(Request::route()->getName(), ['ho_tro_khach_hangs.index']) ? '' : 'collapsed' }}"
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['ho_tro_khach_hangs.index', 'ho_tro_khach_hangs.create', 'ho_tro_khach_hangs.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('ho_tro_khach_hangs.index') }}">
                             <i class="bi bi-headset"></i>
                             <span>Hỗ trợ khách hàng</span>
@@ -308,6 +307,7 @@
                         <span>Contact</span>
                     </a>
                 </li><!-- End Contact Page Nav -->
+
 
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-register.html">
@@ -338,7 +338,9 @@
                 </li><!-- End Blank Page Nav -->
 
             </ul>
-
+            <div class="text-white text-center py-3 w-100 border-top-clock shadow " style="background-color: #F05729">
+                🕒 <span id="realtime-clock" style="font-weight: 900;">--:--:--</span>
+            </div>
         </aside><!-- End Sidebar-->
     @endif
     <main id="main" class="main">
@@ -347,14 +349,11 @@
     @if (!($no_layout ?? false))
         <footer id="footer" class="footer">
             <div class="copyright">
-                &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+                &copy; Bản quyền <strong><span>Metasoft</span></strong>. Mọi quyền được bảo lưu
             </div>
             <div class="credits">
-                <!-- All the links in the footer should remain intact. -->
-                <!-- You can delete the links only if you purchased the pro version. -->
-                <!-- Licensing information: https://bootstrapmade.com/license/ -->
-                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
-                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+
+                Thiết kế bời <a href="https://www.facebook.com/leduykhanh309/">Lê Duy Khánh Metasoft</a>
             </div>
         </footer>
     @endif
@@ -414,21 +413,6 @@
         })
     </script>
     <script>
-        $(document).ready(function() {
-            $('#user_id').select2({
-                theme: 'bootstrap4',
-                width: '100%',
-                placeholder: "-- Chọn select --",
-                allowClear: true
-            });
-        });
-        toastr.options = {
-            "progressBar": true, // Hiển thị thanh tiến trình
-            "timeOut": 2000, // Thời gian hiển thị thông báo (2 giây)
-            "extendedTimeOut": 1000, // Thời gian hiển thị khi người dùng di chuột vào thông báo (1 giây)
-
-        };
-
         @if (Session::has('success'))
             toastr.success("{{ Session::get('success') }}");
         @endif
@@ -445,7 +429,8 @@
             toastr.warning("{{ Session::get('warning') }}");
         @endif
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="{{ asset('/source/js/select2.min.js') }}"></script>
+    <script src="{{ asset('/source/js/style.js') }}"></script>
 </body>
 
 </html>

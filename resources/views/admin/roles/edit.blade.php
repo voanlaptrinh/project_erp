@@ -38,7 +38,7 @@
                             </div>
                             <div class="col-md-12">
                                 <label for="roles">Vai trò</label>
-                                <table class="table">
+                                <table class="table table-bordered border-primary">
                                     <tbody>
                                         <tr>
                                             @foreach ($permissions as $index => $permission)
