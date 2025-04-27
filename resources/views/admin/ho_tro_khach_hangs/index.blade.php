@@ -73,11 +73,11 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if ($tk->trang_thai == 'thấp')
+                                                @if ($tk->uu_tien == 'thấp')
                                                     <span class="badge bg-primary">Thấp</span>
-                                                @elseif($tk->trang_thai == 'trung bình')
+                                                @elseif($tk->uu_tien == 'trung bình')
                                                     <span class="badge bg-warning">Trung bình</span>
-                                                @elseif($tk->trang_thai == 'cao')
+                                                @elseif($tk->uu_tien == 'cao')
                                                     <span class="badge bg-success">Cao</span>
                                                 @else
                                                     <span class="badge bg-danger">Khẩn cấp</span>

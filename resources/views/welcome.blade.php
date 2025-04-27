@@ -150,7 +150,8 @@
 
                         <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                             data-bs-toggle="dropdown">
-                            <img src="{{ auth()->user()->avatar ?? '' }}" alt="Profile" class="rounded-circle">
+                            <img src="{{ auth()->user()->avatar ?? asset('source/images/icon_usser.png') }}"
+                                alt="Profile" class="rounded-circle">
                             <span
                                 class="d-none d-md-block dropdown-toggle ps-2">{{ auth()->user()->name ?? '' }}</span>
                         </a><!-- End Profile Iamge Icon -->
@@ -220,7 +221,16 @@
                         <span>Dashboard</span>
                     </a>
                 </li><!-- End Dashboard Nav -->
-                <li class="nav-heading">Nhận sự</li>
+                @if (auth()->user()->hasPermissionTo('xem người dùng') ||
+                        auth()->user()->hasPermissionTo('view roles') ||
+                        auth()->user()->hasPermissionTo('xem dự án') ||
+                        auth()->user()->hasPermissionTo('xem toàn bộ dự án') ||
+                        auth()->user()->hasPermissionTo('xem hợp đồng') ||
+                        auth()->user()->hasPermissionTo('xem toàn bộ hợp đồng') ||
+                        auth()->user()->hasPermissionTo('toàn bộ chấm công') ||
+                        auth()->user()->hasPermissionTo('xem chấm công'))
+                    <li class="nav-heading">Nhận sự</li>
+                @endif
                 @if (auth()->user()->hasPermissionTo('xem người dùng'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.users.index', 'admin.users.create', 'admin.users.edit']) ? '' : 'collapsed' }}"
@@ -239,7 +249,7 @@
                         </a>
                     </li>
                 @endif
-                @if (auth()->user()->hasPermissionTo('xem dự án'))
+                @if (auth()->user()->hasPermissionTo('xem dự án') || auth()->user()->hasPermissionTo('xem toàn bộ dự án'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.projects.show', 'admin.projects.index', 'admin.projects.create', 'admin.projects.edit', 'admin.projects.tasks', 'admin.projects.tasks.edit', 'admin.tasks.create', 'admin.projects.tasks.show']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.projects.index') }}">
@@ -248,7 +258,7 @@
                         </a>
                     </li>
                 @endif
-                @if (auth()->user()->hasPermissionTo('xem hợp đồng'))
+                @if (auth()->user()->hasPermissionTo('xem hợp đồng') || auth()->user()->hasPermissionTo('xem toàn bộ hợp đồng'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.employee-contracts.index', 'admin.employee-contracts.create', 'admin.employee-contracts.view', 'admin.employee-contracts.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.employee-contracts.index') }}">
@@ -269,8 +279,12 @@
 
 
 
-
-                <li class="nav-heading">Khách hàng</li>
+                @if (auth()->user()->hasPermissionTo('xem khách hàng') ||
+                        auth()->user()->hasPermissionTo('xem hợp đồng dự án') ||
+                        auth()->user()->hasPermissionTo('xem hỗ trợ khách hàng') ||
+                        auth()->user()->hasPermissionTo('xem toàn bộ hỗ trợ khách hàng'))
+                    <li class="nav-heading">Khách hàng</li>
+                @endif
 
                 <!-- End Profile Page Nav -->
                 @if (auth()->user()->hasPermissionTo('xem khách hàng'))
@@ -291,7 +305,8 @@
                         </a>
                     </li><!-- End F.A.Q Page Nav -->
                 @endif
-                @if (auth()->user()->hasPermissionTo('xem hỗ trợ khách hàng'))
+                @if (auth()->user()->hasPermissionTo('xem hỗ trợ khách hàng') ||
+                        auth()->user()->hasPermissionTo('xem toàn bộ hỗ trợ khách hàng'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['ho_tro_khach_hangs.index', 'ho_tro_khach_hangs.create', 'ho_tro_khach_hangs.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('ho_tro_khach_hangs.index') }}">
@@ -300,7 +315,7 @@
                         </a>
                     </li><!-- End F.A.Q Page Nav -->
                 @endif
-
+                <li class="nav-heading">Hợp đồng</li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-contact.html">
                         <i class="bi bi-envelope"></i>

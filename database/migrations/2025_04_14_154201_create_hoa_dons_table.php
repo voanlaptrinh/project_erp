@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hop_dong_id');
             $table->string('so_hoa_don')->unique();
             $table->date('ngay_phat_hanh');
-            $table->decimal('so_tien', 15, 2);
+            $table->integer('so_tien')->nullable(); // Số tiền thanh toán
             $table->string('trang_thai')->default('chưa thanh toán'); // Đã thanh toán, Quá hạn
             $table->timestamps();
 

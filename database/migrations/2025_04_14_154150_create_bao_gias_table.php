@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('hop_dong_id');
             $table->string('so_bao_gia')->unique(); //mã báo giá
             $table->date('ngay_gui')->nullable();
-            $table->decimal('tong_gia_tri', 15, 2)->nullable();
+            $table->integer('tong_gia_tri')->nullable();
             $table->text('chi_tiet')->nullable();
             $table->string('trang_thai')->default('đang chờ'); // Chấp nhận, Từ chối
             $table->timestamps();

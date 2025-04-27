@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AttendancesController;
+use App\Http\Controllers\Admin\BaoGiaController;
 use App\Http\Controllers\Admin\EmployeeContractController;
 use App\Http\Controllers\Admin\HopDongKhachHangController;
 use App\Http\Controllers\Admin\HoTroKhachHangController;
@@ -121,7 +122,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
       
     });
 
-
+    Route::prefix('bao-gias')->group(function () {
+        Route::get('/', [BaoGiaController::class, 'index'])->name('bao-gias.index');
+        Route::get('/hop-dong/{hop_dong_id}', [BaoGiaController::class, 'index'])->name('bao-gias.byHopDong');
+        Route::get('/create', [BaoGiaController::class, 'create'])->name('bao-gias.create');
+        Route::post('/', [BaoGiaController::class, 'store'])->name('bao-gias.store');
+        Route::get('/{id}/edit', [BaoGiaController::class, 'edit'])->name('bao-gias.edit');
+        Route::put('/{id}', [BaoGiaController::class, 'update'])->name('bao-gias.update');
+        Route::delete('/{id}', [BaoGiaController::class, 'destroy'])->name('bao-gias.destroy');
+    });
 
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
