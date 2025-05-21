@@ -27,6 +27,7 @@
                                     Thêm mới thiết bị</a>
                             @endif
                         </div>
+
                         <form method="GET" action="{{ route('thietbi.index') }}" class="mb-3">
                             <div class="row">
                                 <div class="col-md-10">
@@ -38,7 +39,6 @@
                                     <label for="license_key" class="form-label"></label>
                                     <button type="submit" class="me-2 ms-2 btn btn-success w-100 mt-2"><i
                                             class="bi bi-search"></i></button>
-
                                 </div>
                             </div>
                         </form>
@@ -101,14 +101,10 @@
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->
-                            {{-- <div class=" p-nav text-end d-flex justify-content-center">
-                                {{ $hopDongs->appends(request()->query())->links('pagination::bootstrap-4') }}
-                            </div> --}}
+                            <div class="d-flex justify-content-center mt-3">
+                                {{ $devices->appends(request()->query())->links('pagination::bootstrap-4') }}
+                            </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>

@@ -35,7 +35,7 @@ class ThietBiLamViecController extends Controller
     public function show($id)
     {
         $device = ThietBiLamViec::with('user')->findOrFail($id);
-    return view('admin.thiet_bi_lam_viec.show', compact('device'));
+        return view('admin.thiet_bi_lam_viec.show', compact('device'));
     }
 
     public function create()
@@ -49,11 +49,11 @@ class ThietBiLamViecController extends Controller
         $request->validate([
             'user_id' => 'required|exists:users,id',
             'loai_thiet_bi' => 'required|string|max:255',
-            'ten_thiet_bi' => 'nullable|string|max:255',
+            'ten_thiet_bi' => 'required|string|max:255',
             'he_dieu_hanh' => 'nullable|string|max:255',
             'cau_hinh' => 'nullable|string',
             'so_serial' => 'nullable|string|max:255',
-            'ngay_ban_giao' => 'nullable|date',
+            'ngay_ban_giao' => 'required|date',
             'ghi_chu' => 'nullable|string',
         ]);
 

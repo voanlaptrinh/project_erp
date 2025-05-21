@@ -108,7 +108,7 @@
                             <div class="col-lg-6">
                                 <label for="ten_thiet_bi" class="form-label">Tên thiết bị</label>
                                 <input type="text" class="form-control" name="ten_thiet_bi"
-                                    value="{{ old('ten_thiet_bi', $device->ten_thiet_bi ?? '') }}">
+                                    value="{{ old('ten_thiet_bi', $device->ten_thiet_bi ?? '') }}" required>
                             </div>
                             <div class="col-lg-6">
                                 <label for="he_dieu_hanh" class="form-label">Hệ điều hành</label>
@@ -129,7 +129,7 @@
                             <div class="col-lg-6">
                                 <label for="ngay_ban_giao" class="form-label">Ngày bàn giao</label>
                                 <input type="date" class="form-control" name="ngay_ban_giao"
-                                    value="{{ old('ngay_ban_giao', isset($device->ngay_ban_giao) ? \Carbon\Carbon::parse($device->ngay_ban_giao)->format('Y-m-d') : '') }}">
+                                    value="{{ old('ngay_ban_giao', isset($device->ngay_ban_giao) ? \Carbon\Carbon::parse($device->ngay_ban_giao)->format('Y-m-d') : '') }}" required>
                             </div>
                             <div class="col-lg-12">
                                 <label for="ghi_chu" class="form-label">Ghi chú</label>
