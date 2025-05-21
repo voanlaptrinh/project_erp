@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\TaskController;
 use App\Http\Controllers\Admin\ThongkeChamCongController;
+use App\Http\Controllers\Admin\ThietBiLamViecController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LoginController;
@@ -116,10 +117,9 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/create', [HoTroKhachHangController::class, 'create'])->name('ho_tro_khach_hangs.create');
         Route::post('/store', [HoTroKhachHangController::class, 'store'])->name('ho_tro_khach_hangs.store');
         Route::get('/{id}/edit', [HoTroKhachHangController::class, 'edit'])->name('ho_tro_khach_hangs.edit');
-        Route::put('/{id}', [HoTroKhachHangController::class, 'update'])->name('ho_tro_khach_hangs.update'); 
+        Route::put('/{id}', [HoTroKhachHangController::class, 'update'])->name('ho_tro_khach_hangs.update');
         Route::get('/{id}/show', [HoTroKhachHangController::class, 'show'])->name('ho_tro_khach_hangs.show');
         Route::delete('/{id}', [HoTroKhachHangController::class, 'destroy'])->name('ho_tro_khach_hangs.destroy');
-      
     });
 
     Route::prefix('bao-gias')->group(function () {
@@ -131,6 +131,17 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{id}', [BaoGiaController::class, 'update'])->name('bao-gias.update');
         Route::delete('/{id}', [BaoGiaController::class, 'destroy'])->name('bao-gias.destroy');
     });
+    
+    Route::prefix('thiet-bi-lam-viec')->group(function () {
+        Route::get('/', [ThietBiLamViecController::class, 'index'])->name('thietbi.index');
+        Route::get('/create', [ThietBiLamViecController::class, 'create'])->name('thietbi.create');
+        Route::post('/store', [ThietBiLamViecController::class, 'store'])->name('thietbi.store');
+        Route::get('/{id}', [ThietBiLamViecController::class, 'show'])->name('thietbi.show');
+        Route::get('/{id}/edit', [ThietBiLamViecController::class, 'edit'])->name('thietbi.edit');
+        Route::put('/{id}', [ThietBiLamViecController::class, 'update'])->name('thietbi.update');
+        Route::delete('/{id}', [ThietBiLamViecController::class, 'destroy'])->name('thietbi.destroy');
+    });
+
 
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
@@ -144,4 +155,4 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 });
 Route::fallback(function () {
     return view('errors.404');
-  });
+});

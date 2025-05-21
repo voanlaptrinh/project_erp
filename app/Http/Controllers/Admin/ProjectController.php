@@ -54,7 +54,7 @@ class ProjectController extends Controller
 
     public function create()
     {
-      
+
         $users = User::all();
         return view('admin.projects.create', compact('users'));
     }
@@ -118,7 +118,7 @@ class ProjectController extends Controller
     // Chỉ Admin mới có quyền sửa dự án
     public function edit($alias)
     {
-      
+
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = User::all();
         $assignedUsers = $project->users->pluck('id')->toArray();
@@ -127,7 +127,7 @@ class ProjectController extends Controller
     }
     public function show($alias)
     {
-       
+
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = User::all();
         $assignedUsers = $project->users->pluck('id')->toArray();
@@ -140,7 +140,7 @@ class ProjectController extends Controller
     // Cập nhật dự án
     public function update(Request $request, $alias)
     {
-      
+
 
         // Xác thực dữ liệu
         $request->validate([
@@ -184,7 +184,7 @@ class ProjectController extends Controller
 
         // Cập nhật người phụ trách cho dự án
         $project->users()->sync($request->input('user_ids'));
-Log::create([
+        Log::create([
             'message' => Auth::user()->name . ' đã cập nhật dự án ' . $request->ten_du_an
         ]);
         return redirect()->route('admin.projects.index')->with('success', 'Dự án đã được cập nhật thành công!');
@@ -194,7 +194,7 @@ Log::create([
     // Chỉ Admin mới có quyền xóa dự án
     public function destroy($alias)
     {
-       
+
 
         $project = Project::where('alias', $alias)->firstOrFail();
         $users = $project->users;

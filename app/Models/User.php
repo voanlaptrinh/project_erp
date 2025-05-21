@@ -54,7 +54,12 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class, 'project_user');
     }
     public function notifications()
-{
-    return $this->hasMany(notification::class);
-}
+    {
+        return $this->hasMany(notification::class);
+    }
+
+    public function thietBiLamViec()
+    {
+        return $this->hasMany(ThietBiLamViec::class);
+    }
 }
