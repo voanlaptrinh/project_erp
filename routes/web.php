@@ -17,6 +17,8 @@ use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\GoogleAuthController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\Admin\DomainController;
+use App\Http\Controllers\Admin\HostingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -142,6 +144,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::delete('/{id}', [ThietBiLamViecController::class, 'destroy'])->name('thietbi.destroy');
     });
 
+    Route::prefix('domain')->group(function () {
+        Route::get('/', [DomainController::class, 'index'])->name('domains.index');
+        Route::get('/create', [DomainController::class, 'create'])->name('domains.create');
+        Route::post('/store', [DomainController::class, 'store'])->name('domains.store');
+        Route::get('/{id}/edit', [DomainController::class, 'edit'])->name('domains.edit');
+        Route::get('/{id}', [DomainController::class, 'show'])->name('domains.show');
+        Route::put('/{id}', [DomainController::class, 'update'])->name('domains.update');
+        Route::delete('/{id}', [DomainController::class, 'destroy'])->name('domains.destroy');
+        Route::get('/domains/search', [DomainController::class, 'search'])->name('domains.search');
+    });
 
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
@@ -153,6 +165,15 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Route::resource('resources', ResourceController::class);
     // Route::resource('issues', IssueController::class);
 });
+
+
+
+
+
+
+Route::get('/hosting', [HostingController::class, 'index'])->name('hostings.index');
+
+
 Route::fallback(function () {
     return view('errors.404');
 });
