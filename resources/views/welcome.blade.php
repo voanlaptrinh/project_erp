@@ -228,7 +228,8 @@
                         auth()->user()->hasPermissionTo('xem hợp đồng') ||
                         auth()->user()->hasPermissionTo('xem toàn bộ hợp đồng') ||
                         auth()->user()->hasPermissionTo('toàn bộ chấm công') ||
-                        auth()->user()->hasPermissionTo('xem chấm công'))
+                        auth()->user()->hasPermissionTo('xem chấm công')||
+                        auth()->user()->hasPermissionTo('xem thiết bị'))
                     <li class="nav-heading">Nhận sự</li>
                 @endif
                 @if (auth()->user()->hasPermissionTo('xem người dùng'))
@@ -255,6 +256,15 @@
                             href="{{ route('admin.projects.index') }}">
                             <i class="bi bi-kanban"></i>
                             <span>Dự án</span>
+                        </a>
+                    </li>
+                @endif
+                   @if (auth()->user()->hasPermissionTo('xem thiết bị'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['thietbi.show', 'thietbi.index', 'thietbi.create', 'thietbi.edit', 'thietbi.show']) ? '' : 'collapsed' }}"
+                            href="{{ route('thietbi.index') }}">
+                            <i class="bi bi-pc-display"></i>
+                            <span>Quản lý thiết bị</span>
                         </a>
                     </li>
                 @endif
@@ -315,6 +325,41 @@
                         </a>
                     </li><!-- End F.A.Q Page Nav -->
                 @endif
+
+                {{-- DOMAIN, HOSTING, SERVER --}}
+                @if (auth()->user()->hasPermissionTo('xem domain') ||
+                        auth()->user()->hasPermissionTo('xem hosting') ||
+                        auth()->user()->hasPermissionTo('xem server'))
+                    <li class="nav-heading">domain</li>
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem domain'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['domains.index', 'domains.create', 'domains.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('domains.index') }}">
+                            <i class="bi bi-postcard"></i>
+                            <span>Domains</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem hosting'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['hostings.index', 'hostings.create', 'hostings.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('hostings.index') }}">
+                            <i class="bi bi-postcard"></i>
+                            <span>Hostings</span>
+                        </a>
+                    </li>
+                @endif
+                @if (auth()->user()->hasPermissionTo('xem server'))
+                    <li class="nav-item">
+                        <a class="nav-link {{ in_array(Request::route()->getName(), ['servers.index', 'servers.create', 'servers.edit']) ? '' : 'collapsed' }}"
+                            href="{{ route('servers.index') }}">
+                            <i class="bi bi-postcard"></i>
+                            <span>Servers</span>
+                        </a>
+                    </li>
+                @endif
+                {{-- End F.A.Q Page Nav --}}
                 <li class="nav-heading">Hợp đồng</li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-contact.html">

@@ -27,9 +27,15 @@
                         <form action="{{ route('domains.store') }}" method="POST" class="row g-3">
                             @csrf
                             <div class="col-lg-6">
-                                <label for="domain_name" class="form-label">Tên domain</label>
-                                <input type="text" name="domain_name" class="form-control" placeholder="vd:okuneva.com"
-                                    value="{{ old('domain_name', $domain->domain_name ?? '') }}" required>
+                                <div class="form-group">
+                                    <label for="domain_name" class="form-label">Tên domain</label>
+                                    <input type="text" name="domain_name" class="form-control"
+                                        placeholder="vd:okuneva.com"
+                                        value="{{ old('domain_name', $domain->domain_name ?? '') }}">
+                                </div>
+                                @error('domain_name')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
                                 <label for="registrar" class="form-label">Registrar</label>

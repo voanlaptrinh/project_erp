@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Domain;
 use App\Models\notification;
 use Carbon\Carbon;
+use App\Models\Log;
+use Illuminate\Support\Facades\Auth;
 
 class DomainController extends Controller
 {
@@ -30,6 +32,10 @@ class DomainController extends Controller
             $this->checkExpiry($domain);
         }
 
+        Log::create([
+            'message' => Auth::user()->name . 'vừa xem danh sách domain',
+        ]);
+
         return view('admin.domains.index', compact('domains'));
     }
 
@@ -52,6 +58,8 @@ class DomainController extends Controller
             'start_date' => 'nullable|date',
             'expiry_date' => 'required|date',
             'status' => 'required|string|in:active,inactive',
+        ], [
+            'domain_name.required' => 'Vui lòng nhập tên domain.',
         ]);
 
         $domain = Domain::create([
@@ -65,6 +73,19 @@ class DomainController extends Controller
 
         // Kiểm tra ngay sau khi tạo
         $this->checkExpiry($domain);
+
+        // Thêm thông báo cho người tạo
+        // Notification::create([
+        //     'user_id' => auth()->id(),
+        //     'title' => 'Domain mới đã được thêm',
+        //     'message' => auth()->user()->name . 'vừa thêm domain mới"' . $domain->domain_name . '" với ngày hết hạn ' . $domain->expiry_date . '.',
+        //     'is_read' => false
+        // ]);
+
+        // Ghi log hệ thống
+        Log::create([
+            'message' => auth()->user()->name . 'vừa thêm domain mới"' . $domain->domain_name . '" với ngày hết hạn ' . $domain->expiry_date . '.',
+        ]);
 
         return redirect()->route('domains.index')->with('success', 'Domain đã được thêm.');
     }
@@ -100,10 +121,25 @@ class DomainController extends Controller
             'registrar' => 'nullable|string|max:255',
             'start_date' => 'nullable|date',
             'expiry_date' => 'required|date',
-            'status' => 'required|string|in:active,inactive',
+            'status' => 'required|string|in:active,inactive,pending,expired',
+        ], [
+            'domain_name.required' => 'Vui lòng nhập tên domain.',
         ]);
 
         $domain->update($request->all());
+
+        // Thêm thông báo cho người tạo
+        // Notification::create([
+        //     'user_id' => auth()->id(),
+        //     'title' => 'Domain ' . $domain->domain_name . ' đã được cập nhật',
+        //     'message' => auth()->user()->name . 'vừa sửa domain"' . $domain->domain_name . '.',
+        //     'is_read' => false
+        // ]);
+
+        // Ghi log hệ thống
+        Log::create([
+            'message' => auth()->user()->name . 'vừa cập nhật"' . $domain->domain_name . '.',
+        ]);
 
         // Kiểm tra sau khi cập nhật
         $this->checkExpiry($domain);
@@ -119,17 +155,39 @@ class DomainController extends Controller
         $domain = Domain::where('user_id', auth()->id())->findOrFail($id);
         $domain->delete();
 
+        // Thêm thông báo cho người tạo
+        // Notification::create([
+        //     'user_id' => auth()->id(),
+        //     'title' => 'Domain ' . $domain->domain_name . ' đã bị xóa',
+        //     'message' => auth()->user()->name . 'vừa xóa domain"' . $domain->domain_name . '.',
+        //     'is_read' => false
+        // ]);
+
+        // Ghi log hệ thống
+        Log::create([
+            'message' => auth()->user()->name . 'vừa xóa"' . $domain->domain_name . '.',
+        ]);
         return redirect()->route('domains.index')->with('success', 'Domain đã bị xóa.');
     }
 
     public function search(Request $request)
     {
         $request->validate([
+            'search' => 'nullable|string|max:255',
+            'status' => 'nullable|string|in:active,inactive',
             'start_date' => 'nullable|date',
             'end_date' => 'nullable|date|after_or_equal:start_date',
         ]);
 
         $query = Domain::where('user_id', auth()->id());
+
+        if ($request->filled('search')) {
+            $query->where('domain_name', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
 
         if ($request->filled('start_date')) {
             $startDate = Carbon::parse($request->start_date)->startOfDay();
@@ -141,7 +199,7 @@ class DomainController extends Controller
             $query->where('expiry_date', '<=', $endDate);
         }
 
-        $domains = $query->paginate(10);
+        $domains = $query->orderBy('expiry_date', 'asc')->paginate(10);
         $domains->appends($request->query());
 
         return view('admin.domains.index', compact('domains'));

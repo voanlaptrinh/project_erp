@@ -1,11 +1,15 @@
 @extends('welcome')
 
 @section('body')
-    @if (request()->hasAny(['search', 'start_date', 'end_date']))
+    {{-- Cập nhật phần thông báo kết quả tìm kiếm: --}}
+    @if (request()->hasAny(['search', 'status', 'start_date', 'end_date']))
         <div class="alert alert-info">
             Đang hiển thị kết quả tìm kiếm:
             @if (request('search'))
                 - Tên domain chứa: "{{ request('search') }}"
+            @endif
+            @if (request('status'))
+                - Trạng thái: {{ ucfirst(request('status')) }}
             @endif
             @if (request('start_date'))
                 - Từ ngày: {{ request('start_date') }}
@@ -43,25 +47,35 @@
                                     Thêm mới domain</a>
                             @endif
                         </div>
-
+                        {{-- Form Tìm Kiếm --}}
                         <form method="GET" action="{{ route('domains.search') }}" class="mb-3">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="domain_name" class="form-label">Tên domain:</label>
                                     <input type="text" name="search" placeholder="Tên domain" class="form-control"
                                         value="{{ request('search') }}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <label for="status" class="form-label">Trạng thái:</label>
+                                    <select name="status" class="form-select">
+                                        <option value="">Tất cả</option>
+                                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>Active
+                                        </option>
+                                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>
+                                            Inactive</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2">
                                     <label for="start_date" class="form-label">Từ ngày:</label>
                                     <input type="date" name="start_date" class="form-control"
                                         value="{{ request('start_date') }}">
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <label for="end_date" class="form-label">Đến ngày:</label>
                                     <input type="date" name="end_date" class="form-control"
                                         value="{{ request('end_date') }}">
                                 </div>
-                                <div class="col-md-3 d-flex align-items-end">
+                                <div class="col-md-2 d-flex align-items-end">
                                     <button type="submit" class="btn btn-primary me-2">
                                         <i class="bi bi-search"></i> Tìm kiếm
                                     </button>
@@ -94,7 +108,19 @@
                                         <td>{{ $domain->user->name ?? 'Không rõ' }}</td>
                                         <td>{{ $domain->expiry_date }}</td>
                                         {{-- chuyển đổi ký tự đầu tiên của chuỗi thành chữ hoa --}}
-                                        <td>{{ ucfirst($domain->status) }}</td>
+                                        <td>
+                                            <span
+                                                class="badge bg-{{ $domain->status == 'active'
+                                                    ? 'success'
+                                                    : ($domain->status == 'inactive'
+                                                        ? 'secondary'
+                                                        : ($domain->status == 'expired'
+                                                            ? 'danger'
+                                                            : 'warning')) }}">
+                                                {{ ucfirst($domain->status) }}
+                                            </span>
+
+                                        </td>
                                         <td colspan="2">
                                             <a href="{{ route('hostings.index', ['idDomain' => $domain->id]) }}"
                                                 class="btn btn-sm btn-primary">
@@ -125,12 +151,11 @@
                                         </td>
                                         </tr>
                                         <tr>
-
                                         @empty
                                         <tr>
                                             <td colspan="6" class="text-center">
                                                 <div class="alert alert-danger">
-                                                    Không có thiết bị nào
+                                                    Không có domain nào
                                                 </div>
                                             </td>
                                         </tr>
@@ -138,7 +163,7 @@
                                 </tbody>
                             </table>
                             <!-- End Table with stripped rows -->
-                            <div class="p-nav text-end d-flex justify-content-center">
+                            <div class="p-nav text-end d-flex justify-content-end">
                                 {{ $domains->appends(request()->query())->links('pagination::bootstrap-4') }}
                             </div>
                         </div>

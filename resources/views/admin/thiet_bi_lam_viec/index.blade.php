@@ -1,6 +1,7 @@
 @extends('welcome')
 
 @section('body')
+
     <div class="pagetitle">
         <h1>Quản lý thiết bị làm việc</h1>
         <nav>
@@ -27,19 +28,64 @@
                                     Thêm mới thiết bị</a>
                             @endif
                         </div>
+                        {{--  phần hiển thị thông báo tìm kiếm phía trên bảng --}}
+                        @if (request()->hasAny(['search', 'start_date', 'end_date']))
+                            <div class="alert alert-info">
+                                Đang hiển thị kết quả tìm kiếm:
+                                @if (request('search'))
+                                    - Từ khóa: "{{ request('search') }}"
+                                @endif
+                                @if (request('start_date'))
+                                    - Từ ngày: {{ request('start_date') }}
+                                @endif
+                                @if (request('end_date'))
+                                    - Đến ngày: {{ request('end_date') }}
+                                @endif
+                                @if (request('loai_thiet_bi'))
+                                    - Loại: {{ request('loai_thiet_bi') }}
+                                @endif
+                                <a href="{{ route('thietbi.index') }}" class="float-end">Xóa bộ lọc</a>
+                            </div>
+                        @endif
 
                         <form method="GET" action="{{ route('thietbi.index') }}" class="mb-3">
                             <div class="row">
-                                <div class="col-md-10">
-                                    <label for="email" class="form-label">Tên thiết bị:</label>
-                                    <input type="text" name="search" placeholder="Tên thiết bị" class="form-control "
-                                        value="{{ request('search') }}">
+                                <div class="col-md-3">
+                                    <label class="form-label">Tìm kiếm:</label>
+                                    <input type="text" name="search" placeholder="Tên hoặc loại thiết bị"
+                                        class="form-control" value="{{ request('search') }}">
                                 </div>
-                                <div class="col-lg-2">
-                                    <label for="license_key" class="form-label"></label>
-                                    <button type="submit" class="me-2 ms-2 btn btn-success w-100 mt-2"><i
-                                            class="bi bi-search"></i></button>
+                                <div class="col-md-2">
+                                    <label class="form-label">Loại thiết bị:</label>
+                                    <select name="loai_thiet_bi" class="form-select">
+                                        <option value="">Tất cả loại</option>
+                                        @foreach ($loaiThietBis as $loai)
+                                            <option value="{{ $loai }}"
+                                                {{ request('loai_thiet_bi') == $loai ? 'selected' : '' }}>
+                                                {{ $loai }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Từ ngày:</label>
+                                    <input type="date" name="start_date" class="form-control"
+                                        value="{{ request('start_date') }}">
+                                </div>
+                                <div class="col-md-2">
+                                    <label class="form-label">Đến ngày:</label>
+                                    <input type="date" name="end_date" class="form-control"
+                                        value="{{ request('end_date') }}">
+                                </div>
+                                <div class="col-md-2 d-flex align-items-end">
+                                    <button type="submit" class="btn btn-primary me-2">
+                                        <i class="bi bi-search"></i> Tìm kiếm
+                                    </button>
+                                    <a href="{{ route('thietbi.index') }}" class="btn btn-secondary">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Reset
+                                    </a>
+                                </div>
+
                             </div>
                         </form>
                         <hr>

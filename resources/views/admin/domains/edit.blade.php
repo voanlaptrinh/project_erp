@@ -27,9 +27,15 @@
                             @csrf
                             @method('PUT')
                             <div class="col-lg-6">
-                                <label for="domain_name" class="form-label">Tên domain</label>
-                                <input type="text" name="domain_name" class="form-control"
-                                    value="{{ old('domain_name', $domain->domain_name ?? '') }}" required>
+                                <div class="form-group">
+                                    <label for="domain_name" class="form-label">Tên domain</label>
+                                    <input type="text" name="domain_name" class="form-control"
+                                        placeholder="vd:okuneva.com"
+                                        value="{{ old('domain_name', $domain->domain_name ?? '') }}">
+                                </div>
+                                @error('domain_name')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
                                 <label for="registrar" class="form-label">Người đăng ký</label>
@@ -55,6 +61,12 @@
                                     <option value="inactive"
                                         {{ old('status', $domain->status ?? '') == 'inactive' ? 'selected' : '' }}>
                                         Ngưng</option>
+                                    <option value="pending"
+                                        {{ old('status', $domain->status ?? '') == 'pending' ? 'selected' : '' }}>
+                                        Chưa kích hoạt</option>
+                                    <option value="expired"
+                                        {{ old('status', $domain->status ?? '') == 'expired' ? 'selected' : '' }}>
+                                        Hết hạn</option>
                                 </select>
                             </div>
                             <div class="text-end">

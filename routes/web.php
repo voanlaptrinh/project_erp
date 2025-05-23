@@ -19,6 +19,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Admin\DomainController;
 use App\Http\Controllers\Admin\HostingController;
+use App\Http\Controllers\admin\ServerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -155,6 +156,28 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/domains/search', [DomainController::class, 'search'])->name('domains.search');
     });
 
+    Route::prefix('hosting')->group(function () {
+        Route::get('/', [HostingController::class, 'index'])->name('hostings.index');
+        Route::get('/create', [HostingController::class, 'create'])->name('hostings.create');
+        Route::post('/store', [HostingController::class, 'store'])->name('hostings.store');
+        Route::get('/{id}/edit', [HostingController::class, 'edit'])->name('hostings.edit');
+        Route::get('/{id}', [HostingController::class, 'show'])->name('hostings.show');
+        Route::put('/{id}', [HostingController::class, 'update'])->name('hostings.update');
+        Route::delete('/{id}', [HostingController::class, 'destroy'])->name('hostings.destroy');
+        Route::get('/hostings/search', [HostingController::class, 'search'])->name('hostings.search');
+    });
+
+    Route::prefix('server')->group(function () {    
+        Route::get('/', [ServerController::class, 'index'])->name('servers.index');    
+        Route::get('/create', [ServerController::class, 'create'])->name('servers.create');
+        Route::post('/store', [ServerController::class, 'store'])->name('servers.store');
+        Route::get('/{id}/edit', [ServerController::class, 'edit'])->name('servers.edit');
+        Route::get('/{id}', [ServerController::class, 'show'])->name('servers.show');
+        Route::put('/{id}', [ServerController::class, 'update'])->name('servers.update');
+        Route::delete('/{id}', [ServerController::class, 'destroy'])->name('servers.destroy');
+        Route::get('/server/search', [ServerController::class, 'search'])->name('servers.search');
+    });
+
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');
     Route::post('/chamcong/thong-kes', [ThongkeChamCongController::class, 'thongKeThang'])->name('admin.chamcong.generateThongKe');
@@ -171,7 +194,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
 
 
 
-Route::get('/hosting', [HostingController::class, 'index'])->name('hostings.index');
+
 
 
 Route::fallback(function () {
