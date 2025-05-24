@@ -14,4 +14,20 @@ class notification extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+     /**
+     * Đánh dấu là đã đọc
+     */
+    public function markAsRead()
+    {
+        $this->update(['is_read' => true]);
+    }
+    
+    /**
+     * Scope cho thông báo chưa đọc
+     */
+    public function scopeUnread($query)
+    {
+        return $query->where('is_read', false);
+    }
 }

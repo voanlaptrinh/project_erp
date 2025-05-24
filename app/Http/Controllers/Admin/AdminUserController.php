@@ -120,9 +120,9 @@ class AdminUserController extends Controller
             'ngay_vao_lam' => 'nullable|date',
             'roles' => 'required|array',
         ]);
-    
+
         $user = User::findOrFail($id);
-    
+
         $user->name = $request->name;
         $user->so_dien_thoai = $request->so_dien_thoai;
         $user->ngay_sinh = $request->ngay_sinh;
@@ -130,17 +130,17 @@ class AdminUserController extends Controller
         $user->vi_tri = $request->vi_tri;
         $user->ngay_vao_lam = $request->ngay_vao_lam;
         $user->save();
-    
+
         // Gán lại vai trò
         $user->syncRoles($request->roles);
-    
+
         Log::create([
             'message' => Auth::user()->name . ' đã cập nhật thông tin và quyền cho người dùng ' . $user->name
         ]);
-    
+
         return redirect()->route('admin.users.index')->with('success', 'Cập nhật người dùng thành công!');
     }
-    
+
 
     public function destroy($id)
     {
