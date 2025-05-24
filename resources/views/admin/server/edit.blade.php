@@ -51,10 +51,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">IP Address*</label>
-
                                             <input type="text" name="ip_address" class="form-control"
                                                 value="{{ old('ip_address', $server->ip_address ?? '') }}">
-
                                         </div>
                                         @error('ip_address')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>

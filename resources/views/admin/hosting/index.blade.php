@@ -24,7 +24,6 @@
                                 </a>
                             @endif
                         </div>
-
                         <!-- Form tìm kiếm -->
                         <form method="GET" action="{{ route('hostings.index') }}" class="mb-3">
                             <div class="row">

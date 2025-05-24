@@ -94,7 +94,6 @@
                                 <a href="{{ route('servers.index') }}" class="float-end">Xóa bộ lọc</a>
                             </div>
                         @endif
-
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
