@@ -27,10 +27,8 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Tên hosting</label>
-
                                             <input type="text" name="service_name" class="form-control"
-                                                value="{{ $hosting->service_name }}" required>
-
+                                                value="{{ old('service_name', $hosting->service_name ?? '') }}">
                                         </div>
                                         @error('service_name')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -61,7 +59,7 @@
                                         <div class="form-group">
                                             <label class="form-label">Nhà cung cấp</label>
                                             <input type="text" name="provider" class="form-control"
-                                                value="{{ $hosting->provider }}" required>
+                                                value="{{ old('provider', $hosting->provider ?? '') }}">
                                         </div>
                                         @error('provider')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -74,7 +72,7 @@
                                             <label class="form-label">Gói dịch vụ</label>
 
                                             <input type="text" name="package" class="form-control"
-                                                value="{{ $hosting->package }}" required>
+                                                value="{{ old('package', $hosting->package ?? '') }}">
 
                                         </div>
                                         @error('package')
@@ -88,7 +86,7 @@
                                             <label class="form-label">IP Address</label>
 
                                             <input type="text" name="ip_address" class="form-control"
-                                                value="{{ $hosting->ip_address }}" required>
+                                                value="{{ old('ip_address', $hosting->ip_address ?? '') }}">
 
                                         </div>
                                         @error('ip_address')
@@ -102,7 +100,7 @@
                                             <label class="form-label">Ngày bắt đầu</label>
 
                                             <input type="date" name="start_date" class="form-control"
-                                                value="{{ $hosting->start_date }}" required>
+                                                value="{{ old('start_date', $hosting->start_date ?? '') }}">
 
                                         </div>
                                         @error('start_date')
@@ -114,10 +112,8 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Ngày hết hạn</label>
-
                                             <input type="date" name="expiry_date" class="form-control"
-                                                value="{{ $hosting->expiry_date }}" required>
-
+                                                value="{{ old('expiry_date', $hosting->expiry_date ?? '') }}">
                                         </div>
                                         @error('expiry_date')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -128,10 +124,8 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Control Panel</label>
-
                                             <input type="text" name="control_panel" class="form-control"
-                                                value="{{ $hosting->control_panel }}">
-
+                                                value="{{ old('control_panel', $hosting->control_panel ?? '') }}">
                                         </div>
                                         @error('control_panel')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>

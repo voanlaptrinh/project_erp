@@ -25,7 +25,9 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Tên server*</label>
-                                        <input type="text" name="server_name" class="form-control" placeholder="vd:ab_server_302">
+                                        <input type="text" name="server_name" class="form-control"
+                                            placeholder="vd:ab_server_302"
+                                            value="{{ old('server_name') }}">
                                     </div>
                                     @error('server_name')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -34,7 +36,9 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Nhà cung cấp*</label>
-                                        <input type="text" name="provider" class="form-control" placeholder="vd:Google Cloud">
+                                        <input type="text" name="provider" class="form-control"
+                                            placeholder="vd:Google Cloud"
+                                            value="{{ old('provider') }}">
                                     </div>
                                     @error('provider')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -43,7 +47,9 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-lg-6form-label">IP Address*</label>
-                                        <input type="text" name="ip_address" class="form-control" placeholder="vd:1.1.1.1">
+                                        <input type="text" name="ip_address" class="form-control"
+                                            placeholder="vd:1.1.1.1"
+                                            value="{{ old('ip_address') }}">
                                     </div>
                                     @error('ip_address')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -52,7 +58,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="col-lg-6form-label">Hệ điều hành*</label>
-                                        <input type="text" name="os" class="form-control" placeholder="vd:Windows 10">
+                                        <input type="text" name="os" class="form-control"
+                                            placeholder="vd:Windows 10" value="{{ old('os') }}">
                                     </div>
                                     @error('os')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -61,7 +68,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Tài khoản đăng nhập*</label>
-                                        <input type="text" name="login_user" class="form-control" placeholder="vd:admin">
+                                        <input type="text" name="login_user" class="form-control" placeholder="vd:admin"
+                                            value="{{ old('login_user') }}">
                                     </div>
                                     @error('login_user')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -70,7 +78,9 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Mật khẩu*</label>
-                                        <input type="text" name="login_password" class="form-control" placeholder="vd:123456">
+                                        <input type="text" name="login_password" class="form-control"
+                                            placeholder="vd:123456"
+                                            value="{{ old('login_password') }}">
                                     </div>
                                     @error('login_password')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -79,7 +89,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Ngày bắt đầu*</label>
-                                        <input type="date" name="start_date" class="form-control">
+                                        <input type="date" name="start_date" class="form-control"
+                                            value="{{ old('start_date') }}">
                                     </div>
                                     @error('start_date')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -88,7 +99,8 @@
                                 <div class="col-lg-6">
                                     <div class="form-group">
                                         <label class="form-label">Ngày hết hạn*</label>
-                                        <input type="date" name="expiry_date" class="form-control">
+                                        <input type="date" name="expiry_date" class="form-control"
+                                            value="{{ old('expiry_date') }}">
                                     </div>
                                     @error('expiry_date')
                                         <div class="invalid-feedback d-block">{{ $message }}</div>

@@ -25,10 +25,9 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Tên hosting</label>
-
                                             <input type="text" name="service_name" class="form-control"
-                                                placeholder="vd: Hosting 1">
-
+                                                placeholder="vd: Hosting 1"
+                                                value="{{ old('service_name', $hosting->service_name ?? '') }}">
                                         </div>
                                         @error('service_name')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -58,10 +57,9 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Nhà cung cấp</label>
-
                                             <input type="text" name="provider" class="form-control"
-                                                placeholder="vd: Google Cloud">
-
+                                                placeholder="vd: Google Cloud"
+                                                value="{{ old('provider', $hosting->provider ?? '') }}">
                                         </div>
                                         @error('provider')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -72,10 +70,9 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Gói dịch vụ</label>
-
                                             <input type="text" name="package" class="form-control"
-                                                placeholder="vd: Cloud">
-
+                                                placeholder="vd: Cloud"
+                                                value="{{ old('package', $hosting->package ?? '') }}">
                                         </div>
                                         @error('package')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -88,7 +85,8 @@
                                             <label class="form-label">IP Address</label>
 
                                             <input type="text" name="ip_address" class="form-control"
-                                                placeholder="vd: 1.1.1.1">
+                                                placeholder="vd: 1.1.1.1"
+                                                value="{{ old('ip_address', $hosting->ip_address ?? '') }}">
 
                                         </div>
                                         @error('ip_address')
@@ -100,9 +98,8 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Ngày bắt đầu</label>
-
-                                            <input type="date" name="start_date" class="form-control">
-
+                                            <input type="date" name="start_date" class="form-control"
+                                                value="{{ old('start_date', $hosting->start_date ?? '') }}">
                                         </div>
                                         @error('start_date')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -113,9 +110,8 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Ngày hết hạn</label>
-
-                                            <input type="date" name="expiry_date" class="form-control">
-
+                                            <input type="date" name="expiry_date" class="form-control"
+                                                value="{{ old('expiry_date', $hosting->expiry_date ?? '') }}">
                                         </div>
                                         @error('expiry_date')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -126,10 +122,9 @@
                                     <div class="row mb-3">
                                         <div class="form-group">
                                             <label class="form-label">Control Panel</label>
-
                                             <input type="text" name="control_panel" class="form-control"
-                                                placeholder="vd: Cloud">
-
+                                                placeholder="vd: Cloud"
+                                                value="{{ old('control_panel', $hosting->control_panel ?? '') }}">
                                         </div>
                                         @error('control_panel')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>

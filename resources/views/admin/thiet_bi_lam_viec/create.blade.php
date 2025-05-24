@@ -70,17 +70,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <div class="mb-3">
-                                        <label for="cau_hinh" class="form-label">Cấu hình</label>
-                                        <textarea class="form-control" name="cau_hinh" placeholder="Nhập cấu hình">{{ old('cau_hinh', $device->cau_hinh ?? '') }}</textarea>
-                                    </div>
-                                </div>
-                                @error('cau_hinh')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
+            
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="so_serial" class="form-label">Số serial</label>
@@ -97,6 +87,17 @@
                                     <input type="date" class="form-control" name="ngay_ban_giao"
                                         value="{{ old('ngay_ban_giao', $device->ngay_ban_giao ?? '') }} ">
                                 </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <div class="mb-3">
+                                        <label for="cau_hinh" class="form-label">Cấu hình</label>
+                                        <textarea class="form-control" name="cau_hinh" placeholder="Nhập cấu hình">{{ old('cau_hinh', $device->cau_hinh ?? '') }}</textarea>
+                                    </div>
+                                </div>
+                                @error('cau_hinh')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-12">
                                 <label for="ghi_chu" class="form-label">Ghi chú</label>

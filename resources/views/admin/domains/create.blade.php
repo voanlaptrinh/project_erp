@@ -38,30 +38,50 @@
                                 @enderror
                             </div>
                             <div class="col-lg-6">
-                                <label for="registrar" class="form-label">Registrar</label>
-                                <input type="text" name="registrar" class="form-control" placeholder="vd:SiteGround"
-                                    value="{{ old('registrar', $domain->registrar ?? '') }}">
+                                <div class="form-group">
+                                    <label for="registrar" class="form-label">Registrar</label>
+                                    <input type="text" name="registrar" class="form-control" placeholder="vd:SiteGround"
+                                        value="{{ old('registrar', $domain->registrar ?? '') }}">
+                                </div>
+                                @error('registrar')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
-                                <label for="start_date" class="form-label">Ngày bắt đầu</label>
-                                <input type="date" name="start_date" class="form-control"
-                                    value="{{ old('start_date', $domain->start_date ?? '') }}">
+                                <div class="form-group">
+                                    <label for="start_date" class="form-label">Ngày bắt đầu</label>
+                                    <input type="date" name="start_date" class="form-control"
+                                        value="{{ old('start_date', $domain->start_date ?? '') }}">
+                                </div>
+                                @error('start_date')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
-                                <label for="expiry_date" class="form-label">Ngày hết hạn</label>
-                                <input type="date" name="expiry_date" class="form-control"
-                                    value="{{ old('expiry_date', $domain->expiry_date ?? '') }}">
+                                <div class="form-group">
+                                    <label for="expiry_date" class="form-label">Ngày hết hạn</label>
+                                    <input type="date" name="expiry_date" class="form-control"
+                                        value="{{ old('expiry_date', $domain->expiry_date ?? '') }}">
+                                </div>
+                                @error('expiry_date')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="col-lg-6">
-                                <label for="status" class="form-label">Trạng thái</label>
-                                <select name="status" class="form-control">
-                                    <option value="active"
-                                        {{ old('status', $domain->status ?? '') == 'active' ? 'selected' : '' }}>Kích
-                                        hoạt</option>
-                                    <option value="inactive"
-                                        {{ old('status', $domain->status ?? '') == 'inactive' ? 'selected' : '' }}>
-                                        Ngưng</option>
-                                </select>
+                                <div class="from-group">
+                                    <label for="status" class="form-label">Trạng thái</label>
+                                    <select name="status" class="form-control" value="{{ old('status', $domain->status ?? '') }}">
+                                        <option value="active"
+                                            {{ old('status', $domain->status ?? '') == 'active' ? 'selected' : '' }}>Kích
+                                            hoạt</option>
+                                        <option value="inactive"
+                                            {{ old('status', $domain->status ?? '') == 'inactive' ? 'selected' : '' }}>
+                                            Ngưng</option>
+                                    </select>
+                                </div>
+                                @error('status')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
                             <div class="text-end">
                                 <button type="submit" class="btn btn-primary">Thêm mới domain</button>

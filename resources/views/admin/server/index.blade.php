@@ -155,9 +155,13 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="7" class="text-center">Không có server nào</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="7" class="text-center">
+                                            <div class="alert alert-danger">
+                                                Không có server nào
+                                            </div>
+                                        </td>
+                                    </tr>
                                     @endforelse
                                 </tbody>
                             </table>

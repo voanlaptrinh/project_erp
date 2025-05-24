@@ -27,10 +27,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Tên server*</label>
-
                                             <input type="text" name="server_name" class="form-control"
-                                                value="{{ $server->server_name }}" required>
-
+                                                value="{{ old('server_name', $server->server_name ?? '') }}">
                                         </div>
                                         @error('server_name')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -41,10 +39,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Nhà cung cấp*</label>
-
                                             <input type="text" name="provider" class="form-control"
-                                                value="{{ $server->provider }}" required>
-
+                                                value="{{ old('provider', $server->provider ?? '') }}">
                                         </div>
                                         @error('provider')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -57,7 +53,7 @@
                                             <label class="form-label">IP Address*</label>
 
                                             <input type="text" name="ip_address" class="form-control"
-                                                value="{{ $server->ip_address }}" required>
+                                                value="{{ old('ip_address', $server->ip_address ?? '') }}">
 
                                         </div>
                                         @error('ip_address')
@@ -69,10 +65,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Hệ điều hành*</label>
-
                                             <input type="text" name="os" class="form-control"
-                                                value="{{ $server->os }}" required>
-
+                                                value="{{ old('os', $server->os ?? '') }}">
                                         </div>
                                         @error('os')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -83,10 +77,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Tài khoản đăng nhập*</label>
-
                                             <input type="text" name="login_user" class="form-control"
-                                                value="{{ $server->login_user }}" required>
-
+                                                value="{{ old('login_user', $server->login_user ?? '') }}">
                                         </div>
                                         @error('login_user')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -97,10 +89,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Mật khẩu*</label>
-
                                             <input type="text" name="login_password" class="form-control"
-                                                value="{{ $server->login_password }}" required>
-
+                                                value="{{ old('login_password', $server->login_password ?? '') }}">
                                         </div>
                                         @error('login_password')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -111,10 +101,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Ngày bắt đầu*</label>
-
                                             <input type="date" name="start_date" class="form-control"
-                                                value="{{ $server->start_date }}" required>
-
+                                                value="{{ old('start_date', $server->start_date ?? '') }}">
                                         </div>
                                         @error('start_date')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -126,10 +114,8 @@
                                     <div class="row mb-3">
                                         <div class="from-group">
                                             <label class="form-label">Ngày hết hạn*</label>
-
                                             <input type="date" name="expiry_date" class="form-control"
-                                                value="{{ $server->expiry_date }}" required>
-
+                                                value="{{ old('expiry_date', $server->expiry_date ?? '') }}">
                                         </div>
                                         @error('expiry_date')
                                             <div class="invalid-feedback d-block">{{ $message }}</div>
