@@ -62,4 +62,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(ThietBiLamViec::class);
     }
+
+    public function messageGroups()
+    {
+        return $this->belongsToMany(MessageGroup::class, 'message_group_users');
+    }
+
+    public function sentMessages()
+    {
+        return $this->hasMany(Message::class);
+    }
+
+    public function messageReads()
+    {
+        return $this->hasMany(MessageRead::class);
+    }
 }

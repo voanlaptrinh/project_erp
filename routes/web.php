@@ -21,6 +21,8 @@ use App\Http\Controllers\Admin\DomainController;
 use App\Http\Controllers\Admin\HostingController;
 use App\Http\Controllers\admin\ServerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessageGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,7 +136,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{id}', [BaoGiaController::class, 'update'])->name('bao-gias.update');
         Route::delete('/{id}', [BaoGiaController::class, 'destroy'])->name('bao-gias.destroy');
     });
-    
+
     Route::prefix('thiet-bi-lam-viec')->group(function () {
         Route::get('/', [ThietBiLamViecController::class, 'index'])->name('thietbi.index');
         Route::get('/create', [ThietBiLamViecController::class, 'create'])->name('thietbi.create');
@@ -167,8 +169,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/hostings/search', [HostingController::class, 'search'])->name('hostings.search');
     });
 
-    Route::prefix('server')->group(function () {    
-        Route::get('/', [ServerController::class, 'index'])->name('servers.index');    
+    Route::prefix('server')->group(function () {
+        Route::get('/', [ServerController::class, 'index'])->name('servers.index');
         Route::get('/create', [ServerController::class, 'create'])->name('servers.create');
         Route::post('/store', [ServerController::class, 'store'])->name('servers.store');
         Route::get('/{id}/edit', [ServerController::class, 'edit'])->name('servers.edit');
@@ -176,6 +178,22 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::put('/{id}', [ServerController::class, 'update'])->name('servers.update');
         Route::delete('/{id}', [ServerController::class, 'destroy'])->name('servers.destroy');
         Route::get('/server/search', [ServerController::class, 'search'])->name('servers.search');
+    });
+
+    Route::middleware(['auth'])->group(function () {
+        // Chat routes
+        Route::prefix('chat')->group(function () {
+            Route::get('/', [MessageGroupController::class, 'index'])->name('chat.index');
+            Route::post('/create-group', [MessageGroupController::class, 'createGroup'])->name('chat.create-group');
+            Route::get('/private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');
+            Route::get('/{group}', [MessageGroupController::class, 'show'])->name('chat.show');
+            Route::post('/{group}/add-users', [MessageGroupController::class, 'addUsers'])->name('chat.add-users');
+            Route::delete('/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
+        });
+
+        // Message routes
+        Route::post('/groups/{group}/messages', [MessageController::class, 'store'])->name('messages.store');
+        Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
     });
 
     // routes/web.php
