@@ -345,7 +345,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['hostings.index', 'hostings.create', 'hostings.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('hostings.index') }}">
-                            <i class="bi bi-postcard"></i>
+                            <i class="bi bi-cpu"></i>
                             <span>Hostings</span>
                         </a>
                     </li>
@@ -354,7 +354,7 @@
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['servers.index', 'servers.create', 'servers.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('servers.index') }}">
-                            <i class="bi bi-postcard"></i>
+                            <i class="bi bi-hdd-stack"></i>
                             <span>Servers</span>
                         </a>
                     </li>

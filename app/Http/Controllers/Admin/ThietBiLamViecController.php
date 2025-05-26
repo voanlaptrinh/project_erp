@@ -96,6 +96,7 @@ class ThietBiLamViecController extends Controller
 
         $device = ThietBiLamViec::create($request->all());
 
+        // Tạo thống báo cho người bán giao
         notification::create([
             'user_id' => $device->user_id,
             'title' => 'Bạn được bàn giao thiết bị mới',

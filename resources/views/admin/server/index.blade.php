@@ -94,7 +94,6 @@
                                 <a href="{{ route('servers.index') }}" class="float-end">Xóa bộ lọc</a>
                             </div>
                         @endif
-
                         <div class="table-responsive">
                             <table class="table">
                                 <thead>
@@ -156,7 +155,11 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Không có server nào</td>
+                                            <td colspan="7" class="text-center">
+                                                <div class="alert alert-danger">
+                                                    Không có server nào
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
