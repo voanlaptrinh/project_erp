@@ -67,8 +67,6 @@ class TaskController extends Controller
     // Hiển thị form thêm task
     public function create(Project $project)
     {
-      
-
         return view('admin.tasks.create', compact('project'));
     }
 

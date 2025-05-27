@@ -1,7 +1,7 @@
 @extends('welcome')
 
 @section('body')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <div class="col-md-4">
                 <div class="card">
@@ -78,7 +78,7 @@
                                         </small>
                                         <small
                                             class="{{ $message->user_id == Auth::id() ? 'text-white-50' : 'text-muted' }}">
-                                            {{ $message->created_at->format('h:i A') }}
+                                            &nbsp; {{ $message->created_at->format('h:i A') }}
                                         </small>
                                     </div>
                                     @if ($message->content)
@@ -86,10 +86,8 @@
                                     @endif
                                     @if ($message->attachment)
                                         <div class="mt-2">
-                                            <a href="{{ asset('storage/' . $message->attachment) }}" target="_blank"
-                                                class="btn btn-sm btn-outline-{{ $message->user_id == Auth::id() ? 'light' : 'secondary' }}">
-                                                <i class="fas fa-paperclip"></i> Attachment
-                                            </a>
+                                            <img src="{{ asset('storage/' . $message->attachment) }}" alt="attachment"
+                                                class="img-fluid mt-2" style="max-height:200px;">
                                         </div>
                                     @endif
                                 </div>

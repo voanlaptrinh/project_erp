@@ -189,6 +189,10 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::get('/{group}', [MessageGroupController::class, 'show'])->name('chat.show');
             Route::post('/{group}/add-users', [MessageGroupController::class, 'addUsers'])->name('chat.add-users');
             Route::delete('/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
+            Route::post('/chat/{group}/typing', [MessageGroupController::class, 'typing'])->name('chat.typing');
+            Route::get('chat/start-private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');            // Xóa thành viên khỏi nhóm
+            Route::delete('/chat/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
+            Route::delete('/chat/{group}', [MessageGroupController::class, 'destroy'])->name('chat.destroy');
         });
 
         // Message routes

@@ -17,7 +17,9 @@
 
     <!-- Theme Bootstrap 5 -->
     <link href="{{ asset('/source/css/select2-bootstrap4.min.css') }}" rel="stylesheet" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
@@ -79,70 +81,46 @@
 
                     </li><!-- End Notification Nav -->
 
+                    {{-- thong bao --}}
                     <li class="nav-item dropdown">
 
                         <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                             <i class="bi bi-chat-left-text"></i>
-                            <span class="badge bg-success badge-number">3</span>
+                            <span class="badge bg-success badge-number">
+                                {{ auth()->user()->thongBaoChats()->where('is_read', false)->count() }}</span>
                         </a><!-- End Messages Icon -->
 
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                             <li class="dropdown-header">
-                                You have 3 new messages
+                                Bạn có {{ auth()->user()->thongBaoChats()->where('is_read', false)->count() }} thông
+                                báo
+                                mới chưa đọc
                                 <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View
                                         all</span></a>
                             </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-1.jpg" alt="" class="rounded-circle">
+                            @forelse (auth()->user()->thongBaoChats->where('is_read', false) as $thongBaoChats)
+                                {{-- <li><strong>{{ $notification->title }}</strong>: {{ $notification->message }}</li> --}}
+                                <li class="notification-item">
+                                    <i class="bi bi-info-circle text-primary"></i>
                                     <div>
-                                        <h4>Maria Hudson</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>4 hrs. ago</p>
+                                        <h4>{{ $thongBaoChats->title }}</h4>
+                                        <p>{{ $thongBaoChats->message }}</p>
+                                        <p> {{ $thongBaoChats->created_at->diffForHumans() }}</p>
                                     </div>
-                                </a>
-                            </li>
+                                </li>
+                            @empty
+                                <span class="dropdown-item text-center">Không có thông báo</span>
+                            @endforelse
+
+
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
-
-                            <li class="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                                    <div>
-                                        <h4>Anna Nelson</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>6 hrs. ago</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
-                            <li class="message-item">
-                                <a href="#">
-                                    <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                                    <div>
-                                        <h4>David Muldon</h4>
-                                        <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                        <p>8 hrs. ago</p>
-                                    </div>
-                                </a>
-                            </li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-
                             <li class="dropdown-footer">
-                                <a href="#">Show all messages</a>
+                                <a href="#">Show all notifications</a>
                             </li>
 
-                        </ul><!-- End Messages Dropdown Items -->
+                        </ul><!-- End Notification Dropdown Items -->
 
                     </li><!-- End Messages Nav -->
 
@@ -228,7 +206,7 @@
                         auth()->user()->hasPermissionTo('xem hợp đồng') ||
                         auth()->user()->hasPermissionTo('xem toàn bộ hợp đồng') ||
                         auth()->user()->hasPermissionTo('toàn bộ chấm công') ||
-                        auth()->user()->hasPermissionTo('xem chấm công')||
+                        auth()->user()->hasPermissionTo('xem chấm công') ||
                         auth()->user()->hasPermissionTo('xem thiết bị'))
                     <li class="nav-heading">Nhận sự</li>
                 @endif
@@ -259,7 +237,7 @@
                         </a>
                     </li>
                 @endif
-                   @if (auth()->user()->hasPermissionTo('xem thiết bị'))
+                @if (auth()->user()->hasPermissionTo('xem thiết bị'))
                     <li class="nav-item">
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['thietbi.show', 'thietbi.index', 'thietbi.create', 'thietbi.edit', 'thietbi.show']) ? '' : 'collapsed' }}"
                             href="{{ route('thietbi.index') }}">
@@ -430,7 +408,7 @@
     <script src="{{ asset('source/js/main.js') }}"></script>
     <script src="{{ asset('/source/js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('/source/js/toastr.min.js') }}"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
     <script src="{{ asset('/source/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript">
         tinymce.init({
@@ -489,6 +467,7 @@
             toastr.warning("{{ Session::get('warning') }}");
         @endif
     </script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="{{ asset('/source/js/select2.min.js') }}"></script>
     <script src="{{ asset('/source/js/style.js') }}"></script>
 </body>

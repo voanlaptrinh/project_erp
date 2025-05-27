@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Message;
 use App\Models\MessageGroup;
+use App\Models\notification;
+use App\Models\ThongBaoChat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,30 +15,43 @@ class MessageController extends Controller
     public function store(Request $request, MessageGroup $group)
     {
         $this->authorize('view', $group);
-        
+
         $request->validate([
             'content' => 'required_without:attachment|string|nullable',
             'attachment' => 'nullable|file|max:10240', // 10MB max
         ]);
-        
+
         $messageData = [
             'user_id' => Auth::id(),
             'content' => $request->content,
         ];
-        
+
         if ($request->hasFile('attachment')) {
             $path = $request->file('attachment')->store('attachments', 'public');
             $messageData['attachment'] = $path;
         }
-        
+
         $message = $group->messages()->create($messageData);
-        
+
         // Mark the message as read by the sender
         $message->reads()->create([
             'user_id' => Auth::id(),
             'read_at' => now(),
         ]);
-        
+
+        // Tạo một thông báo cho mỗi người nhận (trừ người gửi).
+        //user_id là người nhận.
+        //Nếu là chat nhóm, ghi rõ tên nhóm; nếu chat 1:1, ghi rõ tên người gửi.
+        foreach ($group->users->where('id', '!=', Auth::id()) as $receiver) {
+            ThongBaoChat::create([
+                'user_id' => $receiver->id,
+                'title' => 'Tin nhắn mới từ ' . Auth::user()->name,
+                'message' => $group->is_group
+                    ? 'Nhóm "' . $group->name . '" có tin nhắn mới'
+                    : 'Bạn có tin nhắn mới từ ' . Auth::user()->name,
+                'is_read' => false,
+            ]);
+        }
         return back()->with('success', 'Message sent');
     }
 
@@ -44,9 +59,9 @@ class MessageController extends Controller
     public function destroy(Message $message)
     {
         $this->authorize('delete', $message);
-        
+
         $message->delete();
-        
+
         return back()->with('success', 'Message deleted');
     }
 }

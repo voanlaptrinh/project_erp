@@ -77,4 +77,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(MessageRead::class);
     }
+
+    public function thongBaoChats()
+    {
+        return $this->hasMany(\App\Models\ThongBaoChat::class, 'user_id');
+    }
 }

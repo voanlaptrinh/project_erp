@@ -82,6 +82,9 @@ class DatabaseSeeder extends Seeder
             'thêm server',
             'sửa server',
             'xóa server',
+            'tạo nhóm chat',
+            'cập nhật nhóm chat',
+            'xóa nhóm chat',
             //     // 'xem tài nguyên', 'sửa tài nguyên',
             //     // 'xem sự cố', 'tạo sự cố', 'sửa sự cố', 'xóa sự cố',
         ];
