@@ -193,6 +193,16 @@ Route::prefix('admin')->middleware('auth')->group(function () {
             Route::get('chat/start-private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');            // Xóa thành viên khỏi nhóm
             Route::delete('/chat/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
             Route::delete('/chat/{group}', [MessageGroupController::class, 'destroy'])->name('chat.destroy');
+            Route::get('/thong-bao-chat/go/{id}', function ($id) {
+                $tb = \App\Models\ThongBaoChat::findOrFail($id);
+                if ($tb->user_id == auth()->id()) {
+                    $tb->is_read = true;
+                    $tb->save();
+                    // Giả sử bạn có trường message_group_id trong ThongBaoChat
+                    return redirect()->route('chat.index', ['group' => $tb->message_group_id]);
+                }
+                abort(403);
+            })->name('thongbao.chat.goto');
         });
 
         // Message routes

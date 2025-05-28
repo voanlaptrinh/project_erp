@@ -48,7 +48,7 @@
                                 class="badge bg-primary badge-number">{{ auth()->user()->notifications()->where('is_read', false)->count() }}</span>
                         </a><!-- End Notification Icon -->
 
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="max-height: 400px; overflow-y: auto;">
                             <li class="dropdown-header">
                                 Bạn có {{ auth()->user()->notifications()->where('is_read', false)->count() }} thông báo
                                 mới chưa đọc
@@ -90,7 +90,8 @@
                                 {{ auth()->user()->thongBaoChats()->where('is_read', false)->count() }}</span>
                         </a><!-- End Messages Icon -->
 
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+                            style="max-height: 400px; overflow-y: auto;">
                             <li class="dropdown-header">
                                 Bạn có {{ auth()->user()->thongBaoChats()->where('is_read', false)->count() }} thông
                                 báo
@@ -101,12 +102,15 @@
                             @forelse (auth()->user()->thongBaoChats->where('is_read', false) as $thongBaoChats)
                                 {{-- <li><strong>{{ $notification->title }}</strong>: {{ $notification->message }}</li> --}}
                                 <li class="notification-item">
-                                    <i class="bi bi-info-circle text-primary"></i>
-                                    <div>
-                                        <h4>{{ $thongBaoChats->title }}</h4>
-                                        <p>{{ $thongBaoChats->message }}</p>
-                                        <p> {{ $thongBaoChats->created_at->diffForHumans() }}</p>
-                                    </div>
+                                    <a href="{{ route('thongbao.chat.goto', $thongBaoChats->id) }}"
+                                        class="d-flex text-decoration-none text-dark">
+                                        <i class="bi bi-info-circle text-primary"></i>
+                                        <div>
+                                            <h4>{{ $thongBaoChats->title }}</h4>
+                                            <p>{{ $thongBaoChats->message }}</p>
+                                            <p> {{ $thongBaoChats->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </a>
                                 </li>
                             @empty
                                 <span class="dropdown-item text-center">Không có thông báo</span>
@@ -409,6 +413,7 @@
     <script src="{{ asset('/source/js/jquery-3.3.1.js') }}"></script>
     <script src="{{ asset('/source/js/toastr.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
     <script src="{{ asset('/source/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript">
         tinymce.init({

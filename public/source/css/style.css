@@ -1451,3 +1451,132 @@ h6 {
     position: relative;
     display: inline-block;
 }
+
+/* Style cho ảnh trong chat */
+.chat-image {
+    max-height: 200px;
+    max-width: 100%;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.chat-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Overlay zoom ảnh */
+.image-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1000 !important;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    animation: fadeIn 0.3s;
+}
+
+.image-overlay.show {
+    display: flex;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Ảnh được zoom */
+.expanded-image {
+    max-height: 80vh;
+    max-width: 90vw;
+    object-fit: contain;
+    cursor: zoom-in;
+    z-index: 1000 !important;
+    transition: transform 0.25s ease;
+}
+
+.expanded-image.zoomed {
+    transform: scale(1.5);
+    cursor: zoom-out;
+    z-index: 1000 !important;
+}
+
+/* Nút đóng */
+.close-btn {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-btn:hover {
+    color: #ccc;
+}
+
+/* Thông tin ảnh */
+.image-info {
+    color: white;
+    text-align: center;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+}
+
+/* Nút tải xuống */
+.download-btn {
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    color: white;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.download-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    color: #fff;
+}
+
+.list-group-item.active{
+    z-index: 0 !important;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 768px) {
+    .expanded-image {
+        max-width: 95vw;
+        max-height: 70vh;
+        z-index: 1000 !important;
+    }
+
+    .close-btn {
+        top: 10px;
+        right: 15px;
+        font-size: 30px;
+    }
+
+    .download-btn {
+        bottom: 15px;
+        right: 15px;
+        padding: 8px 12px;
+    }
+}

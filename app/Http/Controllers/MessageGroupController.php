@@ -71,17 +71,21 @@ class MessageGroupController extends Controller
     {
         $this->authorize('view', $group);
 
+        // Lấy tin nhắn và đánh dấu đã đọc
         $messages = $group->messages()
             ->with(['sender', 'reads'])
             ->orderBy('created_at', 'asc')
             ->get();
+
+        // Đánh dấu tất cả tin nhắn trong nhóm là đã đọc
+        $this->markMessagesAsRead($group, $messages);
 
         // Lấy danh sách user chưa có trong group (tránh trùng lặp)
         $users = User::where('id', '!=', Auth::id())
             ->whereNotIn('id', $group->users->pluck('id'))
             ->get();
 
-        // Mark messages as read
+        // Đánh dấu tin nhắn là đã đọc
         foreach ($messages as $message) {
             if (!$message->reads->contains('user_id', Auth::id())) {
                 $message->reads()->create([
@@ -196,7 +200,13 @@ class MessageGroupController extends Controller
         }
 
         $group->users()->detach($user->id);
-        
+
+        // Gửi tin nhắn hệ thống nếu có thành viên mới
+        $content = Auth::user()->name . ' đã xóa ' . $user->name . ' khỏi nhóm.';
+        $group->messages()->create([
+            'user_id' => Auth::id(),
+            'content' => $content,
+        ]);
 
         return back()->with('success', 'Đã xóa thành viên khỏi nhóm');
     }
@@ -224,5 +234,33 @@ class MessageGroupController extends Controller
         broadcast(new UserTyping(Auth::id(), $group->id, $request->is_typing))->toOthers();
 
         return response()->json(['status' => 'success']);
+    }
+
+    // Phương thức helper để đánh dấu tin nhắn đã đọc
+    protected function markMessagesAsRead(MessageGroup $group, $messages)
+    {
+        $unreadMessages = $messages->filter(function ($message) {
+            return !$message->reads->contains('user_id', Auth::id());
+        });
+
+        foreach ($unreadMessages as $message) {
+            $message->reads()->create([
+                'user_id' => Auth::id(),
+                'read_at' => now(),
+            ]);
+        }
+
+        // Cập nhật thông báo chat nếu có
+        $this->updateChatNotifications($group);
+    }
+
+    // Cập nhật thông báo chat
+    protected function updateChatNotifications(MessageGroup $group)
+    {
+        // Đánh dấu tất cả thông báo liên quan đến nhóm này là đã đọc
+        auth()->user()->thongBaoChats()
+            ->where('message_group_id', $group->id)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
     }
 }

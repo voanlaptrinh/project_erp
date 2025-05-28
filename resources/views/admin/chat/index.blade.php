@@ -12,7 +12,7 @@
                             Nhóm</button>
                     @endcan
                 </div>
-
+                {{-- chat list --}}
                 <div class="list-group list-group-flush">
                     @foreach ($groups as $group)
                         <a href="{{ route('chat.index', ['group' => $group->id]) }}"
@@ -37,7 +37,7 @@
                         </a>
                     @endforeach
                 </div>
-
+                {{-- user list --}}
                 <div class="border-top p-3">
                     <h6 class="text-muted">Người dùng</h6>
                     @foreach ($users as $user)
@@ -91,10 +91,12 @@
                                 </div>
                             @endif
                         </div>
+                        {{-- chat messages --}}
                         <div class="card-body chat-messages flex-grow-1" style="overflow-y: auto;">
                             @foreach ($messages as $message)
                                 <div
                                     class="message mb-3 d-flex {{ $message->user_id == Auth::id() ? 'justify-content-end' : 'justify-content-start' }}">
+
                                     <div class="{{ $message->user_id == Auth::id() ? 'text-black' : 'text-muted' }} p-3 rounded"
                                         style="max-width: 70%;">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
@@ -112,39 +114,72 @@
                                                 style="max-width: 100%;">{{ $message->content }}</p>
                                         @endif
                                         @if ($message->attachment)
-                                            <div class="mt-2">
-                                                <img src="{{ asset('storage/' . $message->attachment) }}" alt="attachment"
-                                                    class="img-fluid mt-2 w-100" style="max-height:400px;">
+                                            <div class="mt-2 d-flex flex-wrap gap-2">
+                                                @php
+                                                    $attachments = json_decode($message->attachment);
+                                                    if (!is_array($attachments)) {
+                                                        $attachments = [$message->attachment];
+                                                    }
+                                                @endphp
+                                                @foreach ($attachments as $index => $attachment)
+                                                    <div class="image-container">
+                                                        <img src="{{ asset('storage/' . $attachment) }}" alt="attachment"
+                                                            class="chat-image"
+                                                            data-full="{{ asset('storage/' . $attachment) }}"
+                                                            data-sender="{{ $message->user_id == Auth::id() ? 'Bạn' : $message->sender->name }}"
+                                                            data-time="{{ $message->created_at->format('h:i A, d/m/Y') }}">
+                                                    </div>
+                                                @endforeach
                                             </div>
                                         @endif
                                     </div>
 
                                 </div>
                             @endforeach
+                            <!-- Overlay zoom ảnh -->
+                            <div id="imageOverlay" class="image-overlay">
+                                <span class="close-btn">&times;</span>
+                                <div class="image-container">
+                                    <img id="expandedImage" class="expanded-image">
+                                    <div class="image-info">
+                                        <span id="imageSender"></span>
+                                        <span id="imageTime"></span>
+                                    </div>
+                                    <a id="downloadBtn" class="download-btn" download>
+                                        <i class="fas fa-download"></i> Tải xuống
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
+
+
+                        <!-- Trong phần card-footer -->
                         <div class="card-footer p-3 bg-light border-top">
-                            <!-- Nút đính kèm hình ảnh -->
-                            <div id="image-preview" class="mb-2 d-flex justify-content-start"></div>
-                            <form action="{{ route('messages.store', $selectedGroup) }}" method="POST"
+                            <!-- Khu vực hiển thị preview ảnh -->
+                            <div id="image-preview" class="mb-2 d-flex flex-wrap gap-2"></div>
+
+                            <form id="chatForm" action="{{ route('messages.store', $selectedGroup) }}" method="POST"
                                 enctype="multipart/form-data" class="message-form">
                                 @csrf
                                 <div class="input-group">
-                                    <!-- Nút mở Emoji Picker -->
+                                    <!-- Nút emoji -->
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
                                         data-bs-target="#emojiModal" title="Chọn biểu tượng cảm xúc">
                                         <i class="far fa-smile"></i>
                                     </button>
 
-                                    <!-- Trường nhập nội dung tin nhắn -->
+                                    <!-- Ô nhập tin nhắn -->
                                     <input type="text" name="content" id="messageInput" class="form-control"
                                         placeholder="Aa" autocomplete="off">
 
-                                    <!-- Nút đính kèm file và nút gửi -->
+                                    <!-- Nút đính kèm và gửi -->
                                     <div class="input-group-append d-flex align-items-center">
-                                        <!-- Nút đính kèm -->
+                                        <!-- Thay đổi input file để chấp nhận nhiều file -->
                                         <label class="btn btn-outline-secondary mb-0" title="Đính kèm tập tin">
                                             <i class="fas fa-paperclip"></i>
-                                            <input type="file" name="attachment" id="attachmentInput" hidden>
+                                            <input type="file" name="attachments[]" id="attachmentInput" multiple
+                                                hidden>
                                         </label>
 
                                         <!-- Nút gửi -->
@@ -350,12 +385,10 @@
                     const emojiItem = document.createElement('div');
                     emojiItem.className = 'emoji-item';
                     emojiItem.textContent = emoji;
-                    emojiItem.addEventListener('click', function() {
+                    emojiItem.addEventListener('click', function(e) {
                         const messageInput = document.getElementById('messageInput');
                         messageInput.value += emoji;
                         messageInput.focus();
-                        bootstrap.Modal.getInstance(document.getElementById('emojiModal'))
-                            .hide();
                     });
                     grid.appendChild(emojiItem);
                 });
@@ -366,6 +399,7 @@
             if (chatMessages) {
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+
         });
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -393,27 +427,108 @@
             if (attachmentInput && imagePreview) {
                 attachmentInput.addEventListener('change', function(event) {
                     imagePreview.innerHTML = '';
-                    const file = event.target.files[0];
-                    if (file && file.type.startsWith('image/')) {
-                        const reader = new FileReader();
-                        reader.onload = function(e) {
-                            imagePreview.innerHTML =
-                                `<div class="image-preview-wrapper">
-                        <img src="${e.target.result}" class="img-fluid" alt="preview">
-                        <button type="button" class="image-preview-remove" title="Xóa ảnh">&times;</button>
-                    </div>`;
-                            // Nút xóa ảnh
-                            const removeBtn = imagePreview.querySelector('.image-preview-remove');
-                            removeBtn.addEventListener('click', function() {
-                                attachmentInput.value = '';
-                                imagePreview.innerHTML = '';
-                            });
-                        };
-                        reader.readAsDataURL(file);
+                    const files = event.target.files;
+
+                    if (files.length > 0) {
+                        // Hiển thị số lượng ảnh đã chọn
+                        const countBadge = document.createElement('span');
+                        countBadge.className = 'badge bg-secondary mb-2';
+                        countBadge.textContent = `Đã chọn ${files.length} ảnh`;
+                        imagePreview.appendChild(countBadge);
+
+                        // Hiển thị preview từng ảnh
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    const previewWrapper = document.createElement('div');
+                                    previewWrapper.className =
+                                        'image-preview-wrapper position-relative';
+                                    previewWrapper.style.width = '100px';
+                                    previewWrapper.innerHTML = `
+                            <img src="${e.target.result}" class="img-thumbnail" alt="preview">
+                            <button type="button" class="btn-close position-absolute top-0 end-0 bg-white" 
+                                data-index="${i}" title="Xóa ảnh"></button>
+                        `;
+                                    imagePreview.appendChild(previewWrapper);
+
+                                    // Thêm sự kiện cho nút xóa ảnh
+                                    const removeBtn = previewWrapper.querySelector('.btn-close');
+                                    removeBtn.addEventListener('click', function() {
+                                        removeImageFromList(i);
+                                    });
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        }
                     }
                 });
             }
 
+            // Hàm xóa ảnh khỏi danh sách
+            function removeImageFromList(index) {
+                const input = document.getElementById('attachmentInput');
+                const files = Array.from(input.files);
+                files.splice(index, 1);
+
+                // Tạo DataTransfer mới và thêm các file còn lại
+                const dataTransfer = new DataTransfer();
+                files.forEach(file => dataTransfer.items.add(file));
+                input.files = dataTransfer.files;
+
+                // Render lại preview
+                const event = new Event('change');
+                input.dispatchEvent(event);
+            }
+
+            const overlay = document.getElementById('imageOverlay');
+            const expandedImg = document.getElementById('expandedImage');
+            const closeBtn = document.querySelector('.close-btn');
+            const imageSender = document.getElementById('imageSender');
+            const imageTime = document.getElementById('imageTime');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Mở overlay khi click vào ảnh
+            document.querySelectorAll('.chat-image').forEach(img => {
+                img.addEventListener('click', function() {
+                    expandedImg.src = this.dataset.full;
+                    expandedImg.classList.remove('zoomed');
+                    imageSender.textContent = this.dataset.sender;
+                    imageTime.textContent = this.dataset.time;
+                    downloadBtn.href = this.dataset.full;
+                    overlay.classList.add('show');
+                    document.body.style.overflow = 'hidden'; // Ngăn scroll khi overlay mở
+                });
+            });
+
+            // Đóng overlay
+            closeBtn.addEventListener('click', function() {
+                overlay.classList.remove('show');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Đóng khi click bên ngoài ảnh
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    overlay.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            });
+
+            // Zoom in/out khi click vào ảnh
+            expandedImg.addEventListener('click', function(e) {
+                e.stopPropagation();
+                this.classList.toggle('zoomed');
+            });
+
+            // Đóng bằng phím ESC
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && overlay.classList.contains('show')) {
+                    overlay.classList.remove('show');
+                    document.body.style.overflow = 'auto';
+                }
+            });
         });
     </script>
 @endsection
