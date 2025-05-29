@@ -228,7 +228,7 @@
                         <a class="nav-link {{ in_array(Request::route()->getName(), ['admin.roles.index', 'admin.roles.create', 'admin.roles.edit']) ? '' : 'collapsed' }}"
                             href="{{ route('admin.roles.index') }}">
                             <i class="bi-shield-lock-fill"></i>
-                            <span>Quản lý quyền người dùng</span>
+                            <span>Quản lý quyền</span>
                         </a>
                     </li>
                 @endif
@@ -341,7 +341,7 @@
                         </a>
                     </li>
                 @endif
-                {{-- End F.A.Q Page Nav --}}
+                {{-- End F.A.Q Page Nav
                 <li class="nav-heading">Hợp đồng</li>
                 <li class="nav-item">
                     <a class="nav-link collapsed" href="pages-contact.html">
@@ -377,7 +377,7 @@
                         <i class="bi bi-file-earmark"></i>
                         <span>Blank</span>
                     </a>
-                </li><!-- End Blank Page Nav -->
+                </li><!-- End Blank Page Nav --> --}}
 
             </ul>
             <div class="text-white text-center py-3 w-100 border-top-clock shadow " style="background-color: #F05729">
