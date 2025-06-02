@@ -24,7 +24,6 @@
                                 </a>
                             @endif
                         </div>
-
                         <!-- Form tìm kiếm -->
                         <form method="GET" action="{{ route('hostings.index') }}" class="mb-3">
                             <div class="row">
@@ -148,12 +147,16 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Không có hosting nào</td>
+                                            <td colspan="7" class="text-center">
+                                                <div class="alert alert-danger">
+                                                    Không có hosting nào
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforelse
                                 </tbody>
                             </table>
-                              <div class="p-nav text-end d-flex justify-content-end">
+                            <div class="p-nav text-end d-flex justify-content-end">
                                 {{ $hostings->appends(request()->query())->links('pagination::bootstrap-4') }}
                             </div>
                         </div>
