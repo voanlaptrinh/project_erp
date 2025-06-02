@@ -23,7 +23,7 @@ use App\Http\Controllers\admin\ServerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageGroupController;
-
+use Chatify\Http\Controllers\MessagesController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -221,7 +221,14 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     // Route::resource('issues', IssueController::class);
 });
 
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/chat', [MessagesController::class, 'index'])->name('chat');
+    Route::get('/chat/{id}', [MessagesController::class, 'index'])->name('chat.user');
+    Route::post('/chatify/updateSettings', [MessagesController::class, 'updateSettings'])
+     ->name('chatify.updateSettings');
+     Route::post('/avatar/update', [App\Http\Controllers\MessagesController::class, 'updateAvatar'])
+     ->name('avatar.update');
+});
 
 
 

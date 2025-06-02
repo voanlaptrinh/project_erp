@@ -14,7 +14,11 @@ return [
     | files and derived images by default.
     |-------------------------------------
     */
-    'storage_disk_name' => env('CHATIFY_STORAGE_DISK', 'public'),
+    'storage' => [
+    'disk' => 'public',
+    'folder' => 'chatify',
+    'path' => storage_path('app/public/chatify'),
+],
 
     /*
     |-------------------------------------
