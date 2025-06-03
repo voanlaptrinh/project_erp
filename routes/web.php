@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\ThongkeChamCongController;
 use App\Http\Controllers\Admin\ThietBiLamViecController;
 use App\Http\Controllers\Clients\HomeController;
 use App\Http\Controllers\GoogleAuthController;
+use App\Http\Controllers\GroupChatController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UploadController;
 use App\Http\Controllers\Admin\DomainController;
@@ -209,6 +210,8 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::post('/groups/{group}/messages', [MessageController::class, 'store'])->name('messages.store');
         Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
     });
+
+
 
     // routes/web.php
     Route::get('/chamcong/thong-ke', [ThongkeChamCongController::class, 'thongKeChamCong'])->name('admin.chamcong.thongke');

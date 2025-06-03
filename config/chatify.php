@@ -14,17 +14,21 @@ return [
     | files and derived images by default.
     |-------------------------------------
     */
-    'storage_disk_name' => env('CHATIFY_STORAGE_DISK', 'public'),
+    // 'storage_disk_name' => env('CHATIFY_STORAGE_DISK', 'public'),
 
+    'storage' => [
+        'disk' => 'public', // Đảm bảo disk này tồn tại
+        'folder' => 'chatify',
+        'path' => storage_path('app/public/chatify'),
+    ],
     /*
     |-------------------------------------
     | Routes configurations
     |-------------------------------------
     */
     'routes' => [
-        'custom' => env('CHATIFY_CUSTOM_ROUTES', false),
         'prefix' => env('CHATIFY_ROUTES_PREFIX', 'chatify'),
-        'middleware' => env('CHATIFY_ROUTES_MIDDLEWARE', ['web','auth']),
+        'middleware' => env('CHATIFY_ROUTES_MIDDLEWARE', ['web', 'auth']),
         'namespace' => env('CHATIFY_ROUTES_NAMESPACE', 'Chatify\Http\Controllers'),
     ],
     'api_routes' => [
@@ -45,7 +49,7 @@ return [
         'app_id' => env('PUSHER_APP_ID'),
         'options' => [
             'cluster' => env('PUSHER_APP_CLUSTER', 'mt1'),
-            'host' => env('PUSHER_HOST') ?: 'api-'.env('PUSHER_APP_CLUSTER', 'mt1').'.pusher.com',
+            'host' => env('PUSHER_HOST') ?: 'api-' . env('PUSHER_APP_CLUSTER', 'mt1') . '.pusher.com',
             'port' => env('PUSHER_PORT', 443),
             'scheme' => env('PUSHER_SCHEME', 'https'),
             'encrypted' => true,
@@ -60,6 +64,16 @@ return [
     */
     'user_avatar' => [
         'folder' => 'users-avatar',
+        'default' => 'avatar.png',
+    ],
+
+    /*
+    |-------------------------------------
+    | Channel Avatar
+    |-------------------------------------
+    */
+    'channel_avatar' => [
+        'folder' => 'channels-avatar',
         'default' => 'avatar.png',
     ],
 
@@ -85,8 +99,8 @@ return [
     'attachments' => [
         'folder' => 'attachments',
         'download_route_name' => 'attachments.download',
-        'allowed_images' => (array) ['png','jpg','jpeg','gif'],
-        'allowed_files' => (array) ['zip','rar','txt'],
+        'allowed_images' => (array) ['png', 'jpg', 'jpeg', 'gif'],
+        'allowed_files' => (array) ['zip', 'rar', 'txt'],
         'max_upload_size' => env('CHATIFY_MAX_FILE_SIZE', 150), // MB
     ],
 
