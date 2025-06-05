@@ -1,7 +1,8 @@
 <?php
 
-namespace Chatify\Http\Controllers;
+namespace App\Http\Controllers\vendor\Chatify;
 
+use App\Events\MyEvent;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -47,7 +48,7 @@ class MessagesController extends Controller
     {
         $messenger_color = Auth::user()->messenger_color;
 
-        if(!Auth::user()->channel_id){
+        if (!Auth::user()->channel_id) {
             Chatify::createPersonalChannel();
         }
 
@@ -74,23 +75,23 @@ class MessagesController extends Controller
         $favorite = Chatify::inFavorite($request['channel_id']);
         $channel = Channel::find($request['channel_id']);
 
-        if(!$channel) return Response::json([
+        if (!$channel) return Response::json([
             'message' => "This chat channel doesn't exist!"
         ]);
 
         $allow_loading = $channel->owner_id === Auth::user()->id
             || in_array(Auth::user()->id, $channel->users()->pluck('id')->all());
-        if(!$allow_loading) return Response::json([
+        if (!$allow_loading) return Response::json([
             'message' => "You haven't joined this chat channel!"
         ]);
 
         // check if this channel is a group
-        if(isset($channel->owner_id)){
+        if (isset($channel->owner_id)) {
             $fetch = $channel;
             $channel_avatar = Chatify::getChannelWithAvatar($channel)->avatar;
         } else {
             $fetch = Chatify::getUserInOneChannel($request['channel_id']);
-            if($fetch){
+            if ($fetch) {
                 $channel_avatar = Chatify::getUserWithAvatar($fetch)->avatar;
             }
         }
@@ -184,12 +185,14 @@ class MessagesController extends Controller
 
             $messageData = Chatify::parseMessage($message, null, $lastMess ? $lastMess->from_id !== Auth::user()->id : true);
 
-            Chatify::push("private-chatify.".$request['channel_id'], 'messaging', [
+            Chatify::push("private-chatify." . $request['channel_id'], 'messaging', [
                 'from_id' => Auth::user()->id,
                 'to_channel_id' => $request['channel_id'],
                 'message' => Chatify::messageCard($messageData, true)
             ]);
         }
+
+        // event(new MyEvent('Bạn đã nhận một tin  nhắn mới từ ' . Auth::user()->name));
 
         // send the response
         return Response::json([
@@ -221,7 +224,7 @@ class MessagesController extends Controller
 
         // if there is no messages yet.
         if ($totalMessages < 1) {
-            $response['messages'] ='<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>';
+            $response['messages'] = '<p class="message-hint center-el"><span>Say \'hi\' and start messaging</span></p>';
             return Response::json($response);
         }
         if (count($messages->items()) < 1) {
@@ -266,7 +269,7 @@ class MessagesController extends Controller
     {
         $query = Channel::join('ch_messages', 'ch_channels.id', '=', 'ch_messages.to_channel_id')
             ->join('ch_channel_user', 'ch_channels.id', '=', 'ch_channel_user.channel_id')
-            ->where('ch_channel_user.user_id','=',Auth::user()->id)
+            ->where('ch_channel_user.user_id', '=', Auth::user()->id)
             ->select('ch_channels.*', DB::raw('ch_messages.created_at messaged_at'))
             ->groupBy('ch_channels.id')
             ->orderBy('messaged_at', 'desc')
@@ -298,11 +301,11 @@ class MessagesController extends Controller
      */
     public function updateContactItem(Request $request)
     {
-		$channel_id = $request['channel_id'];
-		
+        $channel_id = $request['channel_id'];
+
         // Get user data
         $channel = Channel::find($channel_id);
-        if(!$channel){
+        if (!$channel) {
             return Response::json([
                 'message' => 'Channel not found!',
             ], 401);
@@ -314,22 +317,22 @@ class MessagesController extends Controller
             'contactItem' => $contactItem,
         ], 200);
     }
-	
-	/**
-	 * Get channel_id by get or create new channel
-	 *
-	 * @param Request $request
-	 * @return JsonResponse|void
-	 */
-	public function getChannelId(Request $request)
-	{
-		$user_id = $request['user_id'];
-		$res = Chatify::getOrCreateChannel($user_id);
-		
-		// send the response
-		return Response::json($res, 200);
-	}
-	
+
+    /**
+     * Get channel_id by get or create new channel
+     *
+     * @param Request $request
+     * @return JsonResponse|void
+     */
+    public function getChannelId(Request $request)
+    {
+        $user_id = $request['user_id'];
+        $res = Chatify::getOrCreateChannel($user_id);
+
+        // send the response
+        return Response::json($res, 200);
+    }
+
     /**
      * Put a channel in the favorites list
      *
@@ -363,7 +366,7 @@ class MessagesController extends Controller
             $channel = Channel::find($favorite->favorite_id);
 
             $data = null;
-            if($channel->owner_id){
+            if ($channel->owner_id) {
                 $data = Chatify::getChannelWithAvatar($channel);
             } else {
                 $user = Chatify::getUserInOneChannel($channel->id);
@@ -393,16 +396,16 @@ class MessagesController extends Controller
     {
         $getRecords = null;
         $input = trim(filter_var($request['input']));
-        $records = User::where('id','!=',Auth::user()->id)
-                    ->where('name', 'LIKE', "%{$input}%")
-                    ->paginate($request->per_page ?? $this->perPage);
+        $records = User::where('id', '!=', Auth::user()->id)
+            ->where('name', 'LIKE', "%{$input}%")
+            ->paginate($request->per_page ?? $this->perPage);
         foreach ($records->items() as $record) {
             $getRecords .= view('Chatify::layouts.listItem', [
                 'get' => 'search_item',
                 'user' => Chatify::getUserWithAvatar($record),
             ])->render();
         }
-        if($records->total() < 1){
+        if ($records->total() < 1) {
             $getRecords = '<p class="message-hint center-el"><span>Nothing to show.</span></p>';
         }
         // send the response
@@ -412,8 +415,8 @@ class MessagesController extends Controller
             'last_page' => $records->lastPage()
         ], 200);
     }
-	
-	/**
+
+    /**
      * Get shared photos
      *
      * @param Request $request
@@ -501,7 +504,7 @@ class MessagesController extends Controller
 
         $messageData = Chatify::parseMessage($message, null);
 
-        Chatify::push("private-chatify.".$channel_id, 'messaging', [
+        Chatify::push("private-chatify." . $channel_id, 'messaging', [
             'from_id' => Auth::user()->id,
             'to_channel_id' => $channel_id,
             'message' => Chatify::messageCard($messageData, true)
@@ -616,7 +619,7 @@ class MessagesController extends Controller
     {
         $getRecords = array();
         $input = trim(filter_var($request['input']));
-        $records = User::where('id','!=',Auth::user()->id)
+        $records = User::where('id', '!=', Auth::user()->id)
             ->where('name', 'LIKE', "%{$input}%")
             ->paginate($request->per_page ?? $this->perPage);
         foreach ($records->items() as $record) {
@@ -628,7 +631,7 @@ class MessagesController extends Controller
                 ])->render()
             );
         }
-        if($records->total() < 1){
+        if ($records->total() < 1) {
             $getRecords = '<p class="message-hint"><span>Nothing to show.</span></p>';
         }
         // send the response
@@ -667,7 +670,7 @@ class MessagesController extends Controller
         $message->user_email = Auth::user()->email;
 
         $messageData = Chatify::parseMessage($message, null);
-        Chatify::push("private-chatify.".$new_channel->id, 'messaging', [
+        Chatify::push("private-chatify." . $new_channel->id, 'messaging', [
             'from_id' => Auth::user()->id,
             'to_channel_id' => $new_channel->id,
             'message' => Chatify::messageCard($messageData, true)
@@ -704,5 +707,4 @@ class MessagesController extends Controller
             'channel' => $new_channel
         ], 200);
     }
-
 }

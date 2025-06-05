@@ -45,7 +45,9 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
-// Route::get('/admin/projects', [ProjectController::class, 'index'])->name('admin.project.index');
+Route::post('/make-seen/{channelId}', [MessagesController::class, 'seen'])->name('chatify.makeSeen');
+
+
 
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');

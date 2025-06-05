@@ -1,7 +1,8 @@
 <?php
 
-namespace Chatify\Http\Controllers\Api;
+namespace App\Http\Controllers\vendor\Chatify\Api;
 
+use App\Events\MyEvent;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Response;
@@ -153,6 +154,7 @@ class MessagesController extends Controller
             }
         }
 
+        // event(new MyEvent('Bạn đã nhận một tin  nhắn mới '));
         // send the response
         return Response::json([
             'status' => '200',

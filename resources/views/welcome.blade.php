@@ -48,7 +48,8 @@
                                 class="badge bg-primary badge-number">{{ auth()->user()->notifications()->where('is_read', false)->count() }}</span>
                         </a><!-- End Notification Icon -->
 
-                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" style="max-height: 400px; overflow-y: auto;">
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications"
+                            style="max-height: 400px; overflow-y: auto;">
                             <li class="dropdown-header">
                                 Bạn có {{ auth()->user()->notifications()->where('is_read', false)->count() }} thông báo
                                 mới chưa đọc
@@ -472,7 +473,6 @@
             toastr.warning("{{ Session::get('warning') }}");
         @endif
     </script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
     <script src="{{ asset('/source/js/select2.min.js') }}"></script>
     <script src="{{ asset('/source/js/style.js') }}"></script>
 </body>

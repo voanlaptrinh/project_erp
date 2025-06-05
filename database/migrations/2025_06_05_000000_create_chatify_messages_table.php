@@ -19,7 +19,8 @@ class CreateChatifyMessagesTable extends Migration
 	        $table->string('to_channel_id')->nullable();
             $table->string('body',5000)->nullable();
             $table->string('attachment')->nullable();
-            $table->boolean('seen')->default(false);
+            // $table->boolean('seen')->default(false);
+            $table->json('seen')->nullable();
             $table->timestamps();
         });
     }

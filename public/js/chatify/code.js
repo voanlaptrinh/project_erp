@@ -1,13 +1,13 @@
 const messagesContainer = $(".messenger-messagingView .m-body"),
-    messengerTitleDefault = $(".messenger-headTitle").text(),
-    messageInputContainer = $(".messenger-sendCard"),
-    messageInput = $("#message-form .m-send"),
-    auth_id = $("meta[name=url]").attr("data-auth-user"),
-    my_channel_id = $("meta[name=url]").attr("data-auth-channel"),
-    url = $("meta[name=url]").attr("content"),
-    messengerTheme = $("meta[name=messenger-theme]").attr("content"),
-    defaultMessengerColor = $("meta[name=messenger-color]").attr("content"),
-    csrfToken = $('meta[name="csrf-token"]').attr("content");
+  messengerTitleDefault = $(".messenger-headTitle").text(),
+  messageInputContainer = $(".messenger-sendCard"),
+  messageInput = $("#message-form .m-send"),
+  auth_id = $("meta[name=url]").attr("data-auth-user"),
+  my_channel_id = $("meta[name=url]").attr("data-auth-channel"),
+  url = $("meta[name=url]").attr("content"),
+  messengerTheme = $("meta[name=messenger-theme]").attr("content"),
+  defaultMessengerColor = $("meta[name=messenger-color]").attr("content"),
+  csrfToken = $('meta[name="csrf-token"]').attr("content");
 
 /**
  *-------------------------------------------------------------
@@ -24,7 +24,8 @@ var messenger,
   messages_page = 1;
 
 const currentChannelId = () => $("meta[name=channel_id]").attr("content");
-const setCurrentChannelId = (channel_id) => $("meta[name=channel_id]").attr("content", channel_id);
+const setCurrentChannelId = (channel_id) =>
+  $("meta[name=channel_id]").attr("content", channel_id);
 
 /**
  *-------------------------------------------------------------
@@ -33,13 +34,13 @@ const setCurrentChannelId = (channel_id) => $("meta[name=channel_id]").attr("con
  */
 Pusher.logToConsole = chatify.pusher.debug;
 const pusher = new Pusher(chatify.pusher.key, {
-    encrypted: chatify.pusher.options.encrypted,
-    cluster: chatify.pusher.options.cluster,
-    wsHost: chatify.pusher.options.host,
-    wsPort: chatify.pusher.options.port,
-    wssPort: chatify.pusher.options.port,
-    forceTLS: chatify.pusher.options.useTLS,
-    authEndpoint: chatify.pusherAuthEndpoint,
+  encrypted: chatify.pusher.options.encrypted,
+  cluster: chatify.pusher.options.cluster,
+  wsHost: chatify.pusher.options.host,
+  wsPort: chatify.pusher.options.port,
+  wssPort: chatify.pusher.options.port,
+  forceTLS: chatify.pusher.options.useTLS,
+  authEndpoint: chatify.pusherAuthEndpoint,
   auth: {
     headers: {
       "X-CSRF-TOKEN": csrfToken,
@@ -76,7 +77,9 @@ function updateSelectedContact(channel_id) {
   $(document).find(".messenger-list-item").removeClass("m-list-active");
   $(document)
     .find(
-      ".messenger-list-item[data-channel=" + (channel_id || currentChannelId()) + "]"
+      ".messenger-list-item[data-channel=" +
+        (channel_id || currentChannelId()) +
+        "]"
     )
     .addClass("m-list-active");
 }
@@ -396,13 +399,13 @@ function IDinfo(channel_id) {
           NProgress.done();
           NProgress.remove();
 
-          data?.message && alert(data.message)
+          data?.message && alert(data.message);
 
           return;
         }
 
         // messenger info
-        $(".messenger-infoView").html(data.infoHtml)
+        $(".messenger-infoView").html(data.infoHtml);
         $(".messenger-infoView")
           .find(".avatar-channel")
           .css("background-image", 'url("' + data.channel_avatar + '")');
@@ -531,6 +534,8 @@ function sendMessage() {
   return false;
 }
 
+
+
 /**
  *-------------------------------------------------------------
  * Fetch messages from database
@@ -634,21 +639,23 @@ var clientSendChannel;
 
 function initClientChannel() {
   if (currentChannelId()) {
-    clientSendChannel = pusher.subscribe(`${channelName}.${currentChannelId()}`);
+    clientSendChannel = pusher.subscribe(
+      `${channelName}.${currentChannelId()}`
+    );
   }
 }
 initClientChannel();
 
-function listenAllContactChannels(){
+function listenAllContactChannels() {
   // listen to all existing contact channels
-  const list = document.querySelectorAll('.listOfContacts .contact-item')
-  list.forEach(item => {
-    const channelID = item.getAttribute('data-channel')
+  const list = document.querySelectorAll(".listOfContacts .contact-item");
+  list.forEach((item) => {
+    const channelID = item.getAttribute("data-channel");
     const channel = pusher.subscribe(`${channelName}.${channelID}`);
-    _listenChannelEvent(channel)
-  })
+    _listenChannelEvent(channel);
+  });
 }
-function _listenChannelEvent(channel){
+function _listenChannelEvent(channel) {
   // Listen to messages, and append if data received
   channel.bind("messaging", function (data) {
     if (data.to_channel_id == currentChannelId() && data.from_id != auth_id) {
@@ -658,19 +665,22 @@ function _listenChannelEvent(channel){
       makeSeen(true);
       // remove unseen counter for the user from the contacts list
       $(".messenger-list-item[data-channel=" + currentChannelId() + "]")
-          .find("tr>td>b")
-          .remove();
+        .find("tr>td>b")
+        .remove();
     }
 
-    playNotificationSound("new_message", !(data.to_channel_id == currentChannelId()));
+    playNotificationSound(
+      "new_message",
+      !(data.to_channel_id == currentChannelId())
+    );
   });
 
   // listen to typing indicator
   channel.bind("client-typing", function (data) {
     if (data.to_channel_id == currentChannelId()) {
       data.typing == true
-          ? messagesContainer.find(".typing-indicator").show()
-          : messagesContainer.find(".typing-indicator").hide();
+        ? messagesContainer.find(".typing-indicator").show()
+        : messagesContainer.find(".typing-indicator").hide();
     }
     // scroll to bottom
     scrollToBottom(messagesContainer);
@@ -680,18 +690,21 @@ function _listenChannelEvent(channel){
   channel.bind("client-seen", function (data) {
     if (data.to_channel_id == currentChannelId()) {
       if (data.seen == true) {
-        $(".message-time")
-            .find(".fa-check")
+        // Update seen status for all messages sent by others
+        $(".message-card:not(.mc-sender)").each(function () {
+          $(this)
+            .find(".message-time .fa-check")
             .before('<span class="fas fa-check-double seen"></span> ');
-        $(".message-time").find(".fa-check").remove();
+          $(this).find(".message-time .fa-check").remove();
+        });
       }
     }
   });
 
   // listen to contact item updates event
   channel.bind("client-contactItem", function (data) {
-    const channel_id = data.to
-    const from_user_id = data.from
+    const channel_id = data.to;
+    const from_user_id = data.from;
 
     if (data.update) {
       updateContactItem(channel_id);
@@ -713,7 +726,6 @@ function _listenChannelEvent(channel){
     }
   });
 }
-
 
 // -------------------------------------
 // presence channel [User Active Status]
@@ -765,25 +777,27 @@ function isTyping(status) {
  *-------------------------------------------------------------
  */
 function makeSeen(status) {
-  if (document?.hidden) {
-    return;
+  if (status && currentChannelId()) {
+    // remove unseen counter for the user from the contacts list
+    $(".messenger-list-item[data-channel=" + currentChannelId() + "]")
+      .find("tr>td>b")
+      .remove();
+
+    // seen
+    $.ajax({
+      url: url + "/makeSeen",
+      method: "POST",
+      data: { _token: csrfToken, channel_id: currentChannelId() },
+      dataType: "JSON",
+      success: function () {
+        clientSendChannel.trigger("client-seen", {
+          from_id: auth_id,
+          to_channel_id: currentChannelId(),
+          seen: status,
+        });
+      },
+    });
   }
-  // remove unseen counter for the user from the contacts list
-  $(".messenger-list-item[data-channel=" + currentChannelId() + "]")
-    .find("tr>td>b")
-    .remove();
-  // seen
-  $.ajax({
-    url: url + "/makeSeen",
-    method: "POST",
-    data: { _token: csrfToken, channel_id: currentChannelId() },
-    dataType: "JSON",
-  });
-  return clientSendChannel.trigger("client-seen", {
-    from_id: auth_id, // Me
-    to_channel_id: currentChannelId(), // Messenger
-    seen: status,
-  });
 }
 
 /**
@@ -898,7 +912,7 @@ function getContacts() {
         } else {
           $(".listOfContacts").append(data.contacts);
         }
-        listenAllContactChannels()
+        listenAllContactChannels();
         updateSelectedContact();
         // update data-action required with [responsive design]
         cssMediaQueries();
@@ -962,7 +976,7 @@ function getChannelId(user_id) {
     url: url + "/get-channel-id",
     method: "POST",
     data: { _token: csrfToken, user_id: user_id },
-    dataType: "JSON"
+    dataType: "JSON",
   });
 }
 
@@ -1131,8 +1145,8 @@ function deleteGroupChat(channel_id) {
       });
 
       $(".listOfContacts")
-          .find(".contact-item[data-channel=" + channel_id + "]")
-          .remove();
+        .find(".contact-item[data-channel=" + channel_id + "]")
+        .remove();
 
       // load channel
       routerPush(document.title, `${url}/${my_channel_id}`);
@@ -1183,8 +1197,8 @@ function leaveGroupChat(channel_id) {
       });
 
       $(".listOfContacts")
-          .find(".contact-item[data-channel=" + channel_id + "]")
-          .remove();
+        .find(".contact-item[data-channel=" + channel_id + "]")
+        .remove();
 
       // load channel
       routerPush(document.title, `${url}/${my_channel_id}`);
@@ -1388,17 +1402,17 @@ function setActiveStatus(status) {
  * Group Chat Events
  *-------------------------------------------------------------
  */
-function groupChatAddingModalInit(){
-  const modalGroupChannel = $(".app-modal[data-name=addGroup]")
+function groupChatAddingModalInit() {
+  const modalGroupChannel = $(".app-modal[data-name=addGroup]");
 
   let searchPage = 1;
   let noMoreDataSearch = false;
   let searchLoading = false;
   let searchTempVal = "";
-  const addedUserIds = []
+  const addedUserIds = [];
 
-  const userSearchEl = modalGroupChannel.find(".user-search")
-  const searchRecordsEl = modalGroupChannel.find(".search-records")
+  const userSearchEl = modalGroupChannel.find(".user-search");
+  const searchRecordsEl = modalGroupChannel.find(".search-records");
 
   // Group button action to show group modal
   $("body").on("click", ".group-btn", function (e) {
@@ -1410,14 +1424,12 @@ function groupChatAddingModalInit(){
   });
 
   // Group modal [cancel button]
-  modalGroupChannel.find(".app-modal-footer .cancel")
-    .on("click", function () {
-      app_modal({
-        show: false,
-        name: "addGroup",
-      });
+  modalGroupChannel.find(".app-modal-footer .cancel").on("click", function () {
+    app_modal({
+      show: false,
+      name: "addGroup",
     });
-
+  });
 
   /*
   -----------------------------
@@ -1454,13 +1466,15 @@ function groupChatAddingModalInit(){
         success: (data) => {
           setSearchLoading(false);
 
-          let html = '';
-          if(typeof data.records == 'string'){
-            html = data.records
+          let html = "";
+          if (typeof data.records == "string") {
+            html = data.records;
           } else {
-            data.records.filter(({user, view}) => !addedUserIds.includes(user.id)).forEach(({user, view}) => {
-              html += view
-            })
+            data.records
+              .filter(({ user, view }) => !addedUserIds.includes(user.id))
+              .forEach(({ user, view }) => {
+                html += view;
+              });
           }
 
           if (searchPage < 2) {
@@ -1494,7 +1508,6 @@ function groupChatAddingModalInit(){
     }
   });
 
-
   /*
   ------------------------------------------------
   ------------ Search Result & Submit ------------
@@ -1504,18 +1517,18 @@ function groupChatAddingModalInit(){
   /* -------- Add User to group -------- */
   $("body").on("click", ".search-records .user-list-item", function () {
     const userID = $(this).attr("data-user");
-    const addedUserView = modalGroupChannel.find('.added-users')
+    const addedUserView = modalGroupChannel.find(".added-users");
 
-    addedUserView.prepend($(this))
-    addedUserIds.push(Number(userID))
+    addedUserView.prepend($(this));
+    addedUserIds.push(Number(userID));
   });
 
   /* -------- Remove User in group -------- */
   $("body").on("click", ".added-users .user-list-item", function () {
     const userID = $(this).attr("data-user");
 
-    addedUserIds.splice(addedUserIds.indexOf(Number(userID)), 1)
-    $(this).remove()
+    addedUserIds.splice(addedUserIds.indexOf(Number(userID)), 1);
+    $(this).remove();
   });
 
   /* -------- Create Group Channel -------- */
@@ -1525,8 +1538,8 @@ function groupChatAddingModalInit(){
   });
   function createGroupChat() {
     const addGroupForm = $("#addGroupForm");
-    const groupNameVal = $.trim(addGroupForm.find('#group_name').val());
-    const avatar = addGroupForm.find('.upload-avatar').prop('files')
+    const groupNameVal = $.trim(addGroupForm.find("#group_name").val());
+    const avatar = addGroupForm.find(".upload-avatar").prop("files");
 
     const formData = new FormData();
     formData.append("avatar", avatar ? avatar[0] : null);
@@ -1573,11 +1586,13 @@ function groupChatAddingModalInit(){
             body: "",
           });
 
-          const channel_id = data.channel.id
+          const channel_id = data.channel.id;
 
           // pusher subscribe new channel
-          const channel_pusher = pusher.subscribe(`${channelName}.${channel_id}`);
-          _listenChannelEvent(channel_pusher)
+          const channel_pusher = pusher.subscribe(
+            `${channelName}.${channel_id}`
+          );
+          _listenChannelEvent(channel_pusher);
 
           // update route
           routerPush(document.title, `${url}/${channel_id}`);
@@ -1587,15 +1602,15 @@ function groupChatAddingModalInit(){
           // load data from database
           IDinfo(channel_id);
 
-          setTimeout(()=>{
+          setTimeout(() => {
             updateContactItem(channel_id);
-          }, 500)
+          }, 500);
 
           // reset form
           addGroupForm.trigger("reset");
-          addedUserIds.length = 0
-          modalGroupChannel.find('.added-users')?.html("")
-          modalGroupChannel.find('.search-records')?.html("")
+          addedUserIds.length = 0;
+          modalGroupChannel.find(".added-users")?.html("");
+          modalGroupChannel.find(".search-records")?.html("");
         }
       },
       error: () => {
@@ -1636,10 +1651,15 @@ $(document).ready(function () {
     // listening for pusher:subscription_succeeded - first load
     clientSendChannel.bind("pusher:subscription_succeeded", function () {
       // On connection state change [Updating] and get [info & msgs]
-      if ($(".messenger-list-item").find("tr[data-action]").attr("data-action") == "1") {
+      if (
+        $(".messenger-list-item").find("tr[data-action]").attr("data-action") ==
+        "1"
+      ) {
         $(".messenger-listView").hide();
       }
-      currentChannelId() && currentChannelId().length > 2 && IDinfo(currentChannelId());
+      currentChannelId() &&
+        currentChannelId().length > 2 &&
+        IDinfo(currentChannelId());
     });
   });
 
@@ -1674,25 +1694,27 @@ $(document).ready(function () {
 
     const userID = $(this).attr("data-user");
 
-    getChannelId(userID).then(res => {
-      const {channel_id, type} = res
+    getChannelId(userID)
+      .then((res) => {
+        const { channel_id, type } = res;
 
-      // pusher subscribe new channel
-      if(type && type === 'new_channel'){
-        const channel = pusher.subscribe(`${channelName}.${channel_id}`);
-        _listenChannelEvent(channel)
-      }
+        // pusher subscribe new channel
+        if (type && type === "new_channel") {
+          const channel = pusher.subscribe(`${channelName}.${channel_id}`);
+          _listenChannelEvent(channel);
+        }
 
-      // update route
-      routerPush(document.title, `${url}/${channel_id}`);
-      setCurrentChannelId(channel_id);
-      updateSelectedContact(channel_id);
+        // update route
+        routerPush(document.title, `${url}/${channel_id}`);
+        setCurrentChannelId(channel_id);
+        updateSelectedContact(channel_id);
 
-      // load data from database
-      IDinfo(channel_id);
-    }).catch(e => {
-      console.log(e)
-    })
+        // load data from database
+        IDinfo(channel_id);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   });
 
   // click action for list item [user/group]
@@ -1703,9 +1725,13 @@ $(document).ready(function () {
   });
 
   // show info side button
-  $("body").on("click", ".messenger-infoView nav a , .show-infoSide", function () {
-    $(".messenger-infoView").toggle();
-  });
+  $("body").on(
+    "click",
+    ".messenger-infoView nav a , .show-infoSide",
+    function () {
+      $(".messenger-infoView").toggle();
+    }
+  );
 
   // make favorites card draggable on click to slide.
   hScroller(".messenger-favorites");
@@ -1873,11 +1899,15 @@ $(document).ready(function () {
     });
   });
   // Delete Conversation button
-  $("body").on("click", ".messenger-infoView-btns .delete-conversation", function () {
-    app_modal({
-      name: "delete",
-    });
-  });
+  $("body").on(
+    "click",
+    ".messenger-infoView-btns .delete-conversation",
+    function () {
+      app_modal({
+        name: "delete",
+      });
+    }
+  );
   // Delete Message Button
   $("body").on("click", ".message-card .actions .delete-btn", function () {
     app_modal({
@@ -1905,44 +1935,44 @@ $(document).ready(function () {
     });
   // Delete group modal [on button click]
   $(".app-modal[data-name=delete-group]")
-      .find(".app-modal-footer .delete")
-      .on("click", function () {
-        deleteGroupChat(currentChannelId())
-        app_modal({
-          show: false,
-          name: "delete-group",
-        });
+    .find(".app-modal-footer .delete")
+    .on("click", function () {
+      deleteGroupChat(currentChannelId());
+      app_modal({
+        show: false,
+        name: "delete-group",
       });
+    });
   // Leave group modal [on button click]
   $(".app-modal[data-name=leave-group]")
-      .find(".app-modal-footer .delete")
-      .on("click", function () {
-        leaveGroupChat(currentChannelId())
+    .find(".app-modal-footer .delete")
+    .on("click", function () {
+      leaveGroupChat(currentChannelId());
 
-        app_modal({
-          show: false,
-          name: "leave-group",
-        });
+      app_modal({
+        show: false,
+        name: "leave-group",
       });
+    });
 
   // Delete group modal [on cancel click]
   $(".app-modal[data-name=delete-group]")
-      .find(".app-modal-footer .cancel")
-      .on("click", function () {
-        app_modal({
-          show: false,
-          name: "delete-group",
-        });
+    .find(".app-modal-footer .cancel")
+    .on("click", function () {
+      app_modal({
+        show: false,
+        name: "delete-group",
       });
+    });
   // Leave group modal [on cancel click]
   $(".app-modal[data-name=leave-group]")
-      .find(".app-modal-footer .cancel")
-      .on("click", function () {
-        app_modal({
-          show: false,
-          name: "leave-group",
-        });
+    .find(".app-modal-footer .cancel")
+    .on("click", function () {
+      app_modal({
+        show: false,
+        name: "leave-group",
       });
+    });
 
   // delete modal [cancel button]
   $(".app-modal[data-name=delete]")
