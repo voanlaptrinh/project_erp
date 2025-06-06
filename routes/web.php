@@ -24,6 +24,7 @@ use App\Http\Controllers\admin\ServerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageGroupController;
+use App\Http\Controllers\vendor\Chatify\MessagesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,9 +46,9 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
 Route::get('/auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
-Route::post('/make-seen/{channelId}', [MessagesController::class, 'seen'])->name('chatify.makeSeen');
-
-
+// Route::post('/make-seen/{channelId}', [MessagesController::class, 'seen'])->name('chatify.makeSeen');
+Route::get('/thong-bao-chat/goto/{id}', [MessagesController::class, 'gotoChat'])->name('thongbao.chat.goto');
+Route::get('/chatify/{channel_id?}', [MessagesController::class, 'index'])->name('chatify');
 
 Route::middleware(['auth', 'role:Super Admin'])->group(function () {
     Route::get('/admin/users', [AdminUserController::class, 'index'])->name('admin.users.index');
@@ -183,35 +184,35 @@ Route::prefix('admin')->middleware('auth')->group(function () {
         Route::get('/server/search', [ServerController::class, 'search'])->name('servers.search');
     });
 
-    Route::middleware(['auth'])->group(function () {
-        // Chat routes
-        Route::prefix('chat')->group(function () {
-            Route::get('/', [MessageGroupController::class, 'index'])->name('chat.index');
-            Route::post('/create-group', [MessageGroupController::class, 'createGroup'])->name('chat.create-group');
-            Route::get('/private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');
-            Route::get('/{group}', [MessageGroupController::class, 'show'])->name('chat.show');
-            Route::post('/{group}/add-users', [MessageGroupController::class, 'addUsers'])->name('chat.add-users');
-            Route::delete('/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
-            Route::post('/chat/{group}/typing', [MessageGroupController::class, 'typing'])->name('chat.typing');
-            Route::get('chat/start-private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');            // Xóa thành viên khỏi nhóm
-            Route::delete('/chat/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
-            Route::delete('/chat/{group}', [MessageGroupController::class, 'destroy'])->name('chat.destroy');
-            Route::get('/thong-bao-chat/go/{id}', function ($id) {
-                $tb = \App\Models\ThongBaoChat::findOrFail($id);
-                if ($tb->user_id == auth()->id()) {
-                    $tb->is_read = true;
-                    $tb->save();
-                    // Giả sử bạn có trường message_group_id trong ThongBaoChat
-                    return redirect()->route('chat.index', ['group' => $tb->message_group_id]);
-                }
-                abort(403);
-            })->name('thongbao.chat.goto');
-        });
+    // Route::middleware(['auth'])->group(function () {
+    //     // Chat routes
+    //     Route::prefix('chat')->group(function () {
+    //         Route::get('/', [MessageGroupController::class, 'index'])->name('chat.index');
+    //         Route::post('/create-group', [MessageGroupController::class, 'createGroup'])->name('chat.create-group');
+    //         Route::get('/private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');
+    //         Route::get('/{group}', [MessageGroupController::class, 'show'])->name('chat.show');
+    //         Route::post('/{group}/add-users', [MessageGroupController::class, 'addUsers'])->name('chat.add-users');
+    //         Route::delete('/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
+    //         Route::post('/chat/{group}/typing', [MessageGroupController::class, 'typing'])->name('chat.typing');
+    //         Route::get('chat/start-private/{user}', [MessageGroupController::class, 'startPrivate'])->name('chat.start-private');            // Xóa thành viên khỏi nhóm
+    //         Route::delete('/chat/{group}/remove-user/{user}', [MessageGroupController::class, 'removeUser'])->name('chat.remove-user');
+    //         Route::delete('/chat/{group}', [MessageGroupController::class, 'destroy'])->name('chat.destroy');
+    //         Route::get('/thong-bao-chat/go/{id}', function ($id) {
+    //             $tb = \App\Models\ThongBaoChat::findOrFail($id);
+    //             if ($tb->user_id == auth()->id()) {
+    //                 $tb->is_read = true;
+    //                 $tb->save();
+    //                 // Giả sử bạn có trường message_group_id trong ThongBaoChat
+    //                 return redirect()->route('chat.index', ['group' => $tb->message_group_id]);
+    //             }
+    //             abort(403);
+    //         })->name('thongbao.chat.goto');
+    //     });
 
-        // Message routes
-        Route::post('/groups/{group}/messages', [MessageController::class, 'store'])->name('messages.store');
-        Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
-    });
+    //     // Message routes
+    //     Route::post('/groups/{group}/messages', [MessageController::class, 'store'])->name('messages.store');
+    //     Route::delete('/messages/{message}', [MessageController::class, 'destroy'])->name('messages.destroy');
+    // });
 
 
 

@@ -97,7 +97,7 @@
                                 Bạn có {{ auth()->user()->thongBaoChats()->where('is_read', false)->count() }} thông
                                 báo
                                 mới chưa đọc
-                                <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View
+                                <a href="/chatify"><span class="badge rounded-pill bg-primary p-2 ms-2">View
                                         all</span></a>
                             </li>
                             @forelse (auth()->user()->thongBaoChats->where('is_read', false) as $thongBaoChats)

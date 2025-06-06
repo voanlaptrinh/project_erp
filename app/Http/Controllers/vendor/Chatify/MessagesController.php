@@ -11,15 +11,26 @@ use App\Models\User;
 use App\Models\ChMessage as Message;
 use App\Models\ChFavorite as Favorite;
 use App\Models\ChChannel as Channel;
+use App\Models\ThongBaoChat;
 use Chatify\Facades\ChatifyMessenger as Chatify;
+use FontLib\Table\Type\fpgm;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request as FacadesRequest;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
+
 class MessagesController extends Controller
 {
+
+    public function __construct()
+    {
+        // Chỉ cho phép user có quyền này mới được tạo nhóm
+        $this->middleware('can:tạo nhóm chat')->only(['createGroupChat']);
+        // Chỉ cho phép user có quyền này mới được xóa nhóm
+        $this->middleware('can:xóa nhóm chat')->only(['deleteGroupChat']);
+    }
     protected $perPage = 30;
 
     /**
@@ -60,6 +71,19 @@ class MessagesController extends Controller
         ]);
     }
 
+    public function gotoChat($id)
+    {
+        $thongBao = ThongBaoChat::findOrFail($id);
+
+        // Đánh dấu là đã đọc
+        $thongBao->markAsRead();
+
+        // Tìm channel liên quan (giả sử bạn lưu channel_id trong ThongBaoChat, nếu chưa có thì cần bổ sung)
+        // Nếu không có channel_id, bạn cần xác định channel dựa vào logic của bạn
+        // Ví dụ: chuyển về trang chat chính
+        // Chuyển hướng đến đúng channel chat
+        return redirect()->route('chatify', ['channel_id' => $thongBao->channel_id]);
+    }
 
     /**
      * Fetch data (user, favorite.. etc).
@@ -177,6 +201,20 @@ class MessagesController extends Controller
                     'old_name' => htmlentities(trim($attachment_title), ENT_QUOTES, 'UTF-8'),
                 ]) : null,
             ]);
+
+            $channel = Channel::find($request['channel_id']);
+            if ($channel) {
+                foreach ($channel->users as $user) {
+                    if ($user->id != Auth::user()->id) {
+                        ThongBaoChat::create([
+                            'user_id' => $user->id,
+                            'title' => 'Tin nhắn mới',
+                            'message' => Auth::user()->name . ' đã gửi một tin nhắn mới.',
+                            'is_read' => false,
+                        ]);
+                    }
+                }
+            }
 
             // load user info
             $message->user_avatar = Auth::user()->avatar;
